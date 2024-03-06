@@ -1,1 +1,1 @@
-# Java-Pixel-Phyiscs
+# Java-Pixel-Physics
