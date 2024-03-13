@@ -1,6 +1,9 @@
 package com.aidenx11.game;
 
-import com.badlogic.gdx.graphics.Color;
+import com.aidenx11.game.color.CustomColor;
+import com.aidenx11.game.elements.Element;
+import com.aidenx11.game.elements.Sand;
+import com.aidenx11.game.color.ColorValues;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
@@ -10,7 +13,7 @@ public class CellularMatrix {
 	public int columns;
 	public int pixelSizeModifier;
 
-	private Array<Array<Integer>> matrix;
+	private Array<Array<Element>> matrix;
 
 	/**
 	 * Generates a matrix with the given rows and columns, with a pixel size
@@ -34,13 +37,13 @@ public class CellularMatrix {
 	 * 
 	 * @return the empty matrix
 	 */
-	private Array<Array<Integer>> generateMatrix() {
+	private Array<Array<Element>> generateMatrix() {
 
-		Array<Array<Integer>> outerArray = new Array<>(true, rows);
+		Array<Array<Element>> outerArray = new Array<>(true, rows);
 		for (int y = 0; y < rows; y++) {
-			Array<Integer> innerArr = new Array<>(true, columns);
+			Array<Element> innerArr = new Array<>(true, columns);
 			for (int x = 0; x < columns; x++) {
-				innerArr.add(0);
+				innerArr.add(null);
 			}
 			outerArray.add(innerArr);
 		}
@@ -48,26 +51,17 @@ public class CellularMatrix {
 	}
 
 	/**
-	 * Returns the value at the given row and column of this matrix
-	 * 
-	 * @param row    row of matrix to get value from
-	 * @param column column of matrix to get value from
-	 * @return value at the requested row and column
-	 */
-	public int getValue(int row, int column) {
-		return matrix.get(row).get(column);
-	}
-
-	/**
 	 * Sets the given value at the given row and column of the matrix
 	 * 
 	 * @param row    row to set value at
 	 * @param column column to set value at
-	 * @param value  value to set
+	 * @param element  value to set
 	 */
-	public void setValue(int row, int column, int value) {
-		Array<Integer> rowArray = matrix.get(row);
-		rowArray.set(column, value);
+	public void setElement(Element element) {
+		int row = element.getRow();
+		int column = element.getColumn();
+		Array<Element> rowArray = matrix.get(row);
+		rowArray.set(column, element);
 		matrix.set(row, rowArray);
 	}
 
@@ -77,7 +71,7 @@ public class CellularMatrix {
 	 * @param row row to return
 	 * @return returns the given row
 	 */
-	public Array<Integer> getRow(int row) {
+	public Array<Element> getRow(int row) {
 		return matrix.get(row);
 	}
 
@@ -86,7 +80,7 @@ public class CellularMatrix {
 	 * 
 	 * @return the current matrix
 	 */
-	public Array<Array<Integer>> getMatrix() {
+	public Array<Array<Element>> getMatrix() {
 		return matrix;
 	}
 
@@ -106,9 +100,19 @@ public class CellularMatrix {
 	 * @param col2 y index of second particle to swap
 	 */
 	public void swap(int row1, int col1, int row2, int col2) {
-		int firstParticleValue = this.getValue(col1, row1);
-		this.setValue(col1, row1, this.getValue(col2, row2));
-		this.setValue(row2, col2, firstParticleValue);
+		Element firstParticleValue = this.getElement(col1, row1);
+		this.setElement(this.getElement(col2, row2));
+		this.setElement(firstParticleValue);
+	}
+	
+	/**
+	 * 
+	 * @param row
+	 * @param column
+	 * @return
+	 */
+	public Element getElement(int row, int column) {
+		return getRow(row).get(column);
 	}
 
 	/**
@@ -119,7 +123,7 @@ public class CellularMatrix {
 	 * @return whether or not the pixel is empty
 	 */
 	public boolean isEmpty(int row, int column) {
-		return this.getValue(row, column) == 0;
+		return this.getElement(row, column) == null;
 	}
 
 	/**
@@ -140,9 +144,14 @@ public class CellularMatrix {
 
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < columns; x++) {
-				if (this.getValue(y, x) == 1) {
+				if (!this.isEmpty(y, x)) {
+					Element thisElement = this.getElement(y, x);
+					thisElement.varyColor();
+//					sandColor.setColor(ColorManager.varyColor(ColorValues.SAND_COLOR)[0],
+//							ColorManager.varyColor(ColorValues.SAND_COLOR)[1],
+//							ColorManager.varyColor(ColorValues.SAND_COLOR)[2]);
 					shapeRenderer.begin(ShapeType.Filled);
-					shapeRenderer.setColor(Color.GOLD);
+					shapeRenderer.setColor(thisElement.getColor());
 					shapeRenderer.rect(x * pixelSizeModifier, y * pixelSizeModifier, pixelSizeModifier,
 							pixelSizeModifier);
 					shapeRenderer.end();

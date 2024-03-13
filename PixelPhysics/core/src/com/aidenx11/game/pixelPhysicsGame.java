@@ -1,28 +1,27 @@
 package com.aidenx11.game;
 
+import com.aidenx11.game.color.ColorValues;
+import com.aidenx11.game.color.CustomColor;
+import com.aidenx11.game.input.MouseInput;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.utils.ScreenUtils;
 
 public class pixelPhysicsGame extends ApplicationAdapter {
 
-	public static int screenWidth = 1024;
-	public static int screenHeight = 768;
+	public static int screenWidth = 1024; // MUST equal window size in desktop launcher
+	public static int screenHeight = 768; // MUST equal window size in desktop launcher
 	public static int pixelSizeModifier = 20;
 	public CellularMatrix matrix;
 
-	Vector3 mousePos = new Vector3();
+	public static int rows;
+	public static int columns;
 
-	int rows, columns;
-
-	ShapeRenderer shapeRenderer;
-	OrthographicCamera camera;
-	Viewport viewport;
+	public ShapeRenderer shapeRenderer;
+	private OrthographicCamera camera;
+	private MouseInput mouse;
 
 	@Override
 	public void create() {
@@ -42,25 +41,22 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		columns = fittedWidth / pixelSizeModifier;
 
 		matrix = new CellularMatrix(rows, columns, pixelSizeModifier);
-		matrix.setValue(rows - 2, 20, 1);
+
+		mouse = new MouseInput(matrix, camera);
+		
+
 	}
 
 	@Override
 	public void render() {
+		
+		ScreenUtils.clear(135/255f, 206/255f, 235/255f, 1);
 
 		// Draws the matrix
 		matrix.draw(shapeRenderer);
 
 		// Detects mouse input and sets pixel if it is in bounds
-		if (Gdx.input.isTouched()) {
-			mousePos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-			camera.unproject(mousePos);
-			int touchedRow = (int) Math.floor(mousePos.y / pixelSizeModifier);
-			int touchedCol = (int) Math.floor(mousePos.x / pixelSizeModifier);
-			if (touchedRow >= 0 && touchedRow < rows && touchedCol >= 0 && touchedCol < columns) {
-				matrix.setValue(touchedRow, touchedCol, 1);
-			}
-		}
+		mouse.detectInput();
 
 	}
 
@@ -68,6 +64,5 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	public void dispose() {
 		shapeRenderer.dispose();
 	}
-	
-	
+
 }

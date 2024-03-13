@@ -8,7 +8,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setWindowedMode(1024, 768);
-		config.setForegroundFPS(30);
+		config.setForegroundFPS(60);
 		config.setTitle("JavaPixelPhysics");
 		config.useVsync(true);
 		new Lwjgl3Application(new pixelPhysicsGame(), config);
