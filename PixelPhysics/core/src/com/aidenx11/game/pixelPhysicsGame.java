@@ -2,6 +2,7 @@ package com.aidenx11.game;
 
 import com.aidenx11.game.color.ColorValues;
 import com.aidenx11.game.color.CustomColor;
+import com.aidenx11.game.elements.Sand;
 import com.aidenx11.game.input.MouseInput;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -52,11 +53,10 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		
 		ScreenUtils.clear(135/255f, 206/255f, 235/255f, 1);
 
-		// Draws the matrix
-		matrix.draw(shapeRenderer);
-
 		// Detects mouse input and sets pixel if it is in bounds
 		mouse.detectInput();
+		
+		matrix.updateFrame(shapeRenderer);
 
 	}
 

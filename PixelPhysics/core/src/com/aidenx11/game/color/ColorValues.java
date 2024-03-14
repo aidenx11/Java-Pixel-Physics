@@ -26,7 +26,7 @@ public enum ColorValues {
 	 * @return the hexCode of the color
 	 */
 	public int[] getRGB() {
-		return new int[] {r, g, b};
+		return new int[] { r, g, b };
 	}
 
 }
