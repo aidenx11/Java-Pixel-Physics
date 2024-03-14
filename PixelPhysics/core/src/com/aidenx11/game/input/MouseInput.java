@@ -28,6 +28,27 @@ public class MouseInput {
 	}
 
 	/**
+	 * 
+	 * @param element
+	 * @param row
+	 * @param column
+	 * @param radius
+	 * @param p
+	 */
+	public void drawSquare(int row, int column, int width, double p) {
+		for (int rowCount = row - width / 2; rowCount < row + width / 2; rowCount++) {
+			for (int colCount = column - width / 2; colCount < column + width / 2; colCount++) {
+				if (rowCount < 0 || rowCount >= rows || colCount < 0 || colCount >= columns) {
+					break;
+				}
+				if (Math.random() < p) {
+					matrix.setElement(new Sand(rowCount, colCount));
+				}
+			}
+		}
+	}
+
+	/**
 	 * Detects the input of the mouse and sets the matrix values corresponding to
 	 * the mouse location.
 	 */
@@ -40,7 +61,8 @@ public class MouseInput {
 			int touchedCol = (int) Math.floor(mousePos.x / pixelSizeModifier);
 			if (touchedRow >= 0 && touchedRow < rows && touchedCol >= 0 && touchedCol < columns) {
 				if (matrix.isEmpty(touchedRow, touchedCol)) {
-					matrix.setElement(new Sand(touchedRow, touchedCol));
+					// matrix.setElement(new Sand(touchedRow, touchedCol));
+					drawSquare(touchedRow, touchedCol, 5, 0.8);
 				}
 			}
 		}

@@ -63,6 +63,8 @@ public class CellularMatrix {
 		rowArray.set(column, element);
 		matrix.set(row, rowArray);
 	}
+	
+	
 
 	/**
 	 * Returns the given row of the matrix
