@@ -1,9 +1,8 @@
 package com.aidenx11.game;
 
-import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.elements.Element;
+import com.aidenx11.game.elements.Empty;
 import com.aidenx11.game.elements.Sand;
-import com.aidenx11.game.color.ColorValues;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
@@ -43,7 +42,7 @@ public class CellularMatrix {
 		for (int y = 0; y < rows; y++) {
 			Array<Element> innerArr = new Array<>(true, columns);
 			for (int x = 0; x < columns; x++) {
-				innerArr.add(null);
+				innerArr.add(new Empty(y, x));
 			}
 			outerArray.add(innerArr);
 		}
@@ -53,9 +52,9 @@ public class CellularMatrix {
 	/**
 	 * Sets the given value at the given row and column of the matrix
 	 * 
-	 * @param row    row to set value at
-	 * @param column column to set value at
-	 * @param element  value to set
+	 * @param row     row to set value at
+	 * @param column  column to set value at
+	 * @param element value to set
 	 */
 	public void setElement(Element element) {
 		int row = element.getRow();
@@ -92,19 +91,21 @@ public class CellularMatrix {
 	}
 
 	/**
-	 * Swaps 2 given indices in the matrix
+	 * Swaps 2 given elements in the matrix
 	 * 
-	 * @param row1 x index of first particle to swap
-	 * @param col1 y index of first particle to swap
-	 * @param row2 x index of second particle to swap
-	 * @param col2 y index of second particle to swap
+	 * 
 	 */
-	public void swap(int row1, int col1, int row2, int col2) {
-		Element firstParticleValue = this.getElement(col1, row1);
-		this.setElement(this.getElement(col2, row2));
-		this.setElement(firstParticleValue);
+	public void swap(Element element1, Element element2) {
+		int[] tempLocation = new int[] { element1.getRow(), element1.getColumn() };
+		element1.setRow(element2.getRow());
+		element1.setColumn(element2.getColumn());
+		element2.setRow(tempLocation[0]);
+		element2.setColumn(tempLocation[1]);
+		
+		this.setElement(element1);
+		this.setElement(element2);
 	}
-	
+
 	/**
 	 * 
 	 * @param row
@@ -112,6 +113,11 @@ public class CellularMatrix {
 	 * @return
 	 */
 	public Element getElement(int row, int column) {
+
+		if (row < 0 || row >= rows || column < 0 || column >= columns) {
+			return null;
+		}
+
 		return getRow(row).get(column);
 	}
 
@@ -123,16 +129,7 @@ public class CellularMatrix {
 	 * @return whether or not the pixel is empty
 	 */
 	public boolean isEmpty(int row, int column) {
-		return this.getElement(row, column) == null;
-	}
-
-	/**
-	 * Updates the matrix by performing checks for surrounding pixels on all pixels
-	 * 
-	 * @param valueToSet value to set if conditions are met
-	 */
-	public void update(int valueToSet) {
-
+		return this.getElement(row, column).isEmpty();
 	}
 
 	/**
@@ -146,15 +143,44 @@ public class CellularMatrix {
 			for (int x = 0; x < columns; x++) {
 				if (!this.isEmpty(y, x)) {
 					Element thisElement = this.getElement(y, x);
-					thisElement.varyColor();
-//					sandColor.setColor(ColorManager.varyColor(ColorValues.SAND_COLOR)[0],
-//							ColorManager.varyColor(ColorValues.SAND_COLOR)[1],
-//							ColorManager.varyColor(ColorValues.SAND_COLOR)[2]);
-					shapeRenderer.begin(ShapeType.Filled);
-					shapeRenderer.setColor(thisElement.getColor());
-					shapeRenderer.rect(x * pixelSizeModifier, y * pixelSizeModifier, pixelSizeModifier,
-							pixelSizeModifier);
-					shapeRenderer.end();
+					if (!thisElement.isEmpty()) {
+						thisElement.varyColor();
+						shapeRenderer.begin(ShapeType.Filled);
+						shapeRenderer.setColor(thisElement.getColor());
+						shapeRenderer.rect(x * pixelSizeModifier, y * pixelSizeModifier, pixelSizeModifier,
+								pixelSizeModifier);
+						shapeRenderer.end();
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @param sr
+	 */
+	public void updateFrame(ShapeRenderer sr) {
+		
+		this.draw(sr);
+		
+		for (int y = 0; y < rows; y++) {
+			for (int x = 0; x < columns; x++) {
+				Element thisElement = this.getElement(y, x);
+
+				if (thisElement instanceof Sand) {
+					Element below = this.getElement(y - 1, x);
+					int randDirection = (int) Math.round(Math.random() * -1 + 1);
+					Element below1 = this.getElement(y - 1, x - randDirection);
+					Element below2 = this.getElement(y - 1, x + randDirection);
+
+					if (below instanceof Empty) {
+						this.swap(thisElement, below);
+					} else if (below1 instanceof Empty) {
+						this.swap(thisElement, below1);
+					} else if (below2 instanceof Empty) {
+						this.swap(thisElement, below2);
+					}
 				}
 			}
 		}

@@ -11,7 +11,7 @@ public class ColorManager extends Color {
 	 * @return the varied color as a hex string
 	 */
 	public static int[] varyColor(CustomColor color) {
-		int[] hslValues = convertToHSLFromRGB(new int[] {color.getR(), color.getG(), color.getB()});
+		int[] hslValues = convertToHSLFromRGB(new int[] { color.getR(), color.getG(), color.getB() });
 
 		double saturation = hslValues[1] + Math.floor(Math.random() * (20) - 20);
 
@@ -47,7 +47,7 @@ public class ColorManager extends Color {
 		double r = rgb[0];
 		double g = rgb[1];
 		double b = rgb[2];
-		
+
 		double rPrime = r / 255.0;
 		double gPrime = g / 255.0;
 		double bPrime = b / 255.0;
@@ -138,7 +138,7 @@ public class ColorManager extends Color {
 		g = Math.round((g + m) * 255);
 		b = Math.round((b + m) * 255);
 
-		int[] rgb = new int[] {(int) r, (int) g, (int) b};
+		int[] rgb = new int[] { (int) r, (int) g, (int) b };
 
 		return rgb;
 	}
