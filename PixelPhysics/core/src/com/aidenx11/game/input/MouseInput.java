@@ -4,7 +4,9 @@ import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.elements.Sand;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 
 public class MouseInput {
@@ -47,6 +49,26 @@ public class MouseInput {
 			}
 		}
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Vector3 getMousePos() {
+		return mousePos;
+	}
+	
+	/**
+	 * 
+	 * @param sr
+	 * @param radius
+	 */
+	public void drawCursor(ShapeRenderer sr, int radius) {
+		sr.begin();
+		sr.setColor(Color.WHITE);
+		sr.circle(Gdx.input.getX(), pixelPhysicsGame.screenHeight - Gdx.input.getY(), radius, 100);
+		sr.end();
+	}
 
 	/**
 	 * Detects the input of the mouse and sets the matrix values corresponding to
@@ -62,7 +84,7 @@ public class MouseInput {
 			if (touchedRow >= 0 && touchedRow < rows && touchedCol >= 0 && touchedCol < columns) {
 				if (matrix.isEmpty(touchedRow, touchedCol)) {
 					// matrix.setElement(new Sand(touchedRow, touchedCol));
-					drawSquare(touchedRow, touchedCol, 5, 0.8);
+					drawSquare(touchedRow, touchedCol, 4, 0.8);
 				}
 			}
 		}

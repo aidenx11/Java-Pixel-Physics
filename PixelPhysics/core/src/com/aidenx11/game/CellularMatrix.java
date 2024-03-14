@@ -3,6 +3,8 @@ package com.aidenx11.game;
 import com.aidenx11.game.elements.Element;
 import com.aidenx11.game.elements.Empty;
 import com.aidenx11.game.elements.Sand;
+import com.aidenx11.game.input.MouseInput;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
