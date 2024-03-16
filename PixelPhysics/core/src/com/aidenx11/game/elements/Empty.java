@@ -6,5 +6,8 @@ public class Empty extends Element {
 
 	public Empty(int row, int column) {
 		super(row, column);
+		super.setMovable(false);
 	}
+
+	
 }

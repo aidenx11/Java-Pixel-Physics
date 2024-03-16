@@ -2,26 +2,20 @@ package com.aidenx11.game;
 
 import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.input.MouseInput;
+import com.aidenx11.game.ui.ButtonStage;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
-import ui.ButtonStage;
 
 public class pixelPhysicsGame extends ApplicationAdapter {
 
 	public static final int SCREEN_WIDTH = 1024; // MUST equal window size in desktop launcher
 	public static final int SCREEN_HEIGHT = 768; // MUST equal window size in desktop launcher
-	public static int pixelSizeModifier = 7;
+	public static int pixelSizeModifier = 6;
 	public CellularMatrix matrix;
 
 	public static int rows;
@@ -32,7 +26,6 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	private Viewport viewport;
 	private MouseInput mouse;
 	private ButtonStage buttonStage;
-	
 
 	@Override
 	public void create() {
@@ -55,28 +48,31 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		mouse = new MouseInput(matrix, camera);
 		mouse.setElementType(ElementTypes.SAND);
 
-		buttonStage = new ButtonStage(viewport, mouse);
-        
-        Gdx.input.setInputProcessor(buttonStage.getStage());
+		buttonStage = new ButtonStage(viewport, mouse, matrix);
+
+		Gdx.input.setInputProcessor(buttonStage.getStage());
 
 	}
 
 	@Override
 	public void render() {
 
-		// Set blue background
-		ScreenUtils.clear(135 / 255f, 206 / 255f, 235 / 255f, 1);
 		
-		// Draw the buttons to the screen
-		buttonStage.getStage().draw();
+			// Set blue background
+			ScreenUtils.clear(135 / 255f, 206 / 255f, 235 / 255f, 1);
 
-		// Detects mouse input and sets pixel if it is in bounds
-		mouse.detectInput();
+			// Draw the buttons to the screen
+			buttonStage.getStage().draw();
 
-		// Perform sand settling logic
-		matrix.updateFrame(shapeRenderer);
+			// Detects mouse input and sets pixel if it is in bounds
+			mouse.detectInput();
 
-		mouse.drawCursor(shapeRenderer, 10);
+			// Perform sand settling logic
+			matrix.draw(shapeRenderer);
+			matrix.updateFrame(shapeRenderer);
+
+			mouse.drawCursor(shapeRenderer, 10);
+		
 
 	}
 
