@@ -65,8 +65,6 @@ public class CellularMatrix {
 		rowArray.set(column, element);
 		matrix.set(row, rowArray);
 	}
-	
-	
 
 	/**
 	 * Returns the given row of the matrix
@@ -105,7 +103,7 @@ public class CellularMatrix {
 		element1.setColumn(element2.getColumn());
 		element2.setRow(tempLocation[0]);
 		element2.setColumn(tempLocation[1]);
-		
+
 		this.setElement(element1);
 		this.setElement(element2);
 	}
@@ -148,7 +146,6 @@ public class CellularMatrix {
 				if (!this.isEmpty(y, x)) {
 					Element thisElement = this.getElement(y, x);
 					if (!thisElement.isEmpty()) {
-						thisElement.varyColor();
 						shapeRenderer.begin(ShapeType.Filled);
 						shapeRenderer.setColor(thisElement.getColor());
 						shapeRenderer.rect(x * pixelSizeModifier, y * pixelSizeModifier, pixelSizeModifier,
@@ -165,9 +162,9 @@ public class CellularMatrix {
 	 * @param sr
 	 */
 	public void updateFrame(ShapeRenderer sr) {
-		
+
 		this.draw(sr);
-		
+
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < columns; x++) {
 				Element thisElement = this.getElement(y, x);

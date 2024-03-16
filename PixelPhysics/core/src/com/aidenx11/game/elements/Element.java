@@ -10,6 +10,10 @@ public abstract class Element {
 	private CustomColor color;
 	private int varyCount;
 
+	public enum ElementTypes {
+		SAND, EMPTY,
+	}
+
 	public Element getType() {
 		return null;
 	}
@@ -19,7 +23,6 @@ public abstract class Element {
 		setRow(row);
 		setColumn(column);
 	}
-	
 
 	public Element(int row, int column, CustomColor color) {
 		setEmpty(false);
