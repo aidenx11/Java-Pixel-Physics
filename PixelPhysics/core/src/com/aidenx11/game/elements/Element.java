@@ -12,7 +12,7 @@ public abstract class Element {
 	private boolean isMovable;
 
 	public enum ElementTypes {
-		SAND, EMPTY,
+		SAND, EMPTY, WOOD
 	}
 
 	public ElementTypes getType() {

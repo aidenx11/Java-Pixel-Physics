@@ -1,6 +1,7 @@
 package com.aidenx11.game.ui;
 
 import com.aidenx11.game.CellularMatrix;
+import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.input.MouseInput;
 import com.badlogic.gdx.Gdx;
@@ -29,7 +30,7 @@ public class ButtonStage extends Stage {
 		final TextButton sandToolButton = new TextButton("Sand", skinButton, "default");
 		sandToolButton.setWidth(150f);
 		sandToolButton.setHeight(20f);
-		sandToolButton.setPosition(Gdx.graphics.getWidth() - 200f, Gdx.graphics.getHeight() - 100f);
+		sandToolButton.setPosition(335f, Gdx.graphics.getHeight() - 25f);
 		sandToolButton.addListener(new ClickListener(){
             @Override 
             public void clicked(InputEvent event, float x, float y){
@@ -40,7 +41,7 @@ public class ButtonStage extends Stage {
 		final TextButton emptyToolButton = new TextButton("Empty", skinButton, "default");
 		emptyToolButton.setWidth(150f);
 		emptyToolButton.setHeight(20f);
-		emptyToolButton.setPosition(Gdx.graphics.getWidth() - 200f, Gdx.graphics.getHeight() - 50f);
+		emptyToolButton.setPosition(175f, Gdx.graphics.getHeight() - 25f);
 		emptyToolButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -51,17 +52,31 @@ public class ButtonStage extends Stage {
 		final TextButton clearCanvasButton = new TextButton("Clear Canvas", skinButton, "default");
 		clearCanvasButton.setWidth(150f);
 		clearCanvasButton.setHeight(20f);
-		clearCanvasButton.setPosition(Gdx.graphics.getWidth() - 200f, Gdx.graphics.getHeight() - 150f);
+		clearCanvasButton.setPosition(15f, Gdx.graphics.getHeight() - 25f);
 		clearCanvasButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				matrix.clear();
 			}
 		});
+		
+
+		final TextButton woodToolButton = new TextButton("poop", skinButton, "default");
+		woodToolButton.setWidth(150f);
+		woodToolButton.setHeight(20f);
+		woodToolButton.setPosition(495f, Gdx.graphics.getHeight() - 25f);
+		woodToolButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				mouseInput.setElementType(ElementTypes.WOOD);
+			}
+		});
        
 		uiStage.addActor(emptyToolButton);
         uiStage.addActor(sandToolButton);
         uiStage.addActor(clearCanvasButton);
+        uiStage.addActor(woodToolButton);
+        mouseInput.setUiRows((int) ((Gdx.graphics.getHeight() - 50f) / pixelPhysicsGame.pixelSizeModifier));
 	}
 	
 	public Stage getStage() {
