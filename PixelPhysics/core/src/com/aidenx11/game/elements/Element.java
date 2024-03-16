@@ -9,13 +9,14 @@ public abstract class Element {
 	private int column;
 	private CustomColor color;
 	private int varyCount;
+	private boolean isMovable;
 
 	public enum ElementTypes {
 		SAND, EMPTY,
 	}
 
-	public Element getType() {
-		return null;
+	public ElementTypes getType() {
+		return ElementTypes.EMPTY;
 	}
 
 	public Element(int row, int column) {
@@ -75,5 +76,13 @@ public abstract class Element {
 
 	public void setEmpty(boolean isEmpty) {
 		this.isEmpty = isEmpty;
+	}
+	
+	public boolean isMovable() {
+		return isMovable;
+	}
+	
+	public void setMovable(boolean movable) {
+		this.isMovable = movable;
 	}
 }

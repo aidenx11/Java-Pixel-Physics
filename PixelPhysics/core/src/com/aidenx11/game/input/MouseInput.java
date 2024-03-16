@@ -2,7 +2,6 @@ package com.aidenx11.game.input;
 
 import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.pixelPhysicsGame;
-import com.aidenx11.game.elements.Element;
 import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.elements.Empty;
 import com.aidenx11.game.elements.Sand;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class MouseInput {
 
@@ -56,7 +54,7 @@ public class MouseInput {
 
 				switch (type) {
 				case SAND:
-					if (Math.random() < p) {
+					if (Math.random() < p && matrix.isEmpty(rowCount, colCount)) {
 						matrix.setElement(new Sand(rowCount, colCount));
 					}
 					break;
@@ -67,6 +65,42 @@ public class MouseInput {
 				}
 			}
 		}
+	}
+
+	public void drawCircle(int row, int column, int radius, ElementTypes type, double p) {
+		// Define bounding box
+		int top = (int) Math.ceil(row + radius);
+		int bottom = (int) Math.floor(row - radius);
+		int left = (int) Math.floor(column - radius);
+		int right = (int) Math.ceil(column + radius);
+
+		for (int rowCount = bottom; rowCount <= top; rowCount++) {
+			for (int colCount = left; colCount <= right; colCount++) {
+				if (insideCircle(row, column, radius, rowCount, colCount)) {
+					if (rowCount < 0 || rowCount >= rows || colCount < 0 || colCount >= columns) {
+						break;
+					}
+					switch (type) {
+					case SAND:
+						if (Math.random() < p && matrix.isEmpty(rowCount, colCount)) {
+							matrix.setElement(new Sand(rowCount, colCount));
+						}
+						break;
+					case EMPTY:
+						matrix.setElement(new Empty(rowCount, colCount));
+						break;
+
+					}
+				}
+			}
+		}
+	}
+	
+	private boolean insideCircle(int centerRow, int centerCol, int radius, int cellRow, int cellCol) {
+		double dx = centerCol - cellCol;
+		double dy = centerRow - cellRow;
+		double distanceSquared = dx * dx + dy * dy;
+		return distanceSquared <= radius * radius; 
 	}
 
 	/**
@@ -98,18 +132,18 @@ public class MouseInput {
 		if (Gdx.input.isTouched()) {
 			mousePos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			camera.unproject(mousePos);
+
 			int touchedRow = (int) Math.floor(mousePos.y / pixelSizeModifier);
 			int touchedCol = (int) Math.floor(mousePos.x / pixelSizeModifier);
 			if (touchedRow >= 0 && touchedRow < rows && touchedCol >= 0 && touchedCol < columns) {
 				switch (elementType) {
 				case SAND:
-					if (matrix.isEmpty(touchedRow, touchedCol)) {
 						// matrix.setElement(new Sand(touchedRow, touchedCol));
-						drawSquare(touchedRow, touchedCol, 4, 0.8, elementType);
-					}
+						// drawSquare(touchedRow, touchedCol, 5, 0.8, elementType);
+						drawCircle(touchedRow, touchedCol, 5, elementType, 0.5);
 					break;
 				case EMPTY:
-					drawSquare(touchedRow, touchedCol, 4, 0.8, elementType);
+					drawCircle(touchedRow, touchedCol, 5, elementType, 1);
 					break;
 				}
 

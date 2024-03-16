@@ -2,9 +2,6 @@ package com.aidenx11.game;
 
 import com.aidenx11.game.elements.Element;
 import com.aidenx11.game.elements.Empty;
-import com.aidenx11.game.elements.Sand;
-import com.aidenx11.game.input.MouseInput;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
@@ -28,7 +25,6 @@ public class CellularMatrix {
 		this.rows = rows;
 		this.columns = columns;
 		this.pixelSizeModifier = pixelSizeModifier;
-
 		this.matrix = generateMatrix();
 	}
 
@@ -163,15 +159,13 @@ public class CellularMatrix {
 	 */
 	public void updateFrame(ShapeRenderer sr) {
 
-		this.draw(sr);
-
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < columns; x++) {
 				Element thisElement = this.getElement(y, x);
-
-				if (thisElement instanceof Sand) {
+				
+				if (thisElement.isMovable()) {
 					Element below = this.getElement(y - 1, x);
-					int randDirection = (int) Math.round(Math.random() * -1 + 1);
+					int randDirection = (int) Math.round(Math.random());
 					Element below1 = this.getElement(y - 1, x - randDirection);
 					Element below2 = this.getElement(y - 1, x + randDirection);
 
@@ -181,7 +175,7 @@ public class CellularMatrix {
 						this.swap(thisElement, below1);
 					} else if (below2 instanceof Empty) {
 						this.swap(thisElement, below2);
-					}
+					} 
 				}
 			}
 		}
