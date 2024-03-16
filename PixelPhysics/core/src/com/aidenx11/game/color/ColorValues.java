@@ -2,7 +2,7 @@ package com.aidenx11.game.color;
 
 public enum ColorValues {
 
-	SAND_COLOR(255, 224, 138);
+	SAND_COLOR(255, 224, 138), WOOD_COLOR(133, 94, 66);
 
 	/** Hex Code of the color */
 	private int r;
