@@ -10,11 +10,8 @@ public class CustomColor extends ColorManager {
 	private int b;
 
 	public CustomColor(ColorValues colorValue) {
-		int[] rgb = colorValue.getRGB();
-		r = rgb[0];
-		g = rgb[1];
-		b = rgb[2];
-		setColor(r, g, b);
+		int[] rgb = varyColor(new CustomColor(colorValue.getRGB()));
+		setColor(rgb);
 	}
 
 	public CustomColor(int[] rgb) {
@@ -39,6 +36,13 @@ public class CustomColor extends ColorManager {
 		return super.varyColor(this);
 	}
 
+	public void setColor(int[] rgb) {
+		r = rgb[0];
+		g = rgb[1];
+		b = rgb[2];
+		setColor(r, g, b);
+	}
+	
 	public void setColor(int r, int g, int b) {
 		color.set((float) (r / 255.0), (float) (g / 255.0), (float) (b / 255.0), 1);
 	}
