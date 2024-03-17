@@ -14,14 +14,25 @@ import com.badlogic.gdx.math.Vector3;
 
 public class MouseInput {
 
+	/** Camera to base the mouse on */
 	private OrthographicCamera camera;
+	/** Matrix to be modified by the mouse */
 	private CellularMatrix matrix;
+	/** Pixel size modifier of this game */
 	private static int pixelSizeModifier = pixelPhysicsGame.pixelSizeModifier;
+
+	/** Position of the mouse in 3D space. Z is always zero */
 	Vector3 mousePos = new Vector3();
+
+	/** Number of rows in the matrix */
 	private static int rows = pixelPhysicsGame.rows;
+	/** Number of columns in the matrix */
 	private static int columns = pixelPhysicsGame.columns;
+
+	/** Number of rows the ui takes up, starting from the top of the screen */
 	private int uiRows;
 
+	/** Element type being drawn by the mouse */
 	private ElementTypes elementType;
 
 	/**
@@ -35,17 +46,23 @@ public class MouseInput {
 		this.matrix = matrix;
 	}
 
+	/**
+	 * Sets the element type the mouse is drawing to the matrix
+	 * 
+	 * @param type type of element to be drawn
+	 */
 	public void setElementType(ElementTypes type) {
 		this.elementType = type;
 	}
 
 	/**
+	 * Draws a square of the given element type to the matrix.
 	 * 
-	 * @param element
-	 * @param row
-	 * @param column
-	 * @param radius
-	 * @param p
+	 * @param row    row of the center of the square
+	 * @param column column of the center of the square
+	 * @param width  width of the square
+	 * @param p      probability of each pixel in the square being drawn
+	 * @param type   element type to be drawn
 	 */
 	public void drawSquare(int row, int column, int width, double p, ElementTypes type) {
 		for (int rowCount = row - width / 2; rowCount < row + width / 2; rowCount++) {
@@ -71,6 +88,15 @@ public class MouseInput {
 		}
 	}
 
+	/**
+	 * Draws a circle to the matrix, similar to drawSquare.
+	 * 
+	 * @param row    row of the center of the circle
+	 * @param column column of the center of the circle
+	 * @param radius radius of the circle
+	 * @param type   element type to be drawn
+	 * @param p      probability of each pixel in the square being drawn
+	 */
 	public void drawCircle(int row, int column, int radius, ElementTypes type, double p) {
 		// Define bounding box
 		int top = (int) Math.ceil(row + radius);
@@ -104,6 +130,7 @@ public class MouseInput {
 		}
 	}
 
+	// Private method to calculate if a matrix index is within the circle
 	private boolean insideCircle(int centerRow, int centerCol, int radius, int cellRow, int cellCol) {
 		double dx = centerCol - cellCol;
 		double dy = centerRow - cellRow;
@@ -112,25 +139,37 @@ public class MouseInput {
 	}
 
 	/**
+	 * Returns the current mouse position as a Vector3
 	 * 
-	 * @return
+	 * @return the current mouse position
 	 */
 	public Vector3 getMousePos() {
 		return mousePos;
 	}
 
+	/**
+	 * Returns the ui rows of this mouse
+	 * 
+	 * @return the ui rows of this mouse
+	 */
 	public int getUiRows() {
 		return uiRows;
 	}
 
+	/**
+	 * Set the ui rows of this mouse
+	 * 
+	 * @param uiRows uiRows to set
+	 */
 	public void setUiRows(int uiRows) {
 		this.uiRows = uiRows;
 	}
 
 	/**
+	 * Draws the cursor around the mouse on the screen
 	 * 
-	 * @param sr
-	 * @param radius
+	 * @param sr     shapeRenderer of the viewport
+	 * @param radius radius of the circle
 	 */
 	public void drawCursor(ShapeRenderer sr, int radius) {
 		sr.begin();
@@ -141,7 +180,7 @@ public class MouseInput {
 
 	/**
 	 * Detects the input of the mouse and sets the matrix values corresponding to
-	 * the mouse location.
+	 * the mouse location and elementType.
 	 */
 	public void detectInput() {
 

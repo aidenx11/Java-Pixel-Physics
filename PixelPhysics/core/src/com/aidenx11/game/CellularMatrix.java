@@ -7,10 +7,17 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
 
 public class CellularMatrix {
+
+	/** Number of rows in the matrix */
 	public int rows;
+
+	/** Number of columns in the matrix */
 	public int columns;
+
+	/** Pixel size modifier of the matrix */
 	public int pixelSizeModifier;
 
+	/** The matrix itself. Stores elements */
 	private Array<Array<Element>> matrix;
 
 	/**
@@ -30,7 +37,7 @@ public class CellularMatrix {
 
 	/**
 	 * Generates a matrix based on the rows and columns of this matrix and
-	 * initializes all values to zero.
+	 * initializes all values to empty elements.
 	 * 
 	 * @return the empty matrix
 	 */
@@ -48,11 +55,9 @@ public class CellularMatrix {
 	}
 
 	/**
-	 * Sets the given value at the given row and column of the matrix
+	 * Sets the given element at the element's corresponding row and column.
 	 * 
-	 * @param row     row to set value at
-	 * @param column  column to set value at
-	 * @param element value to set
+	 * @param element element to set in the matrix
 	 */
 	public void setElement(Element element) {
 		int row = element.getRow();
@@ -89,9 +94,11 @@ public class CellularMatrix {
 	}
 
 	/**
-	 * Swaps 2 given elements in the matrix
+	 * Swaps 2 given elements in the matrix by using their corresponding row and
+	 * column coordinates.
 	 * 
-	 * 
+	 * @param element1 first element to swap
+	 * @param element2 second element to swap
 	 */
 	public void swap(Element element1, Element element2) {
 		int[] tempLocation = new int[] { element1.getRow(), element1.getColumn() };
@@ -105,9 +112,10 @@ public class CellularMatrix {
 	}
 
 	/**
+	 * Retrieves an element from the matrix based on its row and column.
 	 * 
-	 * @param row
-	 * @param column
+	 * @param row    row of the element being retrieved
+	 * @param column column of the element being retrieved
 	 * @return
 	 */
 	public Element getElement(int row, int column) {
@@ -120,11 +128,11 @@ public class CellularMatrix {
 	}
 
 	/**
-	 * Checks if the given row and column's pixel is empty (air)
+	 * Checks if the given row and column's element is empty.
 	 * 
-	 * @param row    row of the pixel
-	 * @param column column of the pixel
-	 * @return whether or not the pixel is empty
+	 * @param row    row of the element
+	 * @param column column of the element
+	 * @return whether or not the element is empty
 	 */
 	public boolean isEmpty(int row, int column) {
 		return this.getElement(row, column).isEmpty();
@@ -154,15 +162,17 @@ public class CellularMatrix {
 	}
 
 	/**
+	 * Updates the frame. Updates all positions of all elements in the matrix based
+	 * on their type. If the element is movable, moves it.
 	 * 
-	 * @param sr
+	 * @param sr shape renderer that draws to the viewport
 	 */
 	public void updateFrame(ShapeRenderer sr) {
 
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < columns; x++) {
 				Element thisElement = this.getElement(y, x);
-				
+
 				if (thisElement.isMovable()) {
 					Element below = this.getElement(y - 1, x);
 					int randDirection = (int) Math.round(Math.random());
@@ -175,7 +185,7 @@ public class CellularMatrix {
 						this.swap(thisElement, below1);
 					} else if (below2 instanceof Empty) {
 						this.swap(thisElement, below2);
-					} 
+					}
 				}
 			}
 		}

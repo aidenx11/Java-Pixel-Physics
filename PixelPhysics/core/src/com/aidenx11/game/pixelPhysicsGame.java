@@ -13,18 +13,29 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class pixelPhysicsGame extends ApplicationAdapter {
 
+	/** Width of the screen */
 	public static final int SCREEN_WIDTH = 1024; // MUST equal window size in desktop launcher
+	/** Height of the screen */
 	public static final int SCREEN_HEIGHT = 768; // MUST equal window size in desktop launcher
+	/** Pixel size modifier of the game */
 	public static int pixelSizeModifier = 6;
+	/** Matrix for use in the game */
 	public CellularMatrix matrix;
 
+	/** Number of rows of the matrix */
 	public static int rows;
+	/** Number of columns of the matrix */
 	public static int columns;
 
+	/** Shape renderer to be used for this game */
 	public ShapeRenderer shapeRenderer;
+	/** Camera to be used for this game */
 	private OrthographicCamera camera;
+	/** Viewport of this game */
 	private Viewport viewport;
+	/** Mouse input controller */
 	private MouseInput mouse;
+	/** Stage to handle buttons/ui elements */
 	private ButtonStage buttonStage;
 
 	@Override
@@ -57,22 +68,20 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	@Override
 	public void render() {
 
-		
-			// Set blue background
-			ScreenUtils.clear(135 / 255f, 206 / 255f, 235 / 255f, 1);
+		// Set blue background
+		ScreenUtils.clear(135 / 255f, 206 / 255f, 235 / 255f, 1);
 
-			// Draw the buttons to the screen
-			buttonStage.getStage().draw();
+		// Draw the buttons to the screen
+		buttonStage.getStage().draw();
 
-			// Detects mouse input and sets pixel if it is in bounds
-			mouse.detectInput();
+		// Detects mouse input and sets pixel if it is in bounds
+		mouse.detectInput();
 
-			// Perform sand settling logic
-			matrix.draw(shapeRenderer);
-			matrix.updateFrame(shapeRenderer);
+		// Perform sand settling logic
+		matrix.draw(shapeRenderer);
+		matrix.updateFrame(shapeRenderer);
 
-			mouse.drawCursor(shapeRenderer, 20);
-		
+		mouse.drawCursor(shapeRenderer, 20);
 
 	}
 
