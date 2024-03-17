@@ -3,21 +3,30 @@ package com.aidenx11.game.elements;
 import com.aidenx11.game.color.CustomColor;
 import com.badlogic.gdx.graphics.Color;
 
+/**
+ * Super class of all elements.
+ * 
+ * @author Aiden Schroeder
+ */
 public abstract class Element {
+	/** Whether or not the element is empty */
 	private boolean isEmpty;
+	/** Row location of this element */
 	private int row;
+	/** Column location of this element */
 	private int column;
+	/** Color of this element */
 	private CustomColor color;
-	private int varyCount;
+	/** Whether or not the color of this element has been varied */
+	private boolean colorHasBeenVaried;
+	/** Whether or not this element is movable */
 	private boolean isMovable;
 
 	public enum ElementTypes {
 		SAND, EMPTY, WOOD
 	}
 
-	public ElementTypes getType() {
-		return ElementTypes.EMPTY;
-	}
+	public abstract ElementTypes getType();
 
 	public Element(int row, int column) {
 		setEmpty(true);
@@ -40,9 +49,9 @@ public abstract class Element {
 	}
 
 	public void varyColor() {
-		if (varyCount == 0 && !isEmpty()) {
+		if (!colorHasBeenVaried && !isEmpty()) {
 			color = new CustomColor(color.varyColor());
-			varyCount++;
+			colorHasBeenVaried = true;
 		}
 	}
 
@@ -77,11 +86,11 @@ public abstract class Element {
 	public void setEmpty(boolean isEmpty) {
 		this.isEmpty = isEmpty;
 	}
-	
+
 	public boolean isMovable() {
 		return isMovable;
 	}
-	
+
 	public void setMovable(boolean movable) {
 		this.isMovable = movable;
 	}
