@@ -1,8 +1,11 @@
 package com.aidenx11.game.color;
 
+import com.aidenx11.game.color.CustomColor.ColorValues;
 import com.badlogic.gdx.graphics.Color;
 
 public class ColorManager extends Color {
+
+	private static int placeInRainbow = 0;
 
 	/**
 	 * Varies the saturation and lightness of a color and returns it as a hex string
@@ -141,5 +144,36 @@ public class ColorManager extends Color {
 		int[] rgb = new int[] { (int) r, (int) g, (int) b };
 
 		return rgb;
+	}
+
+	/**
+	 * Generates a color value in the rainbow
+	 * 
+	 * @return a color value in the rainbow
+	 */
+	public static ColorValues generateRainbowColor() {
+
+		switch (placeInRainbow) {
+		case 0:
+			placeInRainbow++;
+			return ColorValues.RED;
+		case 1:
+			placeInRainbow++;
+			return ColorValues.ORANGE;
+		case 2:
+			placeInRainbow++;
+			return ColorValues.YELLOW;
+		case 3:
+			placeInRainbow++;
+			return ColorValues.GREEN;
+		case 4:
+			placeInRainbow++;
+			return ColorValues.BLUE;
+		case 5:
+			placeInRainbow = 0;
+			return ColorValues.PURPLE;
+		}
+
+		return ColorValues.RED;
 	}
 }

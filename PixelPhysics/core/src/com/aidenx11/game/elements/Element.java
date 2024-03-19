@@ -21,12 +21,22 @@ public abstract class Element {
 	private boolean colorHasBeenVaried;
 	/** Whether or not this element is movable */
 	private boolean isMovable;
+	/** Whether or not element was modified this frame */
+	private boolean modified;
+	private int velocity;
+	private int MAX_SPEED;
 
 	public enum ElementTypes {
 		SAND, EMPTY, WOOD
 	}
 
 	public abstract ElementTypes getType();
+	
+	public abstract void updateVelocity();
+	
+	public abstract int getUpdateCount();
+	
+	public abstract void resetVelocity();
 
 	public Element(int row, int column) {
 		setEmpty(true);
@@ -53,6 +63,16 @@ public abstract class Element {
 			color = new CustomColor(color.varyColor());
 			colorHasBeenVaried = true;
 		}
+	}
+	
+	public void update() {
+		if (MAX_SPEED == 0) {
+			setModified(false);
+			return;
+		}
+		
+		updateVelocity();
+		setModified(getVelocity() != 0);
 	}
 
 	public void setColor(CustomColor color) {
@@ -94,4 +114,26 @@ public abstract class Element {
 	public void setMovable(boolean movable) {
 		this.isMovable = movable;
 	}
+
+	public boolean isModified() {
+		return modified;
+	}
+
+	public void setModified(boolean modified) {
+		this.modified = modified;
+	}
+
+	public int getVelocity() {
+		return velocity;
+	}
+
+	public void setVelocity(int velocity) {
+		this.velocity = velocity;
+	}
+
+	public void randomizeColor() {
+		color.randomizeColor();
+	}
+
+	
 }

@@ -1,7 +1,7 @@
 import java.util.Arrays;
 
 import com.aidenx11.game.color.ColorManager;
-import com.aidenx11.game.color.ColorValues;
+import com.aidenx11.game.color.CustomColor.ColorValues;
 import com.aidenx11.game.color.CustomColor;
 
 public class MainTester {

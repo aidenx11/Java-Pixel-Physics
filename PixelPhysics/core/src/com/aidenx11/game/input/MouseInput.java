@@ -2,6 +2,7 @@ package com.aidenx11.game.input;
 
 import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.pixelPhysicsGame;
+import com.aidenx11.game.color.ColorManager;
 import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.elements.Empty;
 import com.aidenx11.game.elements.Sand;
@@ -34,6 +35,9 @@ public class MouseInput {
 
 	/** Element type being drawn by the mouse */
 	private ElementTypes elementType;
+
+	/** Whether or not the color of the sand should be random */
+	private boolean randomizeColor = false;
 
 	/**
 	 * Constructs the MouseInput with given matrix and camera
@@ -113,7 +117,11 @@ public class MouseInput {
 					switch (type) {
 					case SAND:
 						if (Math.random() < p && matrix.isEmpty(rowCount, colCount)) {
-							matrix.setElement(new Sand(rowCount, colCount));
+							if (!isRandomizeColor()) {
+								matrix.setElement(new Sand(rowCount, colCount));
+							} else {
+								matrix.setElement(new Sand(rowCount, colCount, false, true));
+							}
 						}
 						break;
 					case EMPTY:
@@ -166,6 +174,24 @@ public class MouseInput {
 	}
 
 	/**
+	 * Returns whether or not the color should be randomized for sand particles
+	 * 
+	 * @return whether or not the color should be randomized for sand particles
+	 */
+	public boolean isRandomizeColor() {
+		return randomizeColor;
+	}
+
+	/**
+	 * Sets whether or not the color should be randomized
+	 * 
+	 * @param randomizeColor whether or not to randomize
+	 */
+	public void setRandomizeColor(boolean randomizeColor) {
+		this.randomizeColor = randomizeColor;
+	}
+
+	/**
 	 * Draws the cursor around the mouse on the screen
 	 * 
 	 * @param sr     shapeRenderer of the viewport
@@ -195,7 +221,7 @@ public class MouseInput {
 				case SAND:
 					// matrix.setElement(new Sand(touchedRow, touchedCol));
 					// drawSquare(touchedRow, touchedCol, 5, 0.8, elementType);
-					drawCircle(touchedRow, touchedCol, 3, elementType, 0.5);
+					drawCircle(touchedRow, touchedCol, 5, elementType, 0.5);
 					break;
 				case EMPTY:
 					drawCircle(touchedRow, touchedCol, 3, elementType, 1);

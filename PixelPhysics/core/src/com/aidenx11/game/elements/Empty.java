@@ -9,5 +9,23 @@ public class Empty extends Element {
 		super.setMovable(false);
 	}
 
+	@Override
+	public ElementTypes getType() {
+		return type;
+	}
+
+	@Override
+	public void updateVelocity() {
+	}
+
+	@Override
+	public int getUpdateCount() {
+		return 0;
+	}
+
+	@Override
+	public void resetVelocity() {
+	}
+
 	
 }

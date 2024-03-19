@@ -1,6 +1,6 @@
 package com.aidenx11.game.elements;
 
-import com.aidenx11.game.color.ColorValues;
+import com.aidenx11.game.color.CustomColor.ColorValues;
 import com.aidenx11.game.color.CustomColor;
 
 public class Wood extends Element {
@@ -20,6 +20,21 @@ public class Wood extends Element {
 	@Override
 	public ElementTypes getType() {
 		return type;
+	}
+
+	@Override
+	public void updateVelocity() {
+		
+	}
+
+	@Override
+	public int getUpdateCount() {
+		return 0;
+	}
+
+	@Override
+	public void resetVelocity() {
+		
 	}
 	
 }
