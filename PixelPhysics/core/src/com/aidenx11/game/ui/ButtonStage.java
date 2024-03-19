@@ -61,7 +61,7 @@ public class ButtonStage extends Stage {
 		});
 		
 
-		final TextButton woodToolButton = new TextButton("poop", skinButton, "default");
+		final TextButton woodToolButton = new TextButton("Wood", skinButton, "default");
 		woodToolButton.setWidth(150f);
 		woodToolButton.setHeight(20f);
 		woodToolButton.setPosition(495f, Gdx.graphics.getHeight() - 25f);
@@ -71,11 +71,29 @@ public class ButtonStage extends Stage {
 				mouseInput.setElementType(ElementTypes.WOOD);
 			}
 		});
+		
+		final TextButton randomizeColorButton = new TextButton("Make it rainbow!", skinButton, "default");
+		randomizeColorButton.setWidth(150f);
+		randomizeColorButton.setHeight(20f);
+		randomizeColorButton.setPosition(660f, Gdx.graphics.getHeight() - 25f);
+		randomizeColorButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				if (!mouseInput.isRandomizeColor()) {
+					randomizeColorButton.setText("Stop the rainbow");
+					mouseInput.setRandomizeColor(true);
+				} else {
+					randomizeColorButton.setText("Make it rainbow!");
+					mouseInput.setRandomizeColor(false);
+				}
+			}
+		});
        
 		uiStage.addActor(emptyToolButton);
         uiStage.addActor(sandToolButton);
         uiStage.addActor(clearCanvasButton);
         uiStage.addActor(woodToolButton);
+        uiStage.addActor(randomizeColorButton);
         mouseInput.setUiRows((int) ((Gdx.graphics.getHeight() - 50f) / pixelPhysicsGame.pixelSizeModifier));
 	}
 	

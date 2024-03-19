@@ -172,20 +172,23 @@ public class CellularMatrix {
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < columns; x++) {
 				Element thisElement = this.getElement(y, x);
+				thisElement.update();
 
 				if (thisElement.isMovable()) {
-					Element below = this.getElement(y - 1, x);
-					int randDirection = (int) Math.round(Math.random());
-					Element below1 = this.getElement(y - 1, x - randDirection);
-					Element below2 = this.getElement(y - 1, x + randDirection);
+					//for (int v = 0; v < 3; v++) {
+						Element below = this.getElement(y - 1, x);
+						int randDirection = (int) Math.round(Math.random());
+						Element below1 = this.getElement(y - 1, x - randDirection);
+						Element below2 = this.getElement(y - 1, x + randDirection);
 
-					if (below instanceof Empty) {
-						this.swap(thisElement, below);
-					} else if (below1 instanceof Empty) {
-						this.swap(thisElement, below1);
-					} else if (below2 instanceof Empty) {
-						this.swap(thisElement, below2);
-					}
+						if (below instanceof Empty) {
+							this.swap(thisElement, below);
+						} else if (below1 instanceof Empty) {
+							this.swap(thisElement, below1);
+						} else if (below2 instanceof Empty) {
+							this.swap(thisElement, below2);
+						} 
+					//}
 				}
 			}
 		}
