@@ -123,7 +123,7 @@ public abstract class Element {
 		this.modified = modified;
 	}
 
-	public int getVelocity() {
+	public float getVelocity() {
 		return velocity;
 	}
 

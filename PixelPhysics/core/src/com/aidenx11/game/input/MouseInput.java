@@ -221,13 +221,13 @@ public class MouseInput {
 				case SAND:
 					// matrix.setElement(new Sand(touchedRow, touchedCol));
 					// drawSquare(touchedRow, touchedCol, 5, 0.8, elementType);
-					drawCircle(touchedRow, touchedCol, 5, elementType, 0.5);
+					drawCircle(touchedRow, touchedCol, 15, elementType, 0.5);
 					break;
 				case EMPTY:
 					drawCircle(touchedRow, touchedCol, 3, elementType, 1);
 					break;
 				case WOOD:
-					drawCircle(touchedRow, touchedCol, 3, elementType, 1);
+					drawCircle(touchedRow, touchedCol, 1, elementType, 1);
 					break;
 				}
 

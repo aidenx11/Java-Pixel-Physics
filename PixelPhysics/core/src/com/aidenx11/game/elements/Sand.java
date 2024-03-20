@@ -8,9 +8,9 @@ import com.aidenx11.game.color.CustomColor.*;
 public class Sand extends Element {
 	
 	public static ElementTypes type = ElementTypes.SAND;
-	private int velocity = 1;
-	private int ACCELERATION = pixelPhysicsGame.GRAVITY_ACCELERATION;
-	private int MAX_SPEED = 5;
+	private float velocity = 0;
+	private float ACCELERATION = pixelPhysicsGame.GRAVITY_ACCELERATION;
+	private float MAX_SPEED = 2.5f;
 	
 	public Sand(int row, int column, boolean isEmpty) {
 		super(row, column, new CustomColor(ColorValues.SAND_COLOR), isEmpty);
@@ -42,19 +42,19 @@ public class Sand extends Element {
 	}
 	
 	
-	public int getVelocity() {
+	public float getVelocity() {
 		return velocity;
 	}
 
-	public void setVelocity(int velocity) {
-		this.velocity = velocity;
+	public void setVelocity(float newVelocity) {
+		this.velocity = newVelocity;
 	}
 
 	public void updateVelocity() {
-		int newVelocity = getVelocity() + ACCELERATION;
+		float newVelocity = getVelocity() + ACCELERATION;
 		
 		if (Math.abs(newVelocity) > MAX_SPEED) {
-			newVelocity = (int) (Math.signum(newVelocity) * MAX_SPEED);
+			newVelocity = Math.signum(newVelocity) * MAX_SPEED;
 		}
 		
 		setVelocity(newVelocity);
@@ -66,11 +66,16 @@ public class Sand extends Element {
 	}
 	
 	public int getUpdateCount() {
-		int abs = Math.abs(getVelocity());
+		float abs = Math.abs(getVelocity());
 		int floored = (int) Math.floor(abs);
-		int mod = abs - floored;
+		float mod = abs - floored;
 		
 		return floored + (Math.random() < mod ? 1 : 0);
+	}
+	
+	public void update() {
+		this.updateVelocity();
+		this.setModified(this.getVelocity() != 0);
 	}
 
 }

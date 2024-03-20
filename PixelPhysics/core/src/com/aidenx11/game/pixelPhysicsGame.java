@@ -2,7 +2,7 @@ package com.aidenx11.game;
 
 import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.input.MouseInput;
-import com.aidenx11.game.ui.ButtonStage;
+import com.aidenx11.game.ui.UIStage;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -18,9 +18,9 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	/** Height of the screen */
 	public static final int SCREEN_HEIGHT = 768; // MUST equal window size in desktop launcher
 	/** */
-	public static final int GRAVITY_ACCELERATION = 2;
+	public static final float GRAVITY_ACCELERATION = 0.2f;
 	/** Pixel size modifier of the game */
-	public static int pixelSizeModifier = 6;
+	public static int pixelSizeModifier = 2;
 	/** Matrix for use in the game */
 	public CellularMatrix matrix;
 
@@ -38,7 +38,9 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	/** Mouse input controller */
 	private MouseInput mouse;
 	/** Stage to handle buttons/ui elements */
-	private ButtonStage buttonStage;
+	private UIStage buttonStage;
+	
+//	private Label frameLabel;
 
 	@Override
 	public void create() {
@@ -61,9 +63,15 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		mouse = new MouseInput(matrix, camera);
 		mouse.setElementType(ElementTypes.SAND);
 
-		buttonStage = new ButtonStage(viewport, mouse, matrix);
+		buttonStage = new UIStage(viewport, mouse, matrix);
 
-		Gdx.input.setInputProcessor(buttonStage.getStage());
+		Gdx.input.setInputProcessor(buttonStage);
+		
+//		frameLabel = new Label("", new Skin(Gdx.files.internal("skin/uiskin.json")));
+//		frameLabel.setWidth(50f);
+//		frameLabel.setHeight(20f);
+//		frameLabel.setPosition(850f, Gdx.graphics.getHeight() - 25f);
+//		buttonStage.addActor(frameLabel);
 
 	}
 
@@ -74,7 +82,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		ScreenUtils.clear(135 / 255f, 206 / 255f, 235 / 255f, 1);
 
 		// Draw the buttons to the screen
-		buttonStage.getStage().draw();
+		buttonStage.draw();
 
 		// Detects mouse input and sets pixel if it is in bounds
 		mouse.detectInput();
@@ -83,7 +91,9 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		matrix.draw(shapeRenderer);
 		matrix.updateFrame(shapeRenderer);
 
-		mouse.drawCursor(shapeRenderer, 20);
+		mouse.drawCursor(shapeRenderer, 15);
+		
+//		frameLabel.setText(Integer.toString(matrix.getFramesSinceLastModifiedElement()));
 
 	}
 

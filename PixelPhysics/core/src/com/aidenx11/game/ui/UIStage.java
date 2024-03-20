@@ -7,25 +7,21 @@ import com.aidenx11.game.input.MouseInput;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class ButtonStage extends Stage {
+public class UIStage extends Stage {
 	
-	private Stage uiStage;
 	private Skin skinButton;
 	
-	public ButtonStage(Viewport viewport, MouseInput mouseInput, CellularMatrix matrix) {
-		
-		uiStage = new Stage(viewport);
+	public UIStage(Viewport viewport, MouseInput mouseInput, CellularMatrix matrix) {
 
 		Gdx.gl.glLineWidth(3);
 
 		skinButton = new Skin(Gdx.files.internal("skin/uiskin.json"));
-
-		uiStage = new Stage();
 		
 		final TextButton sandToolButton = new TextButton("Sand", skinButton, "default");
 		sandToolButton.setWidth(150f);
@@ -89,16 +85,16 @@ public class ButtonStage extends Stage {
 			}
 		});
        
-		uiStage.addActor(emptyToolButton);
-        uiStage.addActor(sandToolButton);
-        uiStage.addActor(clearCanvasButton);
-        uiStage.addActor(woodToolButton);
-        uiStage.addActor(randomizeColorButton);
+		this.addActor(emptyToolButton);
+        this.addActor(sandToolButton);
+        this.addActor(clearCanvasButton);
+        this.addActor(woodToolButton);
+        this.addActor(randomizeColorButton);
         mouseInput.setUiRows((int) ((Gdx.graphics.getHeight() - 50f) / pixelPhysicsGame.pixelSizeModifier));
 	}
 	
-	public Stage getStage() {
-		return uiStage;
+	public void setFrameText(int frame) {
+		
 	}
 
 }
