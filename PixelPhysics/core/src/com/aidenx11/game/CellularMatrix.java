@@ -20,6 +20,12 @@ public class CellularMatrix {
 	/** The matrix itself. Stores elements */
 	private Array<Array<Element>> matrix;
 
+	/** Keeps track of whether or not elements were modified last frame */
+	private boolean modifiedElements;
+
+	/** Keeps track of number of frames since elements were modified */
+	private int framesSinceLastModifiedElement;
+
 	/**
 	 * Generates a matrix with the given rows and columns, with a pixel size
 	 * corresponding to pixelSizeModifier.
@@ -33,6 +39,7 @@ public class CellularMatrix {
 		this.columns = columns;
 		this.pixelSizeModifier = pixelSizeModifier;
 		this.matrix = generateMatrix();
+		setModifiedElements(false);
 	}
 
 	/**
@@ -65,6 +72,9 @@ public class CellularMatrix {
 		Array<Element> rowArray = matrix.get(row);
 		rowArray.set(column, element);
 		matrix.set(row, rowArray);
+		if (framesSinceLastModifiedElement != 0) {
+			setFramesSinceLastModifiedElement(0);
+		}
 	}
 
 	/**
@@ -145,20 +155,20 @@ public class CellularMatrix {
 	 */
 	public void draw(ShapeRenderer shapeRenderer) {
 
+		shapeRenderer.begin(ShapeType.Filled);
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < columns; x++) {
 				if (!this.isEmpty(y, x)) {
 					Element thisElement = this.getElement(y, x);
 					if (!thisElement.isEmpty()) {
-						shapeRenderer.begin(ShapeType.Filled);
 						shapeRenderer.setColor(thisElement.getColor());
 						shapeRenderer.rect(x * pixelSizeModifier, y * pixelSizeModifier, pixelSizeModifier,
 								pixelSizeModifier);
-						shapeRenderer.end();
 					}
 				}
 			}
 		}
+		shapeRenderer.end();
 	}
 
 	/**
@@ -169,29 +179,60 @@ public class CellularMatrix {
 	 */
 	public void updateFrame(ShapeRenderer sr) {
 
-		for (int y = 0; y < rows; y++) {
-			for (int x = 0; x < columns; x++) {
-				Element thisElement = this.getElement(y, x);
-				thisElement.update();
+		framesSinceLastModifiedElement++;
 
-				if (thisElement.isMovable()) {
-					//for (int v = 0; v < 3; v++) {
-						Element below = this.getElement(y - 1, x);
-						int randDirection = (int) Math.round(Math.random());
-						Element below1 = this.getElement(y - 1, x - randDirection);
-						Element below2 = this.getElement(y - 1, x + randDirection);
-
-						if (below instanceof Empty) {
-							this.swap(thisElement, below);
-						} else if (below1 instanceof Empty) {
-							this.swap(thisElement, below1);
-						} else if (below2 instanceof Empty) {
-							this.swap(thisElement, below2);
-						} 
-					//}
+		if (getFramesSinceLastModifiedElement() < 5) {
+			for (int y = 0; y < rows; y++) {
+				for (int x = 0; x < columns; x++) {
+					Element thisElement = this.getElement(y, x);
+					thisElement.update();
+					for (int v = 0; v < thisElement.getUpdateCount(); v++) {
+						updateElement(thisElement);
+					}
 				}
 			}
 		}
+	}
+
+	/**
+	 * Updates the given element
+	 * 
+	 * @param thisElement element to update
+	 */
+	public void updateElement(Element thisElement) {
+		if (thisElement.isMovable()) {
+			Element below = this.getElement(thisElement.getRow() - 1, thisElement.getColumn());
+			int randDirection = Math.random() > 0.5 ? 1 : -1;
+			Element below1 = this.getElement(thisElement.getRow() - 1, thisElement.getColumn() - randDirection);
+			Element below2 = this.getElement(thisElement.getRow() - 1, thisElement.getColumn() + randDirection);
+
+			if (below instanceof Empty) {
+				this.swap(thisElement, below);
+			} else if (below1 instanceof Empty) {
+				this.swap(thisElement, below1);
+			} else if (below2 instanceof Empty) {
+				this.swap(thisElement, below2);
+			} else {
+				thisElement.setVelocity(0);
+			}
+
+		}
+	}
+
+	public boolean isModifiedElements() {
+		return modifiedElements;
+	}
+
+	public void setModifiedElements(boolean modifiedElements) {
+		this.modifiedElements = modifiedElements;
+	}
+
+	public int getFramesSinceLastModifiedElement() {
+		return framesSinceLastModifiedElement;
+	}
+
+	public void setFramesSinceLastModifiedElement(int framesSinceLastModifiedElement) {
+		this.framesSinceLastModifiedElement = framesSinceLastModifiedElement;
 	}
 
 }
