@@ -2,6 +2,7 @@ package com.aidenx11.game;
 
 import com.aidenx11.game.elements.Element;
 import com.aidenx11.game.elements.Empty;
+import com.aidenx11.game.elements.Sand;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
@@ -25,6 +26,8 @@ public class CellularMatrix {
 
 	/** Keeps track of number of frames since elements were modified */
 	private int framesSinceLastModifiedElement;
+
+	private boolean direction = true;
 
 	/**
 	 * Generates a matrix with the given rows and columns, with a pixel size
@@ -180,14 +183,25 @@ public class CellularMatrix {
 	public void updateFrame(ShapeRenderer sr) {
 
 		framesSinceLastModifiedElement++;
+		direction = direction ? false : true;
 
 		if (getFramesSinceLastModifiedElement() < 5) {
-			for (int y = 0; y < rows; y++) {
-				for (int x = 0; x < columns; x++) {
-					Element thisElement = this.getElement(y, x);
-					thisElement.update();
-					for (int v = 0; v < thisElement.getUpdateCount(); v++) {
-						updateElement(thisElement);
+			for (int y = rows - 1; y >= 0; y--) {
+				if (direction) {
+					for (int x = 0; x < columns; x++) {
+						Element thisElement = this.getElement(rows - 1 - y, x);
+						thisElement.update();
+						for (int v = 0; v < thisElement.getUpdateCount(); v++) {
+							updateElement(thisElement);
+						}
+					}
+				} else {
+					for (int x = columns - 1; x >= 0; x--) {
+						Element thisElement = this.getElement(rows - 1 - y, x);
+						thisElement.update();
+						for (int v = 0; v < thisElement.getUpdateCount(); v++) {
+							updateElement(thisElement);
+						}
 					}
 				}
 			}
@@ -200,6 +214,7 @@ public class CellularMatrix {
 	 * @param thisElement element to update
 	 */
 	public void updateElement(Element thisElement) {
+		
 		if (thisElement.isMovable()) {
 			Element below = this.getElement(thisElement.getRow() - 1, thisElement.getColumn());
 			int randDirection = Math.random() > 0.5 ? 1 : -1;
@@ -210,8 +225,10 @@ public class CellularMatrix {
 				this.swap(thisElement, below);
 			} else if (below1 instanceof Empty) {
 				this.swap(thisElement, below1);
+				thisElement.setVelocity((float) (thisElement.getVelocity() - 0.1));
 			} else if (below2 instanceof Empty) {
 				this.swap(thisElement, below2);
+				thisElement.setVelocity((float) (thisElement.getVelocity() - 0.1));
 			} else {
 				thisElement.setVelocity(0);
 			}

@@ -23,7 +23,7 @@ public abstract class Element {
 	private boolean isMovable;
 	/** Whether or not element was modified this frame */
 	private boolean modified;
-	private int velocity;
+	private float velocity;
 	private int MAX_SPEED;
 
 	public enum ElementTypes {
@@ -127,8 +127,8 @@ public abstract class Element {
 		return velocity;
 	}
 
-	public void setVelocity(int velocity) {
-		this.velocity = velocity;
+	public void setVelocity(float f) {
+		this.velocity = f;
 	}
 
 	public void randomizeColor() {

@@ -18,7 +18,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	/** Height of the screen */
 	public static final int SCREEN_HEIGHT = 768; // MUST equal window size in desktop launcher
 	/** */
-	public static final float GRAVITY_ACCELERATION = 0.2f;
+	public static final float GRAVITY_ACCELERATION = 0.3f;
 	/** Pixel size modifier of the game */
 	public static int pixelSizeModifier = 2;
 	/** Matrix for use in the game */

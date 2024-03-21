@@ -10,7 +10,7 @@ public class Sand extends Element {
 	public static ElementTypes type = ElementTypes.SAND;
 	private float velocity = 0;
 	private float ACCELERATION = pixelPhysicsGame.GRAVITY_ACCELERATION;
-	private float MAX_SPEED = 2.5f;
+	private float MAX_SPEED = 5f;
 	
 	public Sand(int row, int column, boolean isEmpty) {
 		super(row, column, new CustomColor(ColorValues.SAND_COLOR), isEmpty);
