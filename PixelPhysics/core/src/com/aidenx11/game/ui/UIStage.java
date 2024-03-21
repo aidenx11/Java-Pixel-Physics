@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -84,12 +85,25 @@ public class UIStage extends Stage {
 				}
 			}
 		});
+		
+		final Slider brushSizeSlider = new Slider(1f, 15f, 1f, false, skinButton);
+		brushSizeSlider.setWidth(100f);
+		brushSizeSlider.setHeight(10f);
+		brushSizeSlider.setPosition(850f, Gdx.graphics.getHeight() - 25f);
+		brushSizeSlider.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				mouseInput.setBrushSize((int) brushSizeSlider.getValue());
+				mouseInput.setCursorSize((int) brushSizeSlider.getValue());
+			}
+		});
        
 		this.addActor(emptyToolButton);
         this.addActor(sandToolButton);
         this.addActor(clearCanvasButton);
         this.addActor(woodToolButton);
         this.addActor(randomizeColorButton);
+        this.addActor(brushSizeSlider);
         mouseInput.setUiRows((int) ((Gdx.graphics.getHeight() - 50f) / pixelPhysicsGame.pixelSizeModifier));
 	}
 	

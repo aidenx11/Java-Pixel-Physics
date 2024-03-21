@@ -29,7 +29,10 @@ public class MouseInput {
 	private static int rows = pixelPhysicsGame.rows;
 	/** Number of columns in the matrix */
 	private static int columns = pixelPhysicsGame.columns;
-
+	/** Size of brush (radius of circle) */
+	private int brushSize;
+	/** Size of cursor */
+	private int cursorSize;
 	/** Number of rows the ui takes up, starting from the top of the screen */
 	private int uiRows;
 
@@ -197,10 +200,11 @@ public class MouseInput {
 	 * @param sr     shapeRenderer of the viewport
 	 * @param radius radius of the circle
 	 */
-	public void drawCursor(ShapeRenderer sr, int radius) {
+	public void drawCursor(ShapeRenderer sr) {
 		sr.begin();
 		sr.setColor(Color.WHITE);
-		sr.circle(Gdx.input.getX(), pixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY(), radius, 100);
+		sr.circle(Gdx.input.getX(), pixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY(),
+				getCursorSize() * pixelSizeModifier, 100);
 		sr.end();
 	}
 
@@ -221,18 +225,34 @@ public class MouseInput {
 				case SAND:
 					// matrix.setElement(new Sand(touchedRow, touchedCol));
 					// drawSquare(touchedRow, touchedCol, 5, 0.8, elementType);
-					drawCircle(touchedRow, touchedCol, 15, elementType, 0.5);
+					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 0.5);
 					break;
 				case EMPTY:
-					drawCircle(touchedRow, touchedCol, 3, elementType, 1);
+					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
 					break;
 				case WOOD:
-					drawCircle(touchedRow, touchedCol, 1, elementType, 1);
+					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
 					break;
 				}
 
 			}
 		}
+	}
+
+	public int getBrushSize() {
+		return brushSize;
+	}
+
+	public void setBrushSize(int brushSize) {
+		this.brushSize = brushSize;
+	}
+
+	public int getCursorSize() {
+		return cursorSize;
+	}
+
+	public void setCursorSize(int cursorSize) {
+		this.cursorSize = cursorSize;
 	}
 
 }
