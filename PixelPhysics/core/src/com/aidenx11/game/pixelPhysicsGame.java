@@ -91,7 +91,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		matrix.draw(shapeRenderer);
 		matrix.updateFrame(shapeRenderer);
 
-		mouse.drawCursor(shapeRenderer, 15);
+		mouse.drawCursor(shapeRenderer);
 		
 //		frameLabel.setText(Integer.toString(matrix.getFramesSinceLastModifiedElement()));
 
