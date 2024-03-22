@@ -1,6 +1,7 @@
 package com.aidenx11.game;
 
 import com.aidenx11.game.elements.Element;
+import com.aidenx11.game.elements.ElementUpdater;
 import com.aidenx11.game.elements.Empty;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -204,13 +205,11 @@ public class CellularMatrix {
 			for (int y = rows - 1; y >= 0; y--) {
 				if (direction) {
 					for (int x = 0; x < columns; x++) {
-						Element thisElement = this.getElement(rows - 1 - y, x);
-						thisElement.update();
+						ElementUpdater.update(this.getElement(rows - 1 - y, x), this);
 					}
 				} else {
 					for (int x = columns - 1; x >= 0; x--) {
-						Element thisElement = this.getElement(rows - 1 - y, x);
-						thisElement.update();
+						ElementUpdater.update(this.getElement(rows - 1 - y, x), this);
 					}
 				}
 			}

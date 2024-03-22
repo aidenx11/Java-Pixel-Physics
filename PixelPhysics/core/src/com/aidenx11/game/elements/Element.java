@@ -43,7 +43,9 @@ public abstract class Element {
 	
 	public abstract void resetVelocity();
 	
-	public abstract void update();
+	public abstract void setVelocity(float f);
+	
+	public abstract float getVelocity();
 
 	public Element(int row, int column, CustomColor color, boolean isEmpty) {
 		setEmpty(isEmpty);
@@ -110,6 +112,7 @@ public abstract class Element {
 	public void randomizeColor() {
 		color.randomizeColor();
 	}
+
 
 	
 }
