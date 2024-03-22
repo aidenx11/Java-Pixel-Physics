@@ -9,22 +9,27 @@ import com.badlogic.gdx.graphics.Color;
  * @author Aiden Schroeder
  */
 public abstract class Element {
+	
 	/** Whether or not the element is empty */
 	private boolean isEmpty;
+	
 	/** Row location of this element */
 	private int row;
+	
 	/** Column location of this element */
 	private int column;
+	
 	/** Color of this element */
 	private CustomColor color;
+	
 	/** Whether or not the color of this element has been varied */
 	private boolean colorHasBeenVaried;
+	
 	/** Whether or not this element is movable */
 	private boolean isMovable;
+	
 	/** Whether or not element was modified this frame */
 	private boolean modified;
-	private float velocity;
-	private int MAX_SPEED;
 
 	public enum ElementTypes {
 		SAND, EMPTY, WOOD
@@ -37,19 +42,8 @@ public abstract class Element {
 	public abstract int getUpdateCount();
 	
 	public abstract void resetVelocity();
-
-	public Element(int row, int column) {
-		setEmpty(true);
-		setRow(row);
-		setColumn(column);
-	}
-
-	public Element(int row, int column, CustomColor color) {
-		setEmpty(false);
-		setRow(row);
-		setColumn(column);
-		setColor(color);
-	}
+	
+	public abstract void update();
 
 	public Element(int row, int column, CustomColor color, boolean isEmpty) {
 		setEmpty(isEmpty);
@@ -63,16 +57,6 @@ public abstract class Element {
 			color = new CustomColor(color.varyColor());
 			colorHasBeenVaried = true;
 		}
-	}
-	
-	public void update() {
-		if (MAX_SPEED == 0) {
-			setModified(false);
-			return;
-		}
-		
-		updateVelocity();
-		setModified(getVelocity() != 0);
 	}
 
 	public void setColor(CustomColor color) {
@@ -121,14 +105,6 @@ public abstract class Element {
 
 	public void setModified(boolean modified) {
 		this.modified = modified;
-	}
-
-	public float getVelocity() {
-		return velocity;
-	}
-
-	public void setVelocity(float f) {
-		this.velocity = f;
 	}
 
 	public void randomizeColor() {
