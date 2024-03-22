@@ -7,7 +7,6 @@ import com.aidenx11.game.input.MouseInput;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -24,30 +23,10 @@ public class UIStage extends Stage {
 
 		skinButton = new Skin(Gdx.files.internal("skin/uiskin.json"));
 		
-		final TextButton sandToolButton = new TextButton("Sand", skinButton, "default");
-		sandToolButton.setWidth(150f);
-		sandToolButton.setHeight(20f);
-		sandToolButton.setPosition(335f, Gdx.graphics.getHeight() - 25f);
-		sandToolButton.addListener(new ClickListener(){
-            @Override 
-            public void clicked(InputEvent event, float x, float y){
-                mouseInput.setElementType(ElementTypes.SAND);
-            }
-        });
 		
-		final TextButton emptyToolButton = new TextButton("Empty", skinButton, "default");
-		emptyToolButton.setWidth(150f);
-		emptyToolButton.setHeight(20f);
-		emptyToolButton.setPosition(175f, Gdx.graphics.getHeight() - 25f);
-		emptyToolButton.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				mouseInput.setElementType(ElementTypes.EMPTY);
-			}
-		});
 		
 		final TextButton clearCanvasButton = new TextButton("Clear Canvas", skinButton, "default");
-		clearCanvasButton.setWidth(150f);
+		clearCanvasButton.setWidth(115f);
 		clearCanvasButton.setHeight(20f);
 		clearCanvasButton.setPosition(15f, Gdx.graphics.getHeight() - 25f);
 		clearCanvasButton.addListener(new ClickListener() {
@@ -57,11 +36,32 @@ public class UIStage extends Stage {
 			}
 		});
 		
+		final TextButton emptyToolButton = new TextButton("Empty", skinButton, "default");
+		emptyToolButton.setWidth(60f);
+		emptyToolButton.setHeight(20f);
+		emptyToolButton.setPosition(140f, Gdx.graphics.getHeight() - 25f);
+		emptyToolButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				mouseInput.setElementType(ElementTypes.EMPTY);
+			}
+		});
+		
+		final TextButton sandToolButton = new TextButton("Sand", skinButton, "default");
+		sandToolButton.setWidth(60f);
+		sandToolButton.setHeight(20f);
+		sandToolButton.setPosition(210f, Gdx.graphics.getHeight() - 25f);
+		sandToolButton.addListener(new ClickListener(){
+            @Override 
+            public void clicked(InputEvent event, float x, float y){
+                mouseInput.setElementType(ElementTypes.SAND);
+            }
+        });
 
 		final TextButton woodToolButton = new TextButton("Wood", skinButton, "default");
-		woodToolButton.setWidth(150f);
+		woodToolButton.setWidth(60f);
 		woodToolButton.setHeight(20f);
-		woodToolButton.setPosition(495f, Gdx.graphics.getHeight() - 25f);
+		woodToolButton.setPosition(280f, Gdx.graphics.getHeight() - 25f);
 		woodToolButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -72,7 +72,7 @@ public class UIStage extends Stage {
 		final TextButton randomizeColorButton = new TextButton("Make it rainbow!", skinButton, "default");
 		randomizeColorButton.setWidth(150f);
 		randomizeColorButton.setHeight(20f);
-		randomizeColorButton.setPosition(660f, Gdx.graphics.getHeight() - 25f);
+		randomizeColorButton.setPosition(350f, Gdx.graphics.getHeight() - 25f);
 		randomizeColorButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
