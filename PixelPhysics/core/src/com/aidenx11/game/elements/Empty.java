@@ -28,7 +28,15 @@ public class Empty extends Element {
 	}
 
 	@Override
-	public void update() {
+	public void setVelocity(float f) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public float getVelocity() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	
