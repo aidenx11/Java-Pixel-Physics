@@ -3,12 +3,9 @@ package com.aidenx11.game.elements;
 public class Empty extends Element {
 
 	public static ElementTypes type = ElementTypes.EMPTY;
-	
-	private static final int MAX_SPEED = 0;
-	private int velocity = 0;
 
 	public Empty(int row, int column) {
-		super(row, column);
+		super(row, column, null, true);
 		super.setMovable(false);
 	}
 
@@ -28,6 +25,10 @@ public class Empty extends Element {
 
 	@Override
 	public void resetVelocity() {
+	}
+
+	@Override
+	public void update() {
 	}
 
 	

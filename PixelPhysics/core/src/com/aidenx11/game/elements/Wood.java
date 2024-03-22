@@ -24,7 +24,6 @@ public class Wood extends Element {
 
 	@Override
 	public void updateVelocity() {
-		
 	}
 
 	@Override
@@ -34,7 +33,10 @@ public class Wood extends Element {
 
 	@Override
 	public void resetVelocity() {
-		
+	}
+
+	@Override
+	public void update() {
 	}
 	
 }

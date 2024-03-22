@@ -63,93 +63,6 @@ public class MouseInput {
 	}
 
 	/**
-	 * Draws a square of the given element type to the matrix.
-	 * 
-	 * @param row    row of the center of the square
-	 * @param column column of the center of the square
-	 * @param width  width of the square
-	 * @param p      probability of each pixel in the square being drawn
-	 * @param type   element type to be drawn
-	 */
-	public void drawSquare(int row, int column, int width, double p, ElementTypes type) {
-		for (int rowCount = row - width / 2; rowCount < row + width / 2; rowCount++) {
-			for (int colCount = column - width / 2; colCount < column + width / 2; colCount++) {
-				if (rowCount < 0 || rowCount >= rows || colCount < 0 || colCount >= columns) {
-					break;
-				}
-
-				switch (type) {
-				case SAND:
-					if (Math.random() < p && matrix.isEmpty(rowCount, colCount)) {
-						matrix.setElement(new Sand(rowCount, colCount));
-					}
-					break;
-				case EMPTY:
-					matrix.setElement(new Empty(rowCount, colCount));
-					break;
-				case WOOD:
-					matrix.setElement(new Wood(rowCount, colCount));
-					break;
-				}
-			}
-		}
-	}
-
-	/**
-	 * Draws a circle to the matrix, similar to drawSquare.
-	 * 
-	 * @param row    row of the center of the circle
-	 * @param column column of the center of the circle
-	 * @param radius radius of the circle
-	 * @param type   element type to be drawn
-	 * @param p      probability of each pixel in the square being drawn
-	 */
-	public void drawCircle(int row, int column, int radius, ElementTypes type, double p) {
-		// Define bounding box
-		int top = (int) Math.ceil(row + radius);
-		int bottom = (int) Math.floor(row - radius);
-		int left = (int) Math.floor(column - radius);
-		int right = (int) Math.ceil(column + radius);
-
-		for (int rowCount = bottom; rowCount <= top; rowCount++) {
-			for (int colCount = left; colCount <= right; colCount++) {
-				if (insideCircle(row, column, radius, rowCount, colCount)) {
-					if (rowCount < 0 || rowCount >= rows || colCount < 0 || colCount >= columns) {
-						break;
-					}
-					switch (type) {
-					case SAND:
-						if (Math.random() < p && matrix.isEmpty(rowCount, colCount)) {
-							if (!isRandomizeColor()) {
-								matrix.setElement(new Sand(rowCount, colCount));
-							} else {
-								matrix.setElement(new Sand(rowCount, colCount, false, true));
-							}
-						}
-						break;
-					case EMPTY:
-						matrix.setElement(new Empty(rowCount, colCount));
-						break;
-					case WOOD:
-						if (matrix.isEmpty(rowCount, colCount)) {
-							matrix.setElement(new Wood(rowCount, colCount));
-						}
-						break;
-					}
-				}
-			}
-		}
-	}
-
-	// Private method to calculate if a matrix index is within the circle
-	private boolean insideCircle(int centerRow, int centerCol, int radius, int cellRow, int cellCol) {
-		double dx = centerCol - cellCol;
-		double dy = centerRow - cellRow;
-		double distanceSquared = dx * dx + dy * dy;
-		return distanceSquared <= radius * radius;
-	}
-
-	/**
 	 * Returns the current mouse position as a Vector3
 	 * 
 	 * @return the current mouse position
@@ -174,6 +87,22 @@ public class MouseInput {
 	 */
 	public void setUiRows(int uiRows) {
 		this.uiRows = uiRows;
+	}
+
+	public int getBrushSize() {
+		return brushSize;
+	}
+
+	public void setBrushSize(int brushSize) {
+		this.brushSize = brushSize;
+	}
+
+	public int getCursorSize() {
+		return cursorSize;
+	}
+
+	public void setCursorSize(int cursorSize) {
+		this.cursorSize = cursorSize;
 	}
 
 	/**
@@ -239,20 +168,89 @@ public class MouseInput {
 		}
 	}
 
-	public int getBrushSize() {
-		return brushSize;
+	/**
+	 * Draws a circle to the matrix, similar to drawSquare.
+	 * 
+	 * @param row    row of the center of the circle
+	 * @param column column of the center of the circle
+	 * @param radius radius of the circle
+	 * @param type   element type to be drawn
+	 * @param p      probability of each pixel in the square being drawn
+	 */
+	public void drawCircle(int row, int column, int radius, ElementTypes type, double p) {
+		// Define bounding box
+		int top = (int) Math.ceil(row + radius);
+		int bottom = (int) Math.floor(row - radius);
+		int left = (int) Math.floor(column - radius);
+		int right = (int) Math.ceil(column + radius);
+
+		for (int rowCount = bottom; rowCount <= top; rowCount++) {
+			for (int colCount = left; colCount <= right; colCount++) {
+				if (insideCircle(row, column, radius, rowCount, colCount)) {
+					if (rowCount < 0 || rowCount >= rows || colCount < 0 || colCount >= columns) {
+						break;
+					}
+					switch (type) {
+					case SAND:
+						if (Math.random() < p && matrix.isEmpty(rowCount, colCount)) {
+							if (!isRandomizeColor()) {
+								matrix.setElement(new Sand(rowCount, colCount));
+							} else {
+								matrix.setElement(new Sand(rowCount, colCount, false, true));
+							}
+						}
+						break;
+					case EMPTY:
+						matrix.setElement(new Empty(rowCount, colCount));
+						break;
+					case WOOD:
+						if (matrix.isEmpty(rowCount, colCount)) {
+							matrix.setElement(new Wood(rowCount, colCount));
+						}
+						break;
+					}
+				}
+			}
+		}
 	}
 
-	public void setBrushSize(int brushSize) {
-		this.brushSize = brushSize;
+	// Private method to calculate if a matrix index is within the circle
+	private boolean insideCircle(int centerRow, int centerCol, int radius, int cellRow, int cellCol) {
+		double dx = centerCol - cellCol;
+		double dy = centerRow - cellRow;
+		double distanceSquared = dx * dx + dy * dy;
+		return distanceSquared <= radius * radius;
 	}
 
-	public int getCursorSize() {
-		return cursorSize;
-	}
-
-	public void setCursorSize(int cursorSize) {
-		this.cursorSize = cursorSize;
-	}
+	/**
+	 * // * Draws a square of the given element type to the matrix. // * // * @param
+	 * row row of the center of the square // * @param column column of the center
+	 * of the square // * @param width width of the square // * @param p probability
+	 * of each pixel in the square being drawn // * @param type element type to be
+	 * drawn //
+	 */
+//	public void drawSquare(int row, int column, int width, double p, ElementTypes type) {
+//		for (int rowCount = row - width / 2; rowCount < row + width / 2; rowCount++) {
+//			for (int colCount = column - width / 2; colCount < column + width / 2; colCount++) {
+//				if (rowCount < 0 || rowCount >= rows || colCount < 0 || colCount >= columns) {
+//					break;
+//				}
+//
+//				switch (type) {
+//				case SAND:
+//					if (Math.random() < p && matrix.isEmpty(rowCount, colCount)) {
+//						matrix.setElement(new Sand(rowCount, colCount));
+//					}
+//					break;
+//				case EMPTY:
+//					matrix.setElement(new Empty(rowCount, colCount));
+//					break;
+//				case WOOD:
+//					matrix.setElement(new Wood(rowCount, colCount));
+//					break;
+//				}
+//			}
+//		}
+//	}
 
 }

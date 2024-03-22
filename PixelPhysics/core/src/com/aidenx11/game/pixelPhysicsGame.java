@@ -22,7 +22,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	/** Pixel size modifier of the game */
 	public static int pixelSizeModifier = 2;
 	/** Matrix for use in the game */
-	public CellularMatrix matrix;
+	public static CellularMatrix matrix;
 
 	/** Number of rows of the matrix */
 	public static int rows;
@@ -92,8 +92,6 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		matrix.updateFrame(shapeRenderer);
 
 		mouse.drawCursor(shapeRenderer);
-		
-//		frameLabel.setText(Integer.toString(matrix.getFramesSinceLastModifiedElement()));
 
 	}
 
