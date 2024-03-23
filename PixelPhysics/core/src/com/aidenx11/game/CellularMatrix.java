@@ -200,16 +200,40 @@ public class CellularMatrix {
 
 		framesSinceLastModifiedElement++;
 		direction = direction ? false : true;
+		Element element;
 
 		if (getFramesSinceLastModifiedElement() < 5) {
 			for (int y = rows - 1; y >= 0; y--) {
 				if (direction) {
 					for (int x = 0; x < columns; x++) {
-						ElementUpdater.update(this.getElement(rows - 1 - y, x), this);
+						element = this.getElement(rows - 1 - y, x);
+						if (element.movesDown()) {
+							ElementUpdater.update(element, this);
+						}
 					}
 				} else {
 					for (int x = columns - 1; x >= 0; x--) {
-						ElementUpdater.update(this.getElement(rows - 1 - y, x), this);
+						element = this.getElement(rows - 1 - y, x);
+						if (element.movesDown()) {
+							ElementUpdater.update(element, this);
+						}
+					}
+				}
+			}
+			for (int y = 0; y < rows; y++) {
+				if (direction) {
+					for (int x = 0; x < columns; x++) {
+						element = this.getElement(rows - 1 - y, x);
+						if (!element.movesDown()) {
+							ElementUpdater.update(element, this);
+						}
+					}
+				} else {
+					for (int x = columns - 1; x >= 0; x--) {
+						element = this.getElement(rows - 1 - y, x);
+						if (!element.movesDown()) {
+							ElementUpdater.update(element, this);
+						}
 					}
 				}
 			}

@@ -5,8 +5,10 @@ import com.aidenx11.game.input.MouseInput;
 import com.aidenx11.game.ui.UIStage;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -55,7 +57,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		shapeRenderer.setAutoShapeType(true);
 
-		rows = (int) Math.ceil(SCREEN_HEIGHT / pixelSizeModifier) + 1;
+		rows = (int) Math.ceil((SCREEN_HEIGHT - 50) / pixelSizeModifier) + 1;
 		columns = (int) Math.ceil(SCREEN_WIDTH / pixelSizeModifier) + 1;
 
 		matrix = new CellularMatrix(rows, columns, pixelSizeModifier);
@@ -66,6 +68,8 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		buttonStage = new UIStage(viewport, mouse, matrix);
 
 		Gdx.input.setInputProcessor(buttonStage);
+		
+		
 		
 //		frameLabel = new Label("", new Skin(Gdx.files.internal("skin/uiskin.json")));
 //		frameLabel.setWidth(50f);
@@ -80,6 +84,11 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 
 		// Set blue background
 		ScreenUtils.clear(135 / 255f, 206 / 255f, 235 / 255f, 1);
+		
+		shapeRenderer.begin(ShapeType.Filled);
+		shapeRenderer.setColor(Color.BLACK);
+		shapeRenderer.rect(0, SCREEN_HEIGHT - 48, SCREEN_WIDTH, 1);
+		shapeRenderer.end();
 
 		// Draw the buttons to the screen
 		buttonStage.draw();

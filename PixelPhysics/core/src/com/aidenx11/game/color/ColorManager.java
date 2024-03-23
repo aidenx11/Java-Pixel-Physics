@@ -146,6 +146,14 @@ public class ColorManager extends Color {
 		return rgb;
 	}
 
+	public static int[] reduceLightness(CustomColor color) {
+		int[] rgb = new int[] { color.getR(), color.getB(), color.getG() };
+		if (rgb[2] > 0) {
+			rgb[2] = rgb[2] - 1;
+		}
+		return rgb;
+	}
+
 	/**
 	 * Generates a color value in the rainbow
 	 * 

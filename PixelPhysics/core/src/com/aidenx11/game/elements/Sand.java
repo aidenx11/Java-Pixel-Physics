@@ -9,9 +9,10 @@ import com.aidenx11.game.color.CustomColor.*;
 public class Sand extends Element {
 
 	public static ElementTypes type = ElementTypes.SAND;
-	private float velocity = 1f;
-	private float ACCELERATION = pixelPhysicsGame.GRAVITY_ACCELERATION;
-	private float MAX_SPEED = 5f;
+	private float velocity = 0f;
+	private float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
+	private float maxSpeed = 5f;
+	private float density = 5;
 
 	public static CellularMatrix matrix = pixelPhysicsGame.matrix;
 
@@ -19,18 +20,30 @@ public class Sand extends Element {
 		super(row, column, new CustomColor(ColorValues.SAND_COLOR), false);
 		super.setMovable(true);
 		super.setModified(true);
+		super.setMovesDown(true);
+		super.setDensity(density);
+		super.setMovesSideways(false);
+		super.setLimitedLife(false);
 	}
 
 	public Sand(int row, int column, boolean isEmpty, boolean rainbow) {
 		super(row, column, new CustomColor(ColorManager.generateRainbowColor()), isEmpty);
 		super.setMovable(true);
 		super.setModified(true);
+		super.setMovesDown(true);
+		super.setDensity(density);
+		super.setMovesSideways(false);
+		super.setLimitedLife(false);
 	}
 
 	public Sand(int row, int column, boolean isEmpty, int r, int g, int b) {
 		super(row, column, new CustomColor(r, g, b), isEmpty);
 		super.setMovable(true);
 		super.setModified(true);
+		super.setMovesDown(true);
+		super.setDensity(density);
+		super.setMovesSideways(false);
+		super.setLimitedLife(false);
 	}
 
 	@Override
@@ -50,24 +63,24 @@ public class Sand extends Element {
 		setVelocity(0);
 	}
 
-	public void updateVelocity() {
-		float newVelocity = getVelocity() + ACCELERATION;
-
-		if (Math.abs(newVelocity) > MAX_SPEED) {
-			newVelocity = Math.signum(newVelocity) * MAX_SPEED;
-		}
-
-		setVelocity(newVelocity);
-
+	@Override
+	public float getMaxSpeed() {
+		return maxSpeed;
 	}
 
-	public int getUpdateCount() {
-		float abs = Math.abs(getVelocity());
-		int floored = (int) Math.floor(abs);
-		float mod = abs - floored;
-
-		return floored + (Math.random() < mod ? 1 : 0);
+	@Override
+	public void setMaxSpeed(float maxSpeed) {
+		this.maxSpeed = maxSpeed;
 	}
 
+	@Override
+	public float getAcceleration() {
+		return acceleration;
+	}
+
+	@Override
+	public void setAcceleration(float acceleration) {
+		this.acceleration = acceleration;
+	}
 	
 }

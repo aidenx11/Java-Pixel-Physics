@@ -6,6 +6,7 @@ import com.aidenx11.game.color.ColorManager;
 import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.elements.Empty;
 import com.aidenx11.game.elements.Sand;
+import com.aidenx11.game.elements.Smoke;
 import com.aidenx11.game.elements.Wood;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -33,8 +34,6 @@ public class MouseInput {
 	private int brushSize;
 	/** Size of cursor */
 	private int cursorSize;
-	/** Number of rows the ui takes up, starting from the top of the screen */
-	private int uiRows;
 
 	/** Element type being drawn by the mouse */
 	private ElementTypes elementType;
@@ -69,24 +68,6 @@ public class MouseInput {
 	 */
 	public Vector3 getMousePos() {
 		return mousePos;
-	}
-
-	/**
-	 * Returns the ui rows of this mouse
-	 * 
-	 * @return the ui rows of this mouse
-	 */
-	public int getUiRows() {
-		return uiRows;
-	}
-
-	/**
-	 * Set the ui rows of this mouse
-	 * 
-	 * @param uiRows uiRows to set
-	 */
-	public void setUiRows(int uiRows) {
-		this.uiRows = uiRows;
 	}
 
 	public int getBrushSize() {
@@ -149,7 +130,7 @@ public class MouseInput {
 
 			int touchedRow = (int) Math.floor(mousePos.y / pixelSizeModifier);
 			int touchedCol = (int) Math.floor(mousePos.x / pixelSizeModifier);
-			if (touchedRow < getUiRows() && touchedRow >= 0 && touchedCol >= 0 && touchedCol < columns) {
+			if (touchedRow < rows && touchedRow >= 0 && touchedCol >= 0 && touchedCol < columns) {
 				switch (elementType) {
 				case SAND:
 					// matrix.setElement(new Sand(touchedRow, touchedCol));
@@ -161,6 +142,11 @@ public class MouseInput {
 					break;
 				case WOOD:
 					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
+					break;
+				case SMOKE:
+					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
+					break;
+				default:
 					break;
 				}
 
@@ -207,6 +193,13 @@ public class MouseInput {
 						if (matrix.isEmpty(rowCount, colCount)) {
 							matrix.setElement(new Wood(rowCount, colCount));
 						}
+						break;
+					case SMOKE:
+						if (matrix.isEmpty(rowCount, colCount)) {
+							matrix.setElement(new Smoke(rowCount, colCount));
+						}
+						break;
+					default:
 						break;
 					}
 				}

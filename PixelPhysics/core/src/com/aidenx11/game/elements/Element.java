@@ -28,24 +28,60 @@ public abstract class Element {
 	/** Whether or not this element is movable */
 	private boolean isMovable;
 	
+	/** Whether or not this element moves down */
+	private boolean movesDown;
+	
 	/** Whether or not element was modified this frame */
 	private boolean modified;
+	
+	private float ACCELERATION;
+	
+	private float MAX_SPEED;
+	
+	private float velocity;
+	
+	private float density;
+	
+	private boolean movesSideways;
+	
+	private boolean limitedLife;
+	private int lifetime;
 
 	public enum ElementTypes {
-		SAND, EMPTY, WOOD
+		SAND, EMPTY, WOOD, SMOKE
 	}
 
 	public abstract ElementTypes getType();
-	
-	public abstract void updateVelocity();
-	
-	public abstract int getUpdateCount();
 	
 	public abstract void resetVelocity();
 	
 	public abstract void setVelocity(float f);
 	
-	public abstract float getVelocity();
+	public abstract float getMaxSpeed();
+	
+	public abstract void setMaxSpeed(float maxSpeed);
+	
+	public abstract float getAcceleration();
+	public abstract void setAcceleration(float acceleration);
+	
+	public float getDensity() {
+		return density;
+	}
+	public void setDensity(float density) {
+		this.density = density;
+	}
+	
+	public float getVelocity() {
+		return velocity;
+	}
+	
+	public int getUpdateCount() {
+		float abs = Math.abs(getVelocity());
+		int floored = (int) Math.floor(abs);
+		float mod = abs - floored;
+
+		return floored + (Math.random() < mod ? 1 : 0);
+	}
 
 	public Element(int row, int column, CustomColor color, boolean isEmpty) {
 		setEmpty(isEmpty);
@@ -84,6 +120,10 @@ public abstract class Element {
 	public Color getColor() {
 		return new Color(color.getR() / 255f, color.getG() / 255f, color.getB() / 255f, 1f);
 	}
+	
+	public CustomColor getCustomColor() {
+		return color;
+	}
 
 	public boolean isEmpty() {
 		return isEmpty;
@@ -98,7 +138,15 @@ public abstract class Element {
 	}
 
 	public void setMovable(boolean movable) {
-		this.isMovable = movable;
+		if (movable) {
+			this.isMovable = movable;
+		} else {
+			this.isMovable = movable;
+			this.setMovesDown(false);
+			this.setMovesSideways(false);
+			this.setDensity(999);
+		}
+		
 	}
 
 	public boolean isModified() {
@@ -112,7 +160,43 @@ public abstract class Element {
 	public void randomizeColor() {
 		color.randomizeColor();
 	}
+	
+	public void setMovesDown(boolean b) {
+		this.movesDown = b;
+	}
 
+	public boolean movesDown() {
+		return this.movesDown;
+	}
+
+	public boolean movesSideways() {
+		return movesSideways;
+	}
+
+	public void setMovesSideways(boolean movesSideways) {
+		this.movesSideways = movesSideways;
+	}
+
+	public boolean limitedLife() {
+		return limitedLife;
+	}
+
+	public void setLimitedLife(boolean limitedLife) {
+		if (!limitedLife) {
+			setLifetime(-1);
+		}
+		this.limitedLife = limitedLife;
+	}
+
+	public int getLifetime() {
+		return lifetime;
+	}
+
+	public void setLifetime(int lifetime) {
+		this.lifetime = lifetime;
+	}
+
+	
 
 	
 }
