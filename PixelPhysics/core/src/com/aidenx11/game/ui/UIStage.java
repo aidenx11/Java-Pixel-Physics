@@ -97,6 +97,17 @@ public class UIStage extends Stage {
 			}
 		});
 		
+		final TextButton fireToolButton = new TextButton("Fire", skinButton, "default");
+		fireToolButton.setWidth(60f);
+		fireToolButton.setHeight(20f);
+		fireToolButton.setPosition(590, Gdx.graphics.getHeight() - 25f);
+		fireToolButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				mouseInput.setElementType(ElementTypes.FIRE);
+			}
+		});
+		
 		final Slider brushSizeSlider = new Slider(1f, 15f, 1f, false, skinButton);
 		brushSizeSlider.setWidth(100f);
 		brushSizeSlider.setHeight(10f);
@@ -117,6 +128,7 @@ public class UIStage extends Stage {
         this.addActor(randomizeColorButton);
         this.addActor(brushSizeSlider);
         this.addActor(smokeToolButton);
+        this.addActor(fireToolButton);
 	}
 	
 	public void setFrameText(int frame) {
