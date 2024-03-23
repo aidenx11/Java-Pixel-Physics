@@ -5,6 +5,7 @@ import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.color.ColorManager;
 import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.elements.Empty;
+import com.aidenx11.game.elements.Fire;
 import com.aidenx11.game.elements.Sand;
 import com.aidenx11.game.elements.Smoke;
 import com.aidenx11.game.elements.Wood;
@@ -138,12 +139,9 @@ public class MouseInput {
 					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 0.5);
 					break;
 				case EMPTY:
-					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
-					break;
 				case WOOD:
-					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
-					break;
 				case SMOKE:
+				case FIRE:
 					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
 					break;
 				default:
@@ -199,6 +197,10 @@ public class MouseInput {
 							matrix.setElement(new Smoke(rowCount, colCount));
 						}
 						break;
+					case FIRE:
+						if (matrix.isEmpty(rowCount, colCount)) {
+							matrix.setElement(new Fire(rowCount, colCount));
+						}
 					default:
 						break;
 					}

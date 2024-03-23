@@ -95,6 +95,9 @@ public class CellularMatrix {
 	}
 
 	public void setModifiedElements(boolean modifiedElements) {
+		if (modifiedElements) {
+			setFramesSinceLastModifiedElement(0);
+		}
 		this.modifiedElements = modifiedElements;
 	}
 
@@ -162,9 +165,7 @@ public class CellularMatrix {
 		Array<Element> rowArray = matrix.get(row);
 		rowArray.set(column, element);
 		matrix.set(row, rowArray);
-		if (framesSinceLastModifiedElement != 0) {
-			setFramesSinceLastModifiedElement(0);
-		}
+		setFramesSinceLastModifiedElement(0);
 	}
 
 	/**

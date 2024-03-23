@@ -1,5 +1,7 @@
 package com.aidenx11.game.elements;
 
+import com.aidenx11.game.CellularMatrix;
+import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
 import com.badlogic.gdx.graphics.Color;
 
@@ -9,6 +11,8 @@ import com.badlogic.gdx.graphics.Color;
  * @author Aiden Schroeder
  */
 public abstract class Element {
+	
+	public CellularMatrix parentMatrix = pixelPhysicsGame.matrix;
 	
 	/** Whether or not the element is empty */
 	private boolean isEmpty;
@@ -46,9 +50,11 @@ public abstract class Element {
 	
 	private boolean limitedLife;
 	private int lifetime;
+	
+	private boolean flammable;
 
 	public enum ElementTypes {
-		SAND, EMPTY, WOOD, SMOKE
+		SAND, EMPTY, WOOD, SMOKE, FIRE
 	}
 
 	public abstract ElementTypes getType();
@@ -196,6 +202,21 @@ public abstract class Element {
 		this.lifetime = lifetime;
 	}
 
+	public boolean isFlammable() {
+		return flammable;
+	}
+
+	public void setFlammable(boolean flammable) {
+		if (flammable) {
+			this.flammable = flammable;
+			this.setLimitedLife(true);
+		}
+		this.flammable = flammable;
+	}
+
+	public void flicker() {
+		
+	}
 	
 
 	
