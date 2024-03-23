@@ -6,6 +6,7 @@ import com.aidenx11.game.color.CustomColor;
 public class Wood extends Element {
 	
 	public static ElementTypes type = ElementTypes.WOOD;
+	private float chanceToCatch = 0.01f;
 	
 	public Wood(int row, int column, boolean isEmpty) {
 		super(row, column, new CustomColor(ColorValues.WOOD_COLOR), isEmpty);
@@ -62,6 +63,14 @@ public class Wood extends Element {
 	public void setAcceleration(float acceleration) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public float getChanceToCatch() {
+		return chanceToCatch;
+	}
+
+	public void setChanceToCatch(float chanceToCatch) {
+		this.chanceToCatch = chanceToCatch;
 	}
 	
 }

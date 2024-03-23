@@ -72,8 +72,44 @@ public class ElementUpdater {
 
 		element.setLifetime(lifetime - 1);
 	}
-
-	public static void update(Element element, CellularMatrix matrix) {
+	
+	public static void updateBurningLogic(Element element, CellularMatrix matrix) {
+		if (element instanceof Wood) {
+			int numberOfFire = 0;
+			if (matrix.getElement(element.getRow() + 1, element.getColumn()) instanceof Fire) {
+				numberOfFire++;
+			}
+			if (matrix.getElement(element.getRow() + 1, element.getColumn() + 1) instanceof Fire) {
+				numberOfFire++;
+			}
+			if (matrix.getElement(element.getRow() + 1, element.getColumn() - 1) instanceof Fire) {
+				numberOfFire++;
+			}
+			if (matrix.getElement(element.getRow(), element.getColumn() - 1) instanceof Fire) {
+				numberOfFire++;
+			}
+			if (matrix.getElement(element.getRow(), element.getColumn() + 1) instanceof Fire) {
+				numberOfFire++;
+			}
+			if (matrix.getElement(element.getRow() - 1, element.getColumn()) instanceof Fire) {
+				numberOfFire++;
+			}
+			if (matrix.getElement(element.getRow() - 1, element.getColumn() + 1) instanceof Fire) {
+				numberOfFire++;
+			}
+			if (matrix.getElement(element.getRow() - 1, element.getColumn() - 1) instanceof Fire) {
+				numberOfFire++;
+			}
+			
+			float chanceToCatch = ((Wood) element).getChanceToCatch() * numberOfFire;
+			
+			if (Math.random() < chanceToCatch) {
+				setNewElement(element, ElementTypes.FIRE, matrix);
+			}
+		}
+	}
+	
+	public static void updateMovementLogic(Element element, CellularMatrix matrix) {
 		updateVelocity(element);
 
 		for (int v = 0; v < getUpdateCount(element); v++) {
@@ -104,9 +140,14 @@ public class ElementUpdater {
 			}
 
 		}
+	}
 
+	public static void update(Element element, CellularMatrix matrix) {
+		
+		updateMovementLogic(element, matrix);
 		element.setModified(element.getVelocity() != 0);
 		updateElementLife(element, matrix);
+		updateBurningLogic(element, matrix);
 
 	}
 }
