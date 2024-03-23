@@ -86,6 +86,17 @@ public class UIStage extends Stage {
 			}
 		});
 		
+		final TextButton smokeToolButton = new TextButton("Smoke", skinButton, "default");
+		smokeToolButton.setWidth(70f);
+		smokeToolButton.setHeight(20f);
+		smokeToolButton.setPosition(510, Gdx.graphics.getHeight() - 25f);
+		smokeToolButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				mouseInput.setElementType(ElementTypes.SMOKE);
+			}
+		});
+		
 		final Slider brushSizeSlider = new Slider(1f, 15f, 1f, false, skinButton);
 		brushSizeSlider.setWidth(100f);
 		brushSizeSlider.setHeight(10f);
@@ -97,6 +108,7 @@ public class UIStage extends Stage {
 				mouseInput.setCursorSize((int) brushSizeSlider.getValue());
 			}
 		});
+		
        
 		this.addActor(emptyToolButton);
         this.addActor(sandToolButton);
@@ -104,7 +116,7 @@ public class UIStage extends Stage {
         this.addActor(woodToolButton);
         this.addActor(randomizeColorButton);
         this.addActor(brushSizeSlider);
-        mouseInput.setUiRows((int) ((Gdx.graphics.getHeight() - 50f) / pixelPhysicsGame.pixelSizeModifier));
+        this.addActor(smokeToolButton);
 	}
 	
 	public void setFrameText(int frame) {

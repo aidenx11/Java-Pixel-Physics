@@ -10,25 +10,18 @@ public class Wood extends Element {
 	public Wood(int row, int column, boolean isEmpty) {
 		super(row, column, new CustomColor(ColorValues.WOOD_COLOR), isEmpty);
 		super.setMovable(false);
+		super.setLimitedLife(false);
 	}
 
 	public Wood(int row, int column) {
 		super(row, column, new CustomColor(ColorValues.WOOD_COLOR), false);
 		super.setMovable(false);
+		super.setLimitedLife(false);
 	}
 
 	@Override
 	public ElementTypes getType() {
 		return type;
-	}
-
-	@Override
-	public void updateVelocity() {
-	}
-
-	@Override
-	public int getUpdateCount() {
-		return 0;
 	}
 
 	@Override
@@ -45,6 +38,30 @@ public class Wood extends Element {
 	public float getVelocity() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public float getMaxSpeed() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setMaxSpeed(float maxSpeed) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public float getAcceleration() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setAcceleration(float acceleration) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
