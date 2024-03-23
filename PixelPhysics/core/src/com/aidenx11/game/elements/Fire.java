@@ -9,7 +9,7 @@ public class Fire extends Element {
 	int maxLife = 75 + (int) (75 * Math.random());
 
 	static CustomColor[] colors = new CustomColor[] { new CustomColor(253, 207, 88), new CustomColor(242, 125, 12),
-			new CustomColor(128, 9, 9), new CustomColor(240, 127, 19) };
+			new CustomColor(199, 14, 14), new CustomColor(240, 127, 19) };
 
 	public Fire(int row, int column) {
 		super(row, column, new CustomColor(ColorValues.FIRE), false);
