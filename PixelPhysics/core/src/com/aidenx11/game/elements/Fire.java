@@ -19,7 +19,6 @@ public class Fire extends Element {
 	}
 
 	public void flicker() {
-		double frequency = Math.sqrt(this.getLifetime() / maxLife);
 		this.setColor(colors[(int) Math.round(Math.random() * 3)]);
 		parentMatrix.setModifiedElements(true);
 	}
@@ -53,6 +52,16 @@ public class Fire extends Element {
 
 	@Override
 	public void setAcceleration(float acceleration) {
+	}
+
+	@Override
+	public boolean isFlammable() {
+		return false;
+	}
+	
+	@Override
+	public boolean burnsThings() {
+		return true;
 	}
 
 }

@@ -63,8 +63,9 @@ public class ElementUpdater {
 				break;
 			}
 		}
-		
-		if (element instanceof Fire && Math.random() < 0.2) {
+
+		if ((element instanceof Fire || (element instanceof Smoke && ((Smoke) element).flickers()))
+				&& Math.random() < 0.1) {
 			element.flicker();
 		}
 
@@ -72,43 +73,51 @@ public class ElementUpdater {
 
 		element.setLifetime(lifetime - 1);
 	}
-	
+
 	public static void updateBurningLogic(Element element, CellularMatrix matrix) {
-		if (element instanceof Wood) {
+		if (element.isFlammable()) {
 			int numberOfFire = 0;
-			if (matrix.getElement(element.getRow() + 1, element.getColumn()) instanceof Fire) {
+			Element otherElement = matrix.getElement(element.getRow() + 1, element.getColumn());
+			if (otherElement.burnsThings()) {
 				numberOfFire++;
 			}
-			if (matrix.getElement(element.getRow() + 1, element.getColumn() + 1) instanceof Fire) {
+			otherElement = matrix.getElement(element.getRow() + 1, element.getColumn() + 1);
+			if (otherElement.burnsThings()) {
 				numberOfFire++;
 			}
-			if (matrix.getElement(element.getRow() + 1, element.getColumn() - 1) instanceof Fire) {
+			otherElement = matrix.getElement(element.getRow() + 1, element.getColumn() - 1);
+			if (otherElement.burnsThings()) {
 				numberOfFire++;
 			}
-			if (matrix.getElement(element.getRow(), element.getColumn() - 1) instanceof Fire) {
+			otherElement = matrix.getElement(element.getRow(), element.getColumn() - 1);
+			if (otherElement.burnsThings()) {
 				numberOfFire++;
 			}
-			if (matrix.getElement(element.getRow(), element.getColumn() + 1) instanceof Fire) {
+			otherElement = matrix.getElement(element.getRow(), element.getColumn() + 1);
+			if (otherElement.burnsThings()) {
 				numberOfFire++;
 			}
-			if (matrix.getElement(element.getRow() - 1, element.getColumn()) instanceof Fire) {
+			otherElement = matrix.getElement(element.getRow() - 1, element.getColumn());
+			if (otherElement.burnsThings()) {
 				numberOfFire++;
 			}
-			if (matrix.getElement(element.getRow() - 1, element.getColumn() + 1) instanceof Fire) {
+			otherElement = matrix.getElement(element.getRow() - 1, element.getColumn() + 1);
+			if (otherElement.burnsThings()) {
 				numberOfFire++;
 			}
-			if (matrix.getElement(element.getRow() - 1, element.getColumn() - 1) instanceof Fire) {
+			otherElement = matrix.getElement(element.getRow() - 1, element.getColumn() - 1);
+			if (otherElement.burnsThings()) {
 				numberOfFire++;
 			}
-			
+
 			float chanceToCatch = ((Wood) element).getChanceToCatch() * numberOfFire;
-			
+
 			if (Math.random() < chanceToCatch) {
 				setNewElement(element, ElementTypes.FIRE, matrix);
 			}
 		}
 	}
-	
+
 	public static void updateMovementLogic(Element element, CellularMatrix matrix) {
 		updateVelocity(element);
 
@@ -143,7 +152,7 @@ public class ElementUpdater {
 	}
 
 	public static void update(Element element, CellularMatrix matrix) {
-		
+
 		updateMovementLogic(element, matrix);
 		element.setModified(element.getVelocity() != 0);
 		updateElementLife(element, matrix);

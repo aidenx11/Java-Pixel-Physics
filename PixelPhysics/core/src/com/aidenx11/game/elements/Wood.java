@@ -72,5 +72,15 @@ public class Wood extends Element {
 	public void setChanceToCatch(float chanceToCatch) {
 		this.chanceToCatch = chanceToCatch;
 	}
+
+	@Override
+	public boolean isFlammable() {
+		return true;
+	}
+
+	@Override
+	public boolean burnsThings() {
+		return false;
+	}
 	
 }

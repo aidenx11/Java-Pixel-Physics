@@ -10,6 +10,11 @@ public class Smoke extends Element {
 	private float acceleration = -0.05f;
 	private float maxSpeed = 0.2f;
 	private float density = 1;
+	
+	private boolean flickers = Math.random() < 0.03;
+	
+	static CustomColor[] fireColors = new CustomColor[] { new CustomColor(253, 207, 88), new CustomColor(242, 125, 12),
+			new CustomColor(199, 14, 14), new CustomColor(240, 127, 19) };
 
 	public Smoke(int row, int column) {
 		super(row, column, new CustomColor(ColorValues.SMOKE), false);
@@ -19,6 +24,11 @@ public class Smoke extends Element {
 		super.setMovesSideways(true);
 		super.setLimitedLife(true);
 		super.setLifetime(200 + (int) (300 * Math.random()));
+	}
+	
+	public void flicker() {
+		this.setColor(fireColors[(int) Math.round(Math.random() * 3)]);
+		parentMatrix.setModifiedElements(true);
 	}
 
 	@Override
@@ -62,4 +72,21 @@ public class Smoke extends Element {
 		this.acceleration = acceleration;
 	}
 
+	@Override
+	public boolean isFlammable() {
+		return false;
+	}
+
+	public boolean flickers() {
+		return flickers;
+	}
+	
+	@Override
+	public boolean burnsThings() {
+		if (flickers() && Math.random() < 0.8) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

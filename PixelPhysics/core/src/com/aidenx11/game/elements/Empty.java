@@ -56,5 +56,15 @@ public class Empty extends Element {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public boolean isFlammable() {
+		return false;
+	}
+
+	@Override
+	public boolean burnsThings() {
+		return false;
+	}
 	
 }
