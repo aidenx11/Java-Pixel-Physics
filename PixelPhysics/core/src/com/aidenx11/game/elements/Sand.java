@@ -82,5 +82,15 @@ public class Sand extends Element {
 	public void setAcceleration(float acceleration) {
 		this.acceleration = acceleration;
 	}
+
+	@Override
+	public boolean isFlammable() {
+		return false;
+	}
+
+	@Override
+	public boolean burnsThings() {
+		return false;
+	}
 	
 }

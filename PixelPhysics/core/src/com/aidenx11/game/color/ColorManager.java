@@ -3,8 +3,14 @@ package com.aidenx11.game.color;
 import com.aidenx11.game.color.CustomColor.ColorValues;
 import com.badlogic.gdx.graphics.Color;
 
+/**
+ * Class to handle management of colors. Can convert from RGB to HSL and vary colors
+ * 
+ * @author Aiden Schroeder
+ */
 public class ColorManager extends Color {
 
+	/** Keeps track of the place in the rainbow for generateRainbowColor method */
 	private static int placeInRainbow = 0;
 
 	/**
@@ -143,14 +149,6 @@ public class ColorManager extends Color {
 
 		int[] rgb = new int[] { (int) r, (int) g, (int) b };
 
-		return rgb;
-	}
-
-	public static int[] reduceLightness(CustomColor color) {
-		int[] rgb = new int[] { color.getR(), color.getB(), color.getG() };
-		if (rgb[2] > 0) {
-			rgb[2] = rgb[2] - 1;
-		}
 		return rgb;
 	}
 

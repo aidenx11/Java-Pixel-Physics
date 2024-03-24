@@ -38,19 +38,27 @@ public abstract class Element {
 	/** Whether or not element was modified this frame */
 	private boolean modified;
 	
-	private float ACCELERATION;
+	/** Acceleration of this element */
+	private float acceleration;
 	
-	private float MAX_SPEED;
+	/** Max speed of this element */
+	private float maxSpeed;
 	
+	/** Velocity of this element */
 	private float velocity;
 	
+	/** Density of this element */
 	private float density;
 	
+	/** Whether or not this element moves side to side */
 	private boolean movesSideways;
 	
+	/** Whether or not this element has a limited life (can die) */
 	private boolean limitedLife;
+	/** Number of frames the element can stay alive if it has limited life */
 	private int lifetime;
 	
+	/** Whether or not this element is flammable */
 	private boolean flammable;
 
 	public enum ElementTypes {
@@ -69,6 +77,10 @@ public abstract class Element {
 	
 	public abstract float getAcceleration();
 	public abstract void setAcceleration(float acceleration);
+	
+	public abstract boolean isFlammable();
+	
+	public abstract boolean burnsThings();
 	
 	public float getDensity() {
 		return density;
@@ -162,10 +174,6 @@ public abstract class Element {
 	public void setModified(boolean modified) {
 		this.modified = modified;
 	}
-
-	public void randomizeColor() {
-		color.randomizeColor();
-	}
 	
 	public void setMovesDown(boolean b) {
 		this.movesDown = b;
@@ -202,9 +210,7 @@ public abstract class Element {
 		this.lifetime = lifetime;
 	}
 
-	public boolean isFlammable() {
-		return flammable;
-	}
+	
 
 	public void setFlammable(boolean flammable) {
 		if (flammable) {

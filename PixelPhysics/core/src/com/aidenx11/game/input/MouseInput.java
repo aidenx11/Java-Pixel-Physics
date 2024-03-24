@@ -15,6 +15,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 
+/**
+ * Class to handle detection of mouse input and drawing of elements in the matrix
+ * 
+ * @author Aiden Schroeder
+ */
 public class MouseInput {
 
 	/** Camera to base the mouse on */
@@ -71,18 +76,38 @@ public class MouseInput {
 		return mousePos;
 	}
 
+	/**
+	 * Returns the current brush size
+	 * 
+	 * @return the current brush size
+	 */
 	public int getBrushSize() {
 		return brushSize;
 	}
 
+	/**
+	 * Sets the brush size
+	 * 
+	 * @param brushSize size to set
+	 */
 	public void setBrushSize(int brushSize) {
 		this.brushSize = brushSize;
 	}
 
+	/**
+	 * Returns the cursor size
+	 * 
+	 * @return the cursor size
+	 */
 	public int getCursorSize() {
 		return cursorSize;
 	}
 
+	/**
+	 * Sets the cursor size
+	 * 
+	 * @param cursorSize size to set
+	 */
 	public void setCursorSize(int cursorSize) {
 		this.cursorSize = cursorSize;
 	}
@@ -216,36 +241,5 @@ public class MouseInput {
 		double distanceSquared = dx * dx + dy * dy;
 		return distanceSquared <= radius * radius;
 	}
-
-	/**
-	 * // * Draws a square of the given element type to the matrix. // * // * @param
-	 * row row of the center of the square // * @param column column of the center
-	 * of the square // * @param width width of the square // * @param p probability
-	 * of each pixel in the square being drawn // * @param type element type to be
-	 * drawn //
-	 */
-//	public void drawSquare(int row, int column, int width, double p, ElementTypes type) {
-//		for (int rowCount = row - width / 2; rowCount < row + width / 2; rowCount++) {
-//			for (int colCount = column - width / 2; colCount < column + width / 2; colCount++) {
-//				if (rowCount < 0 || rowCount >= rows || colCount < 0 || colCount >= columns) {
-//					break;
-//				}
-//
-//				switch (type) {
-//				case SAND:
-//					if (Math.random() < p && matrix.isEmpty(rowCount, colCount)) {
-//						matrix.setElement(new Sand(rowCount, colCount));
-//					}
-//					break;
-//				case EMPTY:
-//					matrix.setElement(new Empty(rowCount, colCount));
-//					break;
-//				case WOOD:
-//					matrix.setElement(new Wood(rowCount, colCount));
-//					break;
-//				}
-//			}
-//		}
-//	}
 
 }
