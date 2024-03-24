@@ -9,9 +9,9 @@ import com.aidenx11.game.color.CustomColor.*;
 public class Sand extends Element {
 
 	public static ElementTypes type = ElementTypes.SAND;
-	private float velocity = 0f;
+	private float velocity = 0.2f;
 	private float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
-	private float maxSpeed = 5f;
+	private float maxSpeed = 7f;
 	private float density = 5;
 
 	public static CellularMatrix matrix = pixelPhysicsGame.matrix;

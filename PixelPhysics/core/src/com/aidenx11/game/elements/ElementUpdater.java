@@ -78,35 +78,35 @@ public class ElementUpdater {
 		if (element.isFlammable()) {
 			int numberOfFire = 0;
 			Element otherElement = matrix.getElement(element.getRow() + 1, element.getColumn());
-			if (otherElement.burnsThings()) {
+			if (otherElement != null && otherElement.burnsThings()) {
 				numberOfFire++;
 			}
 			otherElement = matrix.getElement(element.getRow() + 1, element.getColumn() + 1);
-			if (otherElement.burnsThings()) {
+			if (otherElement != null && otherElement.burnsThings()) {
 				numberOfFire++;
 			}
 			otherElement = matrix.getElement(element.getRow() + 1, element.getColumn() - 1);
-			if (otherElement.burnsThings()) {
+			if (otherElement != null && otherElement.burnsThings()) {
 				numberOfFire++;
 			}
 			otherElement = matrix.getElement(element.getRow(), element.getColumn() - 1);
-			if (otherElement.burnsThings()) {
+			if (otherElement != null && otherElement.burnsThings()) {
 				numberOfFire++;
 			}
 			otherElement = matrix.getElement(element.getRow(), element.getColumn() + 1);
-			if (otherElement.burnsThings()) {
+			if (otherElement != null && otherElement.burnsThings()) {
 				numberOfFire++;
 			}
 			otherElement = matrix.getElement(element.getRow() - 1, element.getColumn());
-			if (otherElement.burnsThings()) {
+			if (otherElement != null && otherElement.burnsThings()) {
 				numberOfFire++;
 			}
 			otherElement = matrix.getElement(element.getRow() - 1, element.getColumn() + 1);
-			if (otherElement.burnsThings()) {
+			if (otherElement != null && otherElement.burnsThings()) {
 				numberOfFire++;
 			}
 			otherElement = matrix.getElement(element.getRow() - 1, element.getColumn() - 1);
-			if (otherElement.burnsThings()) {
+			if (otherElement != null && otherElement.burnsThings()) {
 				numberOfFire++;
 			}
 
@@ -136,10 +136,8 @@ public class ElementUpdater {
 				matrix.swap(element, nextVertical);
 			} else if (nextVertical1 != null && nextVertical1.getDensity() < element.getDensity()) {
 				matrix.swap(element, nextVertical1);
-				element.setVelocity((float) (element.getVelocity() - 0.1 * delta));
 			} else if (nextVertical2 != null && nextVertical2.getDensity() < element.getDensity()) {
 				matrix.swap(element, nextVertical2);
-				element.setVelocity((float) (element.getVelocity() - 0.1 * delta));
 			} else if (sideways1 != null && element.movesSideways() && sideways1.getDensity() < element.getDensity()) {
 				matrix.swap(element, sideways1);
 			} else if (sideways2 != null && element.movesSideways() && sideways2.getDensity() < element.getDensity()) {
