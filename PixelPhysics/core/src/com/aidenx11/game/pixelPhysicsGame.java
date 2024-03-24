@@ -16,13 +16,13 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class pixelPhysicsGame extends ApplicationAdapter {
 
 	/** Width of the screen */
-	public static final int SCREEN_WIDTH = 1440; // MUST equal window size in desktop launcher
+	public static final int SCREEN_WIDTH = 1447;
 	/** Height of the screen */
-	public static final int SCREEN_HEIGHT = 900; // MUST equal window size in desktop launcher
+	public static final int SCREEN_HEIGHT = 900;
 	/** */
-	public static final float GRAVITY_ACCELERATION = 0.3f;
+	public static final float GRAVITY_ACCELERATION = 0.5f;
 	/** Pixel size modifier of the game */
-	public static int pixelSizeModifier = 3;
+	public static int pixelSizeModifier = 2;
 	/** Matrix for use in the game */
 	public static CellularMatrix matrix;
 

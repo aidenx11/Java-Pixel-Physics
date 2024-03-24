@@ -188,10 +188,10 @@ public class MouseInput {
 	 */
 	public void drawCircle(int row, int column, int radius, ElementTypes type, double p) {
 		// Define bounding box
-		int top = (int) Math.ceil(row + radius);
-		int bottom = (int) Math.floor(row - radius);
-		int left = (int) Math.floor(column - radius);
-		int right = (int) Math.ceil(column + radius);
+		int top = (int) (Math.ceil(row + radius) < 0 ? 0 : Math.ceil(row + radius));
+		int bottom = (int) (Math.floor(row - radius) < 0 ? 0 : Math.floor(row - radius));
+		int left = (int) (Math.floor(column - radius) < 0 ? 0 : Math.floor(column - radius));
+		int right = (int) (Math.ceil(column + radius) < 0 ? 0 : Math.ceil(column + radius));
 
 		for (int rowCount = bottom; rowCount <= top; rowCount++) {
 			for (int colCount = left; colCount <= right; colCount++) {
