@@ -56,12 +56,22 @@ public class Fire extends Element {
 
 	@Override
 	public boolean isFlammable() {
-		return false;
+		return true;
 	}
 	
 	@Override
 	public boolean burnsThings() {
 		return true;
+	}
+
+	@Override
+	public boolean extinguishesThings() {
+		return false;
+	}
+
+	@Override
+	public float getChanceToCatch() {
+		return 0;
 	}
 
 }

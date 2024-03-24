@@ -1,8 +1,6 @@
 package com.aidenx11.game.elements;
 
 import com.aidenx11.game.CellularMatrix;
-import com.aidenx11.game.color.ColorManager;
-import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.elements.Element.ElementTypes;
 
 public class ElementUpdater {
@@ -43,14 +41,38 @@ public class ElementUpdater {
 		case WOOD:
 			matrix.setElement(new Wood(element.getRow(), element.getColumn()));
 			break;
+		case WATER:
+			matrix.setElement(new Water(element.getRow(), element.getColumn()));
+			break;
+		default:
+			break;
+		}
+	}
+
+	private static void findAndSwapNextEmptyElement(Element element, CellularMatrix matrix) {
+		boolean blocked1 = false;
+		boolean blocked2 = false;
+		for (int i = 0; i < 30; i++) {
+			int randDirection = Math.random() < 0.5 ? i : -i;
+			Element element1 = matrix.getElement(element.getRow(), element.getColumn() - randDirection);
+			Element element2 = matrix.getElement(element.getRow(), element.getColumn() + randDirection);
+			if (!(element1 instanceof Empty) && !(element1 instanceof Water)) {
+				blocked1 = true;
+			}
+			if (!(element2 instanceof Empty) && !(element2 instanceof Water)) {
+				blocked2 = true;
+			}
+			if (element1 instanceof Empty && !blocked1) {
+				matrix.swap(element, element1);
+				return;
+			} else if (element2 instanceof Empty && !blocked2) {
+				matrix.swap(element, element2);
+				return;
+			}
 		}
 	}
 
 	public static void updateElementLife(Element element, CellularMatrix matrix) {
-
-		if (element.getLifetime() < 0) {
-			return;
-		}
 		if (element.getLifetime() == 0) {
 			switch (element.getType()) {
 			case SMOKE:
@@ -75,45 +97,73 @@ public class ElementUpdater {
 	}
 
 	public static void updateBurningLogic(Element element, CellularMatrix matrix) {
-		if (element.isFlammable()) {
-			int numberOfFire = 0;
-			Element otherElement = matrix.getElement(element.getRow() + 1, element.getColumn());
-			if (otherElement != null && otherElement.burnsThings()) {
-				numberOfFire++;
-			}
-			otherElement = matrix.getElement(element.getRow() + 1, element.getColumn() + 1);
-			if (otherElement != null && otherElement.burnsThings()) {
-				numberOfFire++;
-			}
-			otherElement = matrix.getElement(element.getRow() + 1, element.getColumn() - 1);
-			if (otherElement != null && otherElement.burnsThings()) {
-				numberOfFire++;
-			}
-			otherElement = matrix.getElement(element.getRow(), element.getColumn() - 1);
-			if (otherElement != null && otherElement.burnsThings()) {
-				numberOfFire++;
-			}
-			otherElement = matrix.getElement(element.getRow(), element.getColumn() + 1);
-			if (otherElement != null && otherElement.burnsThings()) {
-				numberOfFire++;
-			}
-			otherElement = matrix.getElement(element.getRow() - 1, element.getColumn());
-			if (otherElement != null && otherElement.burnsThings()) {
-				numberOfFire++;
-			}
-			otherElement = matrix.getElement(element.getRow() - 1, element.getColumn() + 1);
-			if (otherElement != null && otherElement.burnsThings()) {
-				numberOfFire++;
-			}
-			otherElement = matrix.getElement(element.getRow() - 1, element.getColumn() - 1);
-			if (otherElement != null && otherElement.burnsThings()) {
-				numberOfFire++;
-			}
+		boolean extinguished = false;
+		int numberOfFire = 0;
+		Element otherElement = matrix.getElement(element.getRow() + 1, element.getColumn());
+		if (otherElement != null && otherElement.burnsThings()) {
+			numberOfFire++;
+		}
+		if (otherElement != null && otherElement.extinguishesThings()) {
+			extinguished = true;
+		}
+		otherElement = matrix.getElement(element.getRow() + 1, element.getColumn() + 1);
+		if (otherElement != null && otherElement.burnsThings()) {
+			numberOfFire++;
+		}
+		if (otherElement != null && otherElement.extinguishesThings()) {
+			extinguished = true;
+		}
+		otherElement = matrix.getElement(element.getRow() + 1, element.getColumn() - 1);
+		if (otherElement != null && otherElement.burnsThings()) {
+			numberOfFire++;
+		}
+		if (otherElement != null && otherElement.extinguishesThings()) {
+			extinguished = true;
+		}
+		otherElement = matrix.getElement(element.getRow(), element.getColumn() - 1);
+		if (otherElement != null && otherElement.burnsThings()) {
+			numberOfFire++;
+		}
+		if (otherElement != null && otherElement.extinguishesThings()) {
+			extinguished = true;
+		}
+		otherElement = matrix.getElement(element.getRow(), element.getColumn() + 1);
+		if (otherElement != null && otherElement.burnsThings()) {
+			numberOfFire++;
+		}
+		if (otherElement != null && otherElement.extinguishesThings()) {
+			extinguished = true;
+		}
+		otherElement = matrix.getElement(element.getRow() - 1, element.getColumn());
+		if (otherElement != null && otherElement.burnsThings()) {
+			numberOfFire++;
+		}
+		if (otherElement != null && otherElement.extinguishesThings()) {
+			extinguished = true;
+		}
+		otherElement = matrix.getElement(element.getRow() - 1, element.getColumn() + 1);
+		if (otherElement != null && otherElement.burnsThings()) {
+			numberOfFire++;
+		}
+		if (otherElement != null && otherElement.extinguishesThings()) {
+			extinguished = true;
+		}
+		otherElement = matrix.getElement(element.getRow() - 1, element.getColumn() - 1);
+		if (otherElement != null && otherElement.burnsThings()) {
+			numberOfFire++;
+		}
+		if (otherElement != null && otherElement.extinguishesThings()) {
+			extinguished = true;
+		}
 
-			float chanceToCatch = ((Wood) element).getChanceToCatch() * numberOfFire;
+		float chanceToCatch = element.getChanceToCatch() * numberOfFire;
+		if (Math.random() < chanceToCatch) {
+			setNewElement(element, ElementTypes.FIRE, matrix);
+		}
 
-			if (Math.random() < chanceToCatch) {
-				setNewElement(element, ElementTypes.FIRE, matrix);
+		if (extinguished) {
+			if (element instanceof Fire) {
+				setNewElement(element, ElementTypes.SMOKE, matrix);
 			}
 		}
 	}
@@ -129,32 +179,44 @@ public class ElementUpdater {
 			Element nextVertical1 = matrix.getElement(element.getRow() - delta, element.getColumn() - randDirection);
 			Element nextVertical2 = matrix.getElement(element.getRow() - delta, element.getColumn() + randDirection);
 
-			Element sideways1 = matrix.getElement(element.getRow(), element.getColumn() - randDirection);
-			Element sideways2 = matrix.getElement(element.getRow(), element.getColumn() + randDirection);
-
 			if (nextVertical != null && nextVertical.getDensity() < element.getDensity()) {
 				matrix.swap(element, nextVertical);
 			} else if (nextVertical1 != null && nextVertical1.getDensity() < element.getDensity()) {
 				matrix.swap(element, nextVertical1);
 			} else if (nextVertical2 != null && nextVertical2.getDensity() < element.getDensity()) {
 				matrix.swap(element, nextVertical2);
-			} else if (sideways1 != null && element.movesSideways() && sideways1.getDensity() < element.getDensity()) {
-				matrix.swap(element, sideways1);
-			} else if (sideways2 != null && element.movesSideways() && sideways2.getDensity() < element.getDensity()) {
-				matrix.swap(element, sideways2);
 			} else {
-				element.setVelocity(0);
+				element.setVelocity(0.5f);
+			}
+
+			if (element.movesSideways()) {
+				if (element instanceof Water) {
+					findAndSwapNextEmptyElement(element, matrix);
+				}
+				Element sideways1 = matrix.getElement(element.getRow(), element.getColumn() - randDirection);
+				Element sideways2 = matrix.getElement(element.getRow(), element.getColumn() + randDirection);
+
+				if (sideways1 != null && sideways1.getDensity() < element.getDensity()) {
+					matrix.swap(element, sideways1);
+				} else if (sideways2 != null && sideways2.getDensity() < element.getDensity()) {
+					matrix.swap(element, sideways2);
+				}
 			}
 
 		}
 	}
 
 	public static void update(Element element, CellularMatrix matrix) {
-
-		updateMovementLogic(element, matrix);
-		element.setModified(element.getVelocity() != 0);
-		updateElementLife(element, matrix);
-		updateBurningLogic(element, matrix);
+		if (element.isMovable()) {
+			updateMovementLogic(element, matrix);
+		}
+		element.setModified(element.getVelocity() != 0 || element.limitedLife());
+		if (element.limitedLife()) {
+			updateElementLife(element, matrix);
+		}
+		if (element.isFlammable()) {
+			updateBurningLogic(element, matrix);
+		}
 
 	}
 }

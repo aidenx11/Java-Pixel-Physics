@@ -82,5 +82,10 @@ public class Wood extends Element {
 	public boolean burnsThings() {
 		return false;
 	}
+
+	@Override
+	public boolean extinguishesThings() {
+		return false;
+	}
 	
 }

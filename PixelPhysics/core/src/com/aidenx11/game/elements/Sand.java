@@ -9,7 +9,7 @@ import com.aidenx11.game.color.CustomColor.*;
 public class Sand extends Element {
 
 	public static ElementTypes type = ElementTypes.SAND;
-	private float velocity = 0.2f;
+	private float velocity = 0.1f;
 	private float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
 	private float maxSpeed = 7f;
 	private float density = 5;
@@ -91,6 +91,20 @@ public class Sand extends Element {
 	@Override
 	public boolean burnsThings() {
 		return false;
+	}
+
+	@Override
+	public boolean extinguishesThings() {
+		if (Math.random() < 0.3) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public float getChanceToCatch() {
+		return 0;
 	}
 	
 }

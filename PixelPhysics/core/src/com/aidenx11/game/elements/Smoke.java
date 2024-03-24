@@ -89,4 +89,14 @@ public class Smoke extends Element {
 			return false;
 		}
 	}
+
+	@Override
+	public boolean extinguishesThings() {
+		return false;
+	}
+
+	@Override
+	public float getChanceToCatch() {
+		return 0;
+	}
 }

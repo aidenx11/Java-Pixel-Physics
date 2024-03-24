@@ -57,12 +57,11 @@ public abstract class Element {
 	private boolean limitedLife;
 	/** Number of frames the element can stay alive if it has limited life */
 	private int lifetime;
-	
-	/** Whether or not this element is flammable */
+
 	private boolean flammable;
 
 	public enum ElementTypes {
-		SAND, EMPTY, WOOD, SMOKE, FIRE
+		SAND, EMPTY, WOOD, SMOKE, FIRE, WATER
 	}
 
 	public abstract ElementTypes getType();
@@ -81,6 +80,10 @@ public abstract class Element {
 	public abstract boolean isFlammable();
 	
 	public abstract boolean burnsThings();
+	
+	public abstract boolean extinguishesThings();
+	
+	public abstract float getChanceToCatch();
 	
 	public float getDensity() {
 		return density;
@@ -223,6 +226,8 @@ public abstract class Element {
 	public void flicker() {
 		
 	}
+
+	
 	
 
 	

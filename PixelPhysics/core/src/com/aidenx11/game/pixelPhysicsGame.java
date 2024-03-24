@@ -20,9 +20,9 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	/** Height of the screen */
 	public static final int SCREEN_HEIGHT = 900;
 	/** */
-	public static final float GRAVITY_ACCELERATION = 0.5f;
+	public static final float GRAVITY_ACCELERATION = 0.3f;
 	/** Pixel size modifier of the game */
-	public static int pixelSizeModifier = 2;
+	public static int pixelSizeModifier = 5;
 	/** Matrix for use in the game */
 	public static CellularMatrix matrix;
 
