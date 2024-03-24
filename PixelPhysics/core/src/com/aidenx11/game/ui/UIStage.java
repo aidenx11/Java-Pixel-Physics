@@ -28,7 +28,7 @@ public class UIStage extends Stage {
 		final TextButton clearCanvasButton = new TextButton("Clear Canvas", skinButton, "default");
 		clearCanvasButton.setWidth(115f);
 		clearCanvasButton.setHeight(20f);
-		clearCanvasButton.setPosition(15f, Gdx.graphics.getHeight() - 25f);
+		clearCanvasButton.setPosition(15f, Gdx.graphics.getHeight() - 30f);
 		clearCanvasButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -39,7 +39,7 @@ public class UIStage extends Stage {
 		final TextButton emptyToolButton = new TextButton("Empty", skinButton, "default");
 		emptyToolButton.setWidth(60f);
 		emptyToolButton.setHeight(20f);
-		emptyToolButton.setPosition(140f, Gdx.graphics.getHeight() - 25f);
+		emptyToolButton.setPosition(140f, Gdx.graphics.getHeight() - 30f);
 		emptyToolButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -50,7 +50,7 @@ public class UIStage extends Stage {
 		final TextButton sandToolButton = new TextButton("Sand", skinButton, "default");
 		sandToolButton.setWidth(60f);
 		sandToolButton.setHeight(20f);
-		sandToolButton.setPosition(210f, Gdx.graphics.getHeight() - 25f);
+		sandToolButton.setPosition(210f, Gdx.graphics.getHeight() - 30f);
 		sandToolButton.addListener(new ClickListener(){
             @Override 
             public void clicked(InputEvent event, float x, float y){
@@ -61,7 +61,7 @@ public class UIStage extends Stage {
 		final TextButton woodToolButton = new TextButton("Wood", skinButton, "default");
 		woodToolButton.setWidth(60f);
 		woodToolButton.setHeight(20f);
-		woodToolButton.setPosition(280f, Gdx.graphics.getHeight() - 25f);
+		woodToolButton.setPosition(280f, Gdx.graphics.getHeight() - 30f);
 		woodToolButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -72,7 +72,7 @@ public class UIStage extends Stage {
 		final TextButton randomizeColorButton = new TextButton("Make it rainbow!", skinButton, "default");
 		randomizeColorButton.setWidth(150f);
 		randomizeColorButton.setHeight(20f);
-		randomizeColorButton.setPosition(350f, Gdx.graphics.getHeight() - 25f);
+		randomizeColorButton.setPosition(350f, Gdx.graphics.getHeight() - 30f);
 		randomizeColorButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -86,21 +86,21 @@ public class UIStage extends Stage {
 			}
 		});
 		
-		final TextButton smokeToolButton = new TextButton("Smoke", skinButton, "default");
-		smokeToolButton.setWidth(70f);
-		smokeToolButton.setHeight(20f);
-		smokeToolButton.setPosition(510, Gdx.graphics.getHeight() - 25f);
-		smokeToolButton.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				mouseInput.setElementType(ElementTypes.SMOKE);
-			}
-		});
+//		final TextButton smokeToolButton = new TextButton("Smoke", skinButton, "default");
+//		smokeToolButton.setWidth(70f);
+//		smokeToolButton.setHeight(20f);
+//		smokeToolButton.setPosition(510, Gdx.graphics.getHeight() - 30f);
+//		smokeToolButton.addListener(new ClickListener() {
+//			@Override
+//			public void clicked(InputEvent event, float x, float y) {
+//				mouseInput.setElementType(ElementTypes.SMOKE);
+//			}
+//		});
 		
 		final TextButton fireToolButton = new TextButton("Fire", skinButton, "default");
 		fireToolButton.setWidth(60f);
 		fireToolButton.setHeight(20f);
-		fireToolButton.setPosition(590, Gdx.graphics.getHeight() - 25f);
+		fireToolButton.setPosition(510, Gdx.graphics.getHeight() - 30f);
 		fireToolButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -108,10 +108,10 @@ public class UIStage extends Stage {
 			}
 		});
 		
-		final Slider brushSizeSlider = new Slider(1f, 15f, 1f, false, skinButton);
+		final Slider brushSizeSlider = new Slider(1f, 50f, 1f, false, skinButton);
 		brushSizeSlider.setWidth(100f);
 		brushSizeSlider.setHeight(10f);
-		brushSizeSlider.setPosition(850f, Gdx.graphics.getHeight() - 25f);
+		brushSizeSlider.setPosition(850f, Gdx.graphics.getHeight() - 30f);
 		brushSizeSlider.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -127,7 +127,7 @@ public class UIStage extends Stage {
         this.addActor(woodToolButton);
         this.addActor(randomizeColorButton);
         this.addActor(brushSizeSlider);
-        this.addActor(smokeToolButton);
+//        this.addActor(smokeToolButton);
         this.addActor(fireToolButton);
 	}
 	

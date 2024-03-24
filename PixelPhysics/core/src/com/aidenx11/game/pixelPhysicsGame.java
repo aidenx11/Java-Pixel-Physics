@@ -16,9 +16,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class pixelPhysicsGame extends ApplicationAdapter {
 
 	/** Width of the screen */
-	public static final int SCREEN_WIDTH = 1024; // MUST equal window size in desktop launcher
+	public static final int SCREEN_WIDTH = 1440; // MUST equal window size in desktop launcher
 	/** Height of the screen */
-	public static final int SCREEN_HEIGHT = 768; // MUST equal window size in desktop launcher
+	public static final int SCREEN_HEIGHT = 900; // MUST equal window size in desktop launcher
 	/** */
 	public static final float GRAVITY_ACCELERATION = 0.3f;
 	/** Pixel size modifier of the game */
