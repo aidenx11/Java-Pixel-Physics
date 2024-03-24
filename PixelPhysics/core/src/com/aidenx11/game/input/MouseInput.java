@@ -2,12 +2,12 @@ package com.aidenx11.game.input;
 
 import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.pixelPhysicsGame;
-import com.aidenx11.game.color.ColorManager;
 import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.elements.Empty;
 import com.aidenx11.game.elements.Fire;
 import com.aidenx11.game.elements.Sand;
 import com.aidenx11.game.elements.Smoke;
+import com.aidenx11.game.elements.Water;
 import com.aidenx11.game.elements.Wood;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -167,6 +167,7 @@ public class MouseInput {
 				case WOOD:
 				case SMOKE:
 				case FIRE:
+				case WATER:
 					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
 					break;
 				default:
@@ -225,6 +226,11 @@ public class MouseInput {
 					case FIRE:
 						if (matrix.isEmpty(rowCount, colCount)) {
 							matrix.setElement(new Fire(rowCount, colCount));
+						}
+						break;
+					case WATER:
+						if (matrix.isEmpty(rowCount, colCount)) {
+							matrix.setElement(new Water(rowCount, colCount));
 						}
 					default:
 						break;

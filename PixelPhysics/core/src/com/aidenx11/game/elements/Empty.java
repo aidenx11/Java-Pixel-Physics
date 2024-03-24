@@ -66,5 +66,15 @@ public class Empty extends Element {
 	public boolean burnsThings() {
 		return false;
 	}
+
+	@Override
+	public boolean extinguishesThings() {
+		return false;
+	}
+
+	@Override
+	public float getChanceToCatch() {
+		return 0;
+	}
 	
 }

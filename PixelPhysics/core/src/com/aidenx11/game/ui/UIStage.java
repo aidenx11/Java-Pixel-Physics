@@ -1,7 +1,6 @@
 package com.aidenx11.game.ui;
 
 import com.aidenx11.game.CellularMatrix;
-import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.input.MouseInput;
 import com.badlogic.gdx.Gdx;
@@ -111,6 +110,17 @@ public class UIStage extends Stage {
 			}
 		});
 		
+		final TextButton waterToolButton = new TextButton("Water", skinButton, "default");
+		waterToolButton.setWidth(70f);
+		waterToolButton.setHeight(20f);
+		waterToolButton.setPosition(580, Gdx.graphics.getHeight() - 30f);
+		waterToolButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				mouseInput.setElementType(ElementTypes.WATER);
+			}
+		});
+		
 		final Slider brushSizeSlider = new Slider(1f, 50f, 1f, false, skinButton);
 		brushSizeSlider.setWidth(100f);
 		brushSizeSlider.setHeight(10f);
@@ -132,6 +142,7 @@ public class UIStage extends Stage {
         this.addActor(brushSizeSlider);
 //        this.addActor(smokeToolButton);
         this.addActor(fireToolButton);
+        this.addActor(waterToolButton);
 	}
 	
 	public void setFrameText(int frame) {
