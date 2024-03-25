@@ -9,7 +9,7 @@ public class Smoke extends Element {
 	private float velocity = 0f;
 	private float acceleration = -0.05f;
 	private float maxSpeed = 0.2f;
-	private float density = 1;
+	private float density = 1f;
 	
 	private boolean flickers = Math.random() < 0.03;
 	

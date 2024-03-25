@@ -50,6 +50,12 @@ public class ElementUpdater {
 		case WATER:
 			matrix.setElement(new Water(element.getRow(), element.getColumn()));
 			break;
+		case STEAM:
+			matrix.setElement(new Steam(element.getRow(), element.getColumn()));
+			break;
+		case WET_SAND:
+			matrix.setElement(new WetSand(element.getRow(), element.getColumn()));
+			break;
 		default:
 			break;
 		}
@@ -111,56 +117,112 @@ public class ElementUpdater {
 			numberOfFire++;
 		}
 		if (otherElement != null && otherElement.extinguishesThings()) {
+			if (element instanceof Fire && otherElement instanceof Water) {
+				setNewElement(otherElement, ElementTypes.STEAM);
+			} else if (element instanceof Fire && otherElement instanceof WetSand) {
+				setNewElement(element, ElementTypes.SMOKE);
+				setNewElement(otherElement, ElementTypes.SAND);
+			}
 			extinguished = true;
+
 		}
 		otherElement = matrix.getElement(element.getRow() + 1, element.getColumn() + 1);
 		if (otherElement != null && otherElement.burnsThings()) {
 			numberOfFire++;
 		}
 		if (otherElement != null && otherElement.extinguishesThings()) {
+			if (element instanceof Fire && otherElement instanceof Water) {
+				setNewElement(otherElement, ElementTypes.STEAM);
+			} else if (element instanceof Fire && otherElement instanceof WetSand) {
+				setNewElement(element, ElementTypes.SMOKE);
+				setNewElement(otherElement, ElementTypes.SAND);
+			}
 			extinguished = true;
+
 		}
 		otherElement = matrix.getElement(element.getRow() + 1, element.getColumn() - 1);
 		if (otherElement != null && otherElement.burnsThings()) {
 			numberOfFire++;
 		}
 		if (otherElement != null && otherElement.extinguishesThings()) {
+			if (element instanceof Fire && otherElement instanceof Water) {
+				setNewElement(otherElement, ElementTypes.STEAM);
+			} else if (element instanceof Fire && otherElement instanceof WetSand) {
+				setNewElement(element, ElementTypes.SMOKE);
+				setNewElement(otherElement, ElementTypes.SAND);
+			}
 			extinguished = true;
+
 		}
 		otherElement = matrix.getElement(element.getRow(), element.getColumn() - 1);
 		if (otherElement != null && otherElement.burnsThings()) {
 			numberOfFire++;
 		}
 		if (otherElement != null && otherElement.extinguishesThings()) {
+			if (element instanceof Fire && otherElement instanceof Water) {
+				setNewElement(otherElement, ElementTypes.STEAM);
+			} else if (element instanceof Fire && otherElement instanceof WetSand) {
+				setNewElement(element, ElementTypes.SMOKE);
+				setNewElement(otherElement, ElementTypes.SAND);
+			}
 			extinguished = true;
+
 		}
 		otherElement = matrix.getElement(element.getRow(), element.getColumn() + 1);
 		if (otherElement != null && otherElement.burnsThings()) {
 			numberOfFire++;
 		}
 		if (otherElement != null && otherElement.extinguishesThings()) {
+			if (element instanceof Fire && otherElement instanceof Water) {
+				setNewElement(otherElement, ElementTypes.STEAM);
+			} else if (element instanceof Fire && otherElement instanceof WetSand) {
+				setNewElement(element, ElementTypes.SMOKE);
+				setNewElement(otherElement, ElementTypes.SAND);
+			}
 			extinguished = true;
+
 		}
 		otherElement = matrix.getElement(element.getRow() - 1, element.getColumn());
 		if (otherElement != null && otherElement.burnsThings()) {
 			numberOfFire++;
 		}
 		if (otherElement != null && otherElement.extinguishesThings()) {
+			if (element instanceof Fire && otherElement instanceof Water) {
+				setNewElement(otherElement, ElementTypes.STEAM);
+			} else if (element instanceof Fire && otherElement instanceof WetSand) {
+				setNewElement(element, ElementTypes.SMOKE);
+				setNewElement(otherElement, ElementTypes.SAND);
+			}
 			extinguished = true;
+
 		}
 		otherElement = matrix.getElement(element.getRow() - 1, element.getColumn() + 1);
 		if (otherElement != null && otherElement.burnsThings()) {
 			numberOfFire++;
 		}
 		if (otherElement != null && otherElement.extinguishesThings()) {
+			if (element instanceof Fire && otherElement instanceof Water) {
+				setNewElement(otherElement, ElementTypes.STEAM);
+			} else if (element instanceof Fire && otherElement instanceof WetSand) {
+				setNewElement(element, ElementTypes.SMOKE);
+				setNewElement(otherElement, ElementTypes.SAND);
+			}
 			extinguished = true;
+
 		}
 		otherElement = matrix.getElement(element.getRow() - 1, element.getColumn() - 1);
 		if (otherElement != null && otherElement.burnsThings()) {
 			numberOfFire++;
 		}
 		if (otherElement != null && otherElement.extinguishesThings()) {
+			if (element instanceof Fire && otherElement instanceof Water) {
+				setNewElement(otherElement, ElementTypes.STEAM);
+			} else if (element instanceof Fire && otherElement instanceof WetSand) {
+				setNewElement(element, ElementTypes.SMOKE);
+				setNewElement(otherElement, ElementTypes.SAND);
+			}
 			extinguished = true;
+
 		}
 
 		float chanceToCatch = element.getChanceToCatch() * numberOfFire;
@@ -173,6 +235,7 @@ public class ElementUpdater {
 				setNewElement(element, ElementTypes.SMOKE);
 			}
 		}
+
 	}
 
 	public static void checkWetness(Element element1, Element element2) {
@@ -182,13 +245,11 @@ public class ElementUpdater {
 		if ((element1 instanceof Sand && element2 instanceof Water)
 				|| (element2 instanceof Sand && element1 instanceof Water)) {
 			if (element1 instanceof Sand && element1.getDensity() != 6f) {
-				element1.setColor(new CustomColor(ColorValues.WET_SAND));
-				element1.setDensity(6f);
+				setNewElement(element1, ElementTypes.WET_SAND);
 				element2.setLimitedLife(true);
 				element2.setLifetime(0);
 			} else if (element2.getDensity() != 6f) {
-				element2.setColor(new CustomColor(ColorValues.WET_SAND));
-				element2.setDensity(6f);
+				setNewElement(element2, ElementTypes.WET_SAND);
 				element1.setLimitedLife(true);
 				element1.setLifetime(0);
 			}

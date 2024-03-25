@@ -7,6 +7,7 @@ import com.aidenx11.game.elements.Empty;
 import com.aidenx11.game.elements.Fire;
 import com.aidenx11.game.elements.Sand;
 import com.aidenx11.game.elements.Smoke;
+import com.aidenx11.game.elements.Steam;
 import com.aidenx11.game.elements.Water;
 import com.aidenx11.game.elements.Wood;
 import com.badlogic.gdx.Gdx;
@@ -229,7 +230,7 @@ public class MouseInput {
 						}
 						break;
 					case WATER:
-						if (matrix.isEmpty(rowCount, colCount)) {
+						if (matrix.isEmpty(rowCount, colCount) || matrix.getElement(rowCount, colCount) instanceof Steam) {
 							matrix.setElement(new Water(rowCount, colCount));
 						}
 					default:
