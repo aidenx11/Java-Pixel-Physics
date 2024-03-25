@@ -12,8 +12,8 @@ public class Sand extends Element {
 	private float velocity = 0.1f;
 	private float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
 	private float maxSpeed = 7f;
-	private float density = 5;
-	private boolean darkened;
+	private float density = 5f;
+	private boolean wet = false;
 
 	public static CellularMatrix matrix = pixelPhysicsGame.matrix;
 
@@ -96,7 +96,7 @@ public class Sand extends Element {
 
 	@Override
 	public boolean extinguishesThings() {
-		if (Math.random() < 0.3) {
+		if (Math.random() < 0.1) {
 			return true;
 		} else {
 			return false;
@@ -107,12 +107,13 @@ public class Sand extends Element {
 	public float getChanceToCatch() {
 		return 0;
 	}
-	
-	public void setDarkened(boolean darkened) {
-		this.darkened = darkened;
+
+	@Override
+	public boolean isWet() {
+		return wet;
 	}
-	
-	public boolean darkened() {
-		return darkened;
+
+	public void setWet(boolean wet) {
+		this.wet = wet;
 	}
 }

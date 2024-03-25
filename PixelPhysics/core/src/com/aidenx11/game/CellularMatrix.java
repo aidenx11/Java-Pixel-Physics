@@ -203,7 +203,7 @@ public class CellularMatrix {
 		direction = direction ? false : true;
 		Element element;
 
-		if (getFramesSinceLastModifiedElement() < 5) {
+		if (getFramesSinceLastModifiedElement() < 60) {
 			for (int y = rows - 1; y >= 0; y--) {
 				if (direction) {
 					for (int x = 0; x < columns; x++) {
