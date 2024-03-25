@@ -66,7 +66,7 @@ public class UIStage extends Stage {
 		sandToolButton.setWidth(60f);
 		sandToolButton.setHeight(20f);
 		sandToolButton.setPosition(210f, Gdx.graphics.getHeight() - 30f);
-		sandToolButton.setColor(Color.LIGHT_GRAY);
+		sandToolButton.setColor(Color.RED);
 		sandToolButton.addListener(new ClickListener(){
             @Override 
             public void clicked(InputEvent event, float x, float y){
