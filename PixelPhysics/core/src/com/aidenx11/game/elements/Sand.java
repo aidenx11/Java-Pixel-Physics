@@ -13,6 +13,7 @@ public class Sand extends Element {
 	private float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
 	private float maxSpeed = 7f;
 	private float density = 5;
+	private boolean darkened;
 
 	public static CellularMatrix matrix = pixelPhysicsGame.matrix;
 
@@ -107,4 +108,11 @@ public class Sand extends Element {
 		return 0;
 	}
 	
+	public void setDarkened(boolean darkened) {
+		this.darkened = darkened;
+	}
+	
+	public boolean darkened() {
+		return darkened;
+	}
 }
