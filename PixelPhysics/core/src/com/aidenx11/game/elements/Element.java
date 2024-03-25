@@ -61,7 +61,7 @@ public abstract class Element {
 	private boolean flammable;
 
 	public enum ElementTypes {
-		SAND, EMPTY, WOOD, SMOKE, FIRE, WATER
+		SAND, EMPTY, WOOD, SMOKE, FIRE, WATER, WET_SAND
 	}
 
 	public abstract ElementTypes getType();

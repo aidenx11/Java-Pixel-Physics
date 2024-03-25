@@ -1,10 +1,12 @@
 package com.aidenx11.game.color;
 
 import com.aidenx11.game.color.CustomColor.ColorValues;
+import com.aidenx11.game.elements.Element;
 import com.badlogic.gdx.graphics.Color;
 
 /**
- * Class to handle management of colors. Can convert from RGB to HSL and vary colors
+ * Class to handle management of colors. Can convert from RGB to HSL and vary
+ * colors
  * 
  * @author Aiden Schroeder
  */
@@ -45,6 +47,15 @@ public class ColorManager extends Color {
 	}
 
 	/**
+	 * Darken the color of the given element
+	 * 
+	 * @param element element to darken color of
+	 */
+	public static void darkenColor(Element element) {
+		element.setColor(new CustomColor(ColorValues.WET_SAND));
+	}
+
+	/**
 	 * Converts a hexadecimal color to an HSL color in the format
 	 * "hue,saturation%,lightness%"
 	 * 
@@ -53,13 +64,19 @@ public class ColorManager extends Color {
 	 */
 	public static int[] convertToHSLFromRGB(int[] rgb) {
 		// Parse RGB values from hexadecimal color
-		double r = rgb[0];
-		double g = rgb[1];
-		double b = rgb[2];
+		double rPrime = rgb[0];
+		double gPrime = rgb[1];
+		double bPrime = rgb[2];
 
-		double rPrime = r / 255.0;
-		double gPrime = g / 255.0;
-		double bPrime = b / 255.0;
+		if (rPrime > 1) {
+			rPrime = rPrime / 255.0;
+		}
+		if (gPrime > 1) {
+			bPrime = bPrime / 255.0;
+		}
+		if (gPrime > 1) {
+			gPrime = gPrime / 255.0;
+		}
 
 		double max = Math.max(Math.max(rPrime, gPrime), bPrime);
 		double min = Math.min(Math.min(rPrime, gPrime), bPrime);
@@ -158,6 +175,10 @@ public class ColorManager extends Color {
 	 * @return a color value in the rainbow
 	 */
 	public static ColorValues generateRainbowColor() {
+		
+		if (placeInRainbow == 6) {
+			placeInRainbow = 0;
+		}
 
 		switch (placeInRainbow) {
 		case 0:
@@ -176,7 +197,7 @@ public class ColorManager extends Color {
 			placeInRainbow++;
 			return ColorValues.BLUE;
 		case 5:
-			placeInRainbow = 0;
+			placeInRainbow++;
 			return ColorValues.PURPLE;
 		}
 

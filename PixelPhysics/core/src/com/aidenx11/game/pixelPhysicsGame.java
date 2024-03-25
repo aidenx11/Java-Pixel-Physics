@@ -22,7 +22,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	/** */
 	public static final float GRAVITY_ACCELERATION = 0.3f;
 	/** Pixel size modifier of the game */
-	public static int pixelSizeModifier = 5;
+	public static int pixelSizeModifier = 7;
 	/** Matrix for use in the game */
 	public static CellularMatrix matrix;
 
@@ -68,8 +68,6 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		buttonStage = new UIStage(viewport, mouse, matrix);
 
 		Gdx.input.setInputProcessor(buttonStage);
-		
-		
 		
 //		frameLabel = new Label("", new Skin(Gdx.files.internal("skin/uiskin.json")));
 //		frameLabel.setWidth(50f);
