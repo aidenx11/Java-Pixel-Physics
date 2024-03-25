@@ -10,7 +10,7 @@ public class Water extends Element {
 	private float velocity = 0f;
 	private float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
 	private float maxSpeed = 9f;
-	private float density = 2;
+	private float density = 6f;
 
 	public Water(int row, int column) {
 		super(row, column, new CustomColor(ColorValues.WATER), false);

@@ -12,6 +12,29 @@ public class ElementUpdater {
 	public static CellularMatrix matrix = pixelPhysicsGame.matrix;
 
 	public static void updateVelocity(Element element) {
+		if (element instanceof WetSand) {
+			if (element.adjacentTo(ElementTypes.EMPTY) > 0) {
+				element.setMaxSpeed(7f);
+				element.setVelocity(4f);
+				element.setMovesSideways(false);
+			} else if (matrix.getElement(element.getRow() - 1, element.getColumn()) instanceof Water) {
+				element.setMaxSpeed(7f);
+				element.setVelocity(4f);
+				element.setMovesSideways(true);
+			} else if (element.adjacentTo(ElementTypes.WATER) > 4) {
+				element.setMaxSpeed(3f);
+				element.setVelocity(2f);
+				element.setMovesSideways(true);
+			} else if (element.adjacentTo(ElementTypes.WATER) > 3) {
+				element.setMaxSpeed(0.1f);
+				element.setVelocity(0.1f);
+				element.setMovesSideways(false);
+			} else {
+				element.setMaxSpeed(0.02f);
+				element.setMovesSideways(false);
+			}
+		}
+		
 		float newVelocity = element.getVelocity() + element.getAcceleration();
 
 		if (Math.abs(newVelocity) > element.getMaxSpeed()) {
@@ -64,7 +87,7 @@ public class ElementUpdater {
 	private static void findAndSwapNextEmptyElement(Element element) {
 		boolean blocked1 = false;
 		boolean blocked2 = false;
-		for (int i = 0; i < 30; i++) {
+		for (int i = 0; i < 70; i++) {
 			int randDirection = Math.random() < 0.5 ? i : -i;
 			Element element1 = matrix.getElement(element.getRow(), element.getColumn() - randDirection);
 			Element element2 = matrix.getElement(element.getRow(), element.getColumn() + randDirection);
@@ -120,7 +143,7 @@ public class ElementUpdater {
 			if (element instanceof Fire && otherElement instanceof Water) {
 				setNewElement(otherElement, ElementTypes.STEAM);
 			} else if (element instanceof Fire && otherElement instanceof WetSand) {
-				setNewElement(element, ElementTypes.SMOKE);
+				setNewElement(element, ElementTypes.STEAM);
 				setNewElement(otherElement, ElementTypes.SAND);
 			}
 			extinguished = true;
@@ -134,7 +157,7 @@ public class ElementUpdater {
 			if (element instanceof Fire && otherElement instanceof Water) {
 				setNewElement(otherElement, ElementTypes.STEAM);
 			} else if (element instanceof Fire && otherElement instanceof WetSand) {
-				setNewElement(element, ElementTypes.SMOKE);
+				setNewElement(element, ElementTypes.STEAM);
 				setNewElement(otherElement, ElementTypes.SAND);
 			}
 			extinguished = true;
@@ -148,7 +171,7 @@ public class ElementUpdater {
 			if (element instanceof Fire && otherElement instanceof Water) {
 				setNewElement(otherElement, ElementTypes.STEAM);
 			} else if (element instanceof Fire && otherElement instanceof WetSand) {
-				setNewElement(element, ElementTypes.SMOKE);
+				setNewElement(element, ElementTypes.STEAM);
 				setNewElement(otherElement, ElementTypes.SAND);
 			}
 			extinguished = true;
@@ -162,7 +185,7 @@ public class ElementUpdater {
 			if (element instanceof Fire && otherElement instanceof Water) {
 				setNewElement(otherElement, ElementTypes.STEAM);
 			} else if (element instanceof Fire && otherElement instanceof WetSand) {
-				setNewElement(element, ElementTypes.SMOKE);
+				setNewElement(element, ElementTypes.STEAM);
 				setNewElement(otherElement, ElementTypes.SAND);
 			}
 			extinguished = true;
@@ -176,7 +199,7 @@ public class ElementUpdater {
 			if (element instanceof Fire && otherElement instanceof Water) {
 				setNewElement(otherElement, ElementTypes.STEAM);
 			} else if (element instanceof Fire && otherElement instanceof WetSand) {
-				setNewElement(element, ElementTypes.SMOKE);
+				setNewElement(element, ElementTypes.STEAM);
 				setNewElement(otherElement, ElementTypes.SAND);
 			}
 			extinguished = true;
@@ -190,7 +213,7 @@ public class ElementUpdater {
 			if (element instanceof Fire && otherElement instanceof Water) {
 				setNewElement(otherElement, ElementTypes.STEAM);
 			} else if (element instanceof Fire && otherElement instanceof WetSand) {
-				setNewElement(element, ElementTypes.SMOKE);
+				setNewElement(element, ElementTypes.STEAM);
 				setNewElement(otherElement, ElementTypes.SAND);
 			}
 			extinguished = true;
@@ -204,7 +227,7 @@ public class ElementUpdater {
 			if (element instanceof Fire && otherElement instanceof Water) {
 				setNewElement(otherElement, ElementTypes.STEAM);
 			} else if (element instanceof Fire && otherElement instanceof WetSand) {
-				setNewElement(element, ElementTypes.SMOKE);
+				setNewElement(element, ElementTypes.STEAM);
 				setNewElement(otherElement, ElementTypes.SAND);
 			}
 			extinguished = true;
@@ -218,7 +241,7 @@ public class ElementUpdater {
 			if (element instanceof Fire && otherElement instanceof Water) {
 				setNewElement(otherElement, ElementTypes.STEAM);
 			} else if (element instanceof Fire && otherElement instanceof WetSand) {
-				setNewElement(element, ElementTypes.SMOKE);
+				setNewElement(element, ElementTypes.STEAM);
 				setNewElement(otherElement, ElementTypes.SAND);
 			}
 			extinguished = true;
@@ -242,16 +265,19 @@ public class ElementUpdater {
 		if (element1 == null || element2 == null) {
 			return;
 		}
+		
 		if ((element1 instanceof Sand && element2 instanceof Water)
 				|| (element2 instanceof Sand && element1 instanceof Water)) {
-			if (element1 instanceof Sand && element1.getDensity() != 6f) {
+			if (element1 instanceof Sand && element1.getDensity() < 6f) {
 				setNewElement(element1, ElementTypes.WET_SAND);
 				element2.setLimitedLife(true);
 				element2.setLifetime(0);
-			} else if (element2.getDensity() != 6f) {
+				return;
+			} else if (element2 instanceof Sand && element2.getDensity() < 6f) {
 				setNewElement(element2, ElementTypes.WET_SAND);
 				element1.setLimitedLife(true);
 				element1.setLifetime(0);
+				return;
 			}
 		}
 	}
@@ -260,16 +286,14 @@ public class ElementUpdater {
 		updateVelocity(element);
 
 		for (int v = 0; v < getUpdateCount(element); v++) {
+			
+			boolean moveThisLoop;
 
 			int delta = (int) Math.signum(element.getVelocity());
 			Element nextVertical = matrix.getElement(element.getRow() - delta, element.getColumn());
 			int randDirection = Math.random() > 0.5 ? 1 : -1;
 			Element nextVertical1 = matrix.getElement(element.getRow() - delta, element.getColumn() - randDirection);
 			Element nextVertical2 = matrix.getElement(element.getRow() - delta, element.getColumn() + randDirection);
-
-			checkWetness(element, nextVertical);
-			checkWetness(element, nextVertical1);
-			checkWetness(element, nextVertical2);
 
 			if (nextVertical != null && nextVertical.getDensity() < element.getDensity()) {
 				matrix.swap(element, nextVertical);
@@ -281,10 +305,25 @@ public class ElementUpdater {
 				element.setVelocity(0.5f);
 			}
 
-			if (element.movesSideways()) {
-				if (element instanceof Water) {
-					findAndSwapNextEmptyElement(element);
-				}
+			if (!(element instanceof WetSand)) {
+				checkWetness(element, nextVertical);
+				checkWetness(element, nextVertical1);
+				checkWetness(element, nextVertical2);
+			}
+			
+			if (element instanceof Water) {
+				findAndSwapNextEmptyElement(element);
+			}
+			
+			if (element instanceof WetSand) {
+				moveThisLoop = Math.random() < 0.6;
+			} else {
+				moveThisLoop = true;
+			}
+			
+
+			if (element.movesSideways() && moveThisLoop) {
+				
 				Element sideways1 = matrix.getElement(element.getRow(), element.getColumn() - randDirection);
 				Element sideways2 = matrix.getElement(element.getRow(), element.getColumn() + randDirection);
 
