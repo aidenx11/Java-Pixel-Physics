@@ -17,8 +17,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 
 /**
- * Class to handle detection of mouse input and drawing of elements in the
- * matrix
+ * Class to handle detection of mouse input and drawing of elements in the matrix
  * 
  * @author Aiden Schroeder
  */
@@ -204,7 +203,7 @@ public class MouseInput {
 					}
 					switch (type) {
 					case SAND:
-						if (Math.random() < p) {
+						if (Math.random() < p && matrix.getElement(rowCount, colCount).getType() != ElementTypes.SAND) {
 							if (!isRandomizeColor()) {
 								matrix.setElement(new Sand(rowCount, colCount));
 							} else {
@@ -216,18 +215,24 @@ public class MouseInput {
 						matrix.setElement(new Empty(rowCount, colCount));
 						break;
 					case WOOD:
-						matrix.setElement(new Wood(rowCount, colCount));
-
+						if (matrix.getElement(rowCount, colCount).getType() != ElementTypes.WOOD) {
+							matrix.setElement(new Wood(rowCount, colCount));
+						}
 						break;
 					case SMOKE:
-						matrix.setElement(new Smoke(rowCount, colCount));
+						if (matrix.getElement(rowCount, colCount).getType() != ElementTypes.SMOKE) {
+							matrix.setElement(new Smoke(rowCount, colCount));
+						}
 						break;
 					case FIRE:
-						matrix.setElement(new Fire(rowCount, colCount));
+						if (matrix.getElement(rowCount, colCount).getType() != ElementTypes.FIRE) {
+							matrix.setElement(new Fire(rowCount, colCount));
+						}
 						break;
 					case WATER:
-						matrix.setElement(new Water(rowCount, colCount));
-
+						if (matrix.getElement(rowCount, colCount).getType() != ElementTypes.WATER) {
+							matrix.setElement(new Water(rowCount, colCount));
+						}
 					default:
 						break;
 					}
