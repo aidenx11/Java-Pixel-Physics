@@ -30,11 +30,15 @@ public class ElementUpdater {
 				element.setVelocity(0.1f);
 				element.setMovesSideways(false);
 			} else {
-				element.setMaxSpeed(0.02f);
-				element.setMovesSideways(false);
+				element.setMaxSpeed(0.05f);
+				if (element.adjacentTo(ElementTypes.WET_SAND) > 1) {
+					element.setMovesSideways(false);
+				} else {
+					element.setMovesSideways(true);
+				}
 			}
 		}
-		
+
 		float newVelocity = element.getVelocity() + element.getAcceleration();
 
 		if (Math.abs(newVelocity) > element.getMaxSpeed()) {
@@ -265,7 +269,7 @@ public class ElementUpdater {
 		if (element1 == null || element2 == null) {
 			return;
 		}
-		
+
 		if ((element1 instanceof Sand && element2 instanceof Water)
 				|| (element2 instanceof Sand && element1 instanceof Water)) {
 			if (element1 instanceof Sand && element1.getDensity() < 6f) {
@@ -286,7 +290,7 @@ public class ElementUpdater {
 		updateVelocity(element);
 
 		for (int v = 0; v < getUpdateCount(element); v++) {
-			
+
 			boolean moveThisLoop;
 
 			int delta = (int) Math.signum(element.getVelocity());
@@ -310,20 +314,19 @@ public class ElementUpdater {
 				checkWetness(element, nextVertical1);
 				checkWetness(element, nextVertical2);
 			}
-			
+
 			if (element instanceof Water) {
 				findAndSwapNextEmptyElement(element);
 			}
-			
+
 			if (element instanceof WetSand) {
 				moveThisLoop = Math.random() < 0.6;
 			} else {
 				moveThisLoop = true;
 			}
-			
 
 			if (element.movesSideways() && moveThisLoop) {
-				
+
 				Element sideways1 = matrix.getElement(element.getRow(), element.getColumn() - randDirection);
 				Element sideways2 = matrix.getElement(element.getRow(), element.getColumn() + randDirection);
 
