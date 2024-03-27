@@ -10,14 +10,14 @@ public class Wood extends Element {
 	private int burningTime = 150;
 	
 	public Wood(int row, int column, boolean isEmpty) {
-		super(row, column, new CustomColor(ColorValues.WOOD_COLOR), isEmpty, type);
+		super(row, column, new CustomColor(ColorValues.WOOD_COLOR, true), isEmpty, type);
 		super.setMovable(false);
 		super.setLimitedLife(false);
 		super.setLifetime(burningTime);
 	}
 
 	public Wood(int row, int column) {
-		super(row, column, new CustomColor(ColorValues.WOOD_COLOR), false, type);
+		super(row, column, new CustomColor(ColorValues.WOOD_COLOR, true), false, type);
 		super.setMovable(false);
 		super.setLimitedLife(false);
 		super.setLifetime(burningTime);

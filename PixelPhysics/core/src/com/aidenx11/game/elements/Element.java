@@ -88,6 +88,14 @@ public abstract class Element {
 
 	public abstract float getChanceToCatch();
 	
+	public Element(int row, int column, CustomColor color, boolean isEmpty, ElementTypes type) {
+		setEmpty(isEmpty);
+		setRow(row);
+		setColumn(column);
+		setColor(color);
+		setType(type);
+	}
+	
 	public ElementTypes getType() {
 		return type;
 	}
@@ -116,23 +124,12 @@ public abstract class Element {
 		return floored + (Math.random() < mod ? 1 : 0);
 	}
 
-	public Element(int row, int column, CustomColor color, boolean isEmpty, ElementTypes type) {
-		setEmpty(isEmpty);
-		setRow(row);
-		setColumn(column);
-		setColor(color);
-		setType(type);
-	}
-
-	public void varyColor() {
-		if (!colorHasBeenVaried && !isEmpty()) {
-			color = new CustomColor(color.varyColor());
-			colorHasBeenVaried = true;
-		}
-	}
-
 	public void setColor(CustomColor color) {
 		this.color = color;
+	}
+	
+	public void setColor(int[] rgb) {
+		this.color = new CustomColor(rgb);
 	}
 
 	public void setRow(int row) {

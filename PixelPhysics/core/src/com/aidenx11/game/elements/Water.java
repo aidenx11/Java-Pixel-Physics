@@ -5,23 +5,26 @@ import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.color.CustomColor.ColorValues;
 
 public class Water extends Element {
-	
+
 	public static ElementTypes type = ElementTypes.WATER;
 	private float velocity = 0f;
 	private float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
-	private float maxSpeed = 9f;
+	private float maxSpeed = 15f;
 	private float density = 6f;
 
+	int[] darkerWater = new int[] { 15, 94, 156 };
+
 	public Water(int row, int column) {
-		super(row, column, new CustomColor(ColorValues.WATER), false, type);
+		super(row, column, new CustomColor(ColorValues.WATER, false), false, type);
 		super.setMovable(true);
 		super.setModified(true);
 		super.setMovesDown(true);
 		super.setDensity(density);
 		super.setMovesSideways(true);
 		super.setLimitedLife(false);
+		super.setColor(darkerWater);
 	}
-	
+
 	@Override
 	public ElementTypes getType() {
 		return type;
@@ -34,7 +37,7 @@ public class Water extends Element {
 	public void setVelocity(float newVelocity) {
 		this.velocity = newVelocity;
 	}
-	
+
 	public void resetVelocity() {
 		setVelocity(0);
 	}

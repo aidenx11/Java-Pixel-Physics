@@ -12,7 +12,7 @@ public class Fire extends Element {
 			new CustomColor(199, 14, 14), new CustomColor(240, 127, 19) };
 
 	public Fire(int row, int column) {
-		super(row, column, new CustomColor(ColorValues.FIRE), false, type);
+		super(row, column, new CustomColor(ColorValues.FIRE, true), false, type);
 		super.setMovable(false);
 		super.setLimitedLife(true);
 		super.setLifetime(maxLife);
