@@ -52,7 +52,7 @@ public class ColorManager extends Color {
 	 * @param element element to darken color of
 	 */
 	public static void darkenColor(Element element) {
-		element.setColor(new CustomColor(ColorValues.WET_SAND));
+		element.setColor(new CustomColor(ColorValues.WET_SAND, true));
 	}
 
 	/**

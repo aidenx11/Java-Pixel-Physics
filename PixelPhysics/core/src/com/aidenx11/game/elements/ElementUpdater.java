@@ -91,28 +91,28 @@ public class ElementUpdater {
 		}
 	}
 
-	private static void findAndSwapNextEmptyElement(Element element) {
-		boolean blocked1 = false;
-		boolean blocked2 = false;
-		for (int i = 0; i < 70; i++) {
-			int randDirection = Math.random() < 0.5 ? i : -i;
-			Element element1 = matrix.getElement(element.getRow(), element.getColumn() - randDirection);
-			Element element2 = matrix.getElement(element.getRow(), element.getColumn() + randDirection);
-			if (!(element1 instanceof Empty) || !(element1 instanceof Water)) {
-				blocked1 = true;
-			}
-			if (!(element2 instanceof Empty) || !(element2 instanceof Water)) {
-				blocked2 = true;
-			}
-			if (element1 instanceof Empty && !blocked1) {
-				matrix.swap(element, element1);
-				return;
-			} else if (element2 instanceof Empty && !blocked2) {
-				matrix.swap(element, element2);
-				return;
-			}
-		}
-	}
+//	private static void findAndSwapNextEmptyElement(Element element) {
+//		boolean blocked1 = false;
+//		boolean blocked2 = false;
+//		for (int i = 0; i < 70; i++) {
+//			int randDirection = Math.random() < 0.5 ? i : -i;
+//			Element element1 = matrix.getElement(element.getRow(), element.getColumn() - randDirection);
+//			Element element2 = matrix.getElement(element.getRow(), element.getColumn() + randDirection);
+//			if (!(element1 instanceof Empty) || !(element1 instanceof Water)) {
+//				blocked1 = true;
+//			}
+//			if (!(element2 instanceof Empty) || !(element2 instanceof Water)) {
+//				blocked2 = true;
+//			}
+//			if (element1 instanceof Empty && !blocked1) {
+//				matrix.swap(element, element1);
+//				return;
+//			} else if (element2 instanceof Empty && !blocked2) {
+//				matrix.swap(element, element2);
+//				return;
+//			}
+//		}
+//	}
 
 	public static void updateElementLife(Element element) {
 		if (element.getLifetime() == 0) {
@@ -296,12 +296,23 @@ public class ElementUpdater {
 		for (int v = 0; v < getUpdateCount(element); v++) {
 
 			boolean moveThisLoop;
+			Element nextVertical1;
+			Element nextVertical2;
 
 			int delta = (int) Math.signum(element.getVelocity());
 			Element nextVertical = matrix.getElement(element.getRow() - delta, element.getColumn());
 			int randDirection = Math.random() > 0.5 ? 1 : -1;
-			Element nextVertical1 = matrix.getElement(element.getRow() - delta, element.getColumn() - randDirection);
-			Element nextVertical2 = matrix.getElement(element.getRow() - delta, element.getColumn() + randDirection);
+			if (element.getType() == ElementTypes.WATER && element.adjacentTo(ElementTypes.EMPTY) > 2) {
+				nextVertical1 = matrix.getElement(element.getRow() - delta,
+						element.getColumn() - randDirection * 7);
+				 nextVertical2 = matrix.getElement(element.getRow() - delta,
+						element.getColumn() + randDirection * 7);
+			} else {
+				 nextVertical1 = matrix.getElement(element.getRow() - delta,
+						element.getColumn() - randDirection);
+				 nextVertical2 = matrix.getElement(element.getRow() - delta,
+						element.getColumn() + randDirection);
+			}
 
 			if (nextVertical != null && nextVertical.getDensity() < element.getDensity()) {
 				matrix.swap(element, nextVertical);
@@ -311,7 +322,7 @@ public class ElementUpdater {
 				matrix.swap(element, nextVertical2);
 			} else {
 				element.setVelocity(0.5f);
-			}
+			} 
 
 			if (!(element instanceof WetSand)) {
 				checkWetness(element, nextVertical);
@@ -319,9 +330,11 @@ public class ElementUpdater {
 				checkWetness(element, nextVertical2);
 			}
 
-			if (element instanceof Water) {
-				findAndSwapNextEmptyElement(element);
-			}
+//			if (element instanceof Water) {
+//				for (int i = 0; i < 5; i++) {
+//					findAndSwapNextEmptyElement(element);
+//				}
+//			}
 
 			if (element instanceof WetSand) {
 				moveThisLoop = Math.random() < 0.6;

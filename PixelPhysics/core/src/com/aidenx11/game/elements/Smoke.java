@@ -7,8 +7,8 @@ public class Smoke extends Element {
 	
 	public static ElementTypes type = ElementTypes.SMOKE;
 	private float velocity = 0f;
-	private float acceleration = -0.05f;
-	private float maxSpeed = 0.2f;
+	private float acceleration = -0.1f;
+	private float maxSpeed = 0.35f;
 	private float density = 1f;
 	
 	private boolean flickers = Math.random() < 0.03;
@@ -17,7 +17,7 @@ public class Smoke extends Element {
 			new CustomColor(199, 14, 14), new CustomColor(240, 127, 19) };
 
 	public Smoke(int row, int column) {
-		super(row, column, new CustomColor(ColorValues.SMOKE), false, type);
+		super(row, column, new CustomColor(ColorValues.SMOKE, true), false, type);
 		super.setMovable(true);
 		super.setMovesDown(false);
 		super.setDensity(density);

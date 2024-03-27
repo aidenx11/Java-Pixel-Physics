@@ -70,8 +70,13 @@ public class CustomColor extends ColorManager {
 	 * 
 	 * @param colorValue color value being used
 	 */
-	public CustomColor(ColorValues colorValue) {
-		int[] rgb = varyColor(new CustomColor(colorValue.getRGB()));
+	public CustomColor(ColorValues colorValue, boolean varyColor) {
+		int[] rgb;
+		if (varyColor) {
+			rgb = varyColor(new CustomColor(colorValue.getRGB()));
+		} else {
+			rgb = colorValue.getRGB();
+		}
 		setColor(rgb);
 	}
 

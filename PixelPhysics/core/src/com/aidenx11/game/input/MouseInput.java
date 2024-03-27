@@ -18,7 +18,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 
 /**
- * Class to handle detection of mouse input and drawing of elements in the matrix
+ * Class to handle detection of mouse input and drawing of elements in the
+ * matrix
  * 
  * @author Aiden Schroeder
  */
@@ -210,39 +211,35 @@ public class MouseInput {
 					}
 					switch (type) {
 					case SAND:
-						if (Math.random() < p && matrix.getElement(rowCount, colCount).getType() != ElementTypes.SAND) {
-							if (!isRandomizeColor()) {
-								matrix.setElement(new Sand(rowCount, colCount));
-							} else {
-								matrix.setElement(new Sand(rowCount, colCount, false, true));
-							}
+						if (Math.random() < p && !(matrix.getElement(rowCount, colCount) instanceof Sand)) {
+							matrix.setElement(new Sand(rowCount, colCount));
 						}
 						break;
 					case EMPTY:
 						matrix.setElement(new Empty(rowCount, colCount));
 						break;
 					case WOOD:
-						if (matrix.getElement(rowCount, colCount).getType() != ElementTypes.WOOD && Math.random() < p) {
+						if (!(matrix.getElement(rowCount, colCount) instanceof Wood) && Math.random() < p) {
 							matrix.setElement(new Wood(rowCount, colCount));
 						}
 						break;
 					case SMOKE:
-						if (matrix.getElement(rowCount, colCount).getType() != ElementTypes.SMOKE && Math.random() < p) {
+						if (!(matrix.getElement(rowCount, colCount) instanceof Smoke) && Math.random() < p) {
 							matrix.setElement(new Smoke(rowCount, colCount));
 						}
 						break;
 					case FIRE:
-						if (matrix.getElement(rowCount, colCount).getType() != ElementTypes.FIRE && Math.random() < p) {
+						if (!(matrix.getElement(rowCount, colCount) instanceof Fire) && Math.random() < p) {
 							matrix.setElement(new Fire(rowCount, colCount));
 						}
 						break;
 					case WATER:
-						if (matrix.getElement(rowCount, colCount).getType() != ElementTypes.WATER && Math.random() < p) {
+						if (!(matrix.getElement(rowCount, colCount) instanceof Water) && Math.random() < p) {
 							matrix.setElement(new Water(rowCount, colCount));
 						}
 						break;
 					case LEAF:
-						if (matrix.getElement(rowCount, colCount).getType() != ElementTypes.LEAF && Math.random() < p) {
+						if (!(matrix.getElement(rowCount, colCount) instanceof Leaf) && Math.random() < p) {
 							matrix.setElement(new Leaf(rowCount, colCount));
 						}
 						break;

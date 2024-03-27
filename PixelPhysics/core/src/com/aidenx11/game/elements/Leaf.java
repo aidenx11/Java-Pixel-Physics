@@ -10,7 +10,7 @@ public class Leaf extends Element {
 	private int burningTime = 50;
 
 	public Leaf(int row, int column) {
-		super(row, column, new CustomColor(ColorValues.LEAF), false, type);
+		super(row, column, new CustomColor(ColorValues.LEAF, true), false, type);
 		super.setMovable(false);
 		super.setLimitedLife(false);
 		super.setLifetime(burningTime);
