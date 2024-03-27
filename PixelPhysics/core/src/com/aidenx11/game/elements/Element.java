@@ -63,10 +63,10 @@ public abstract class Element {
 	private boolean flammable;
 
 	public enum ElementTypes {
-		SAND, EMPTY, WOOD, SMOKE, FIRE, WATER, STEAM, WET_SAND
+		SAND, EMPTY, WOOD, SMOKE, FIRE, WATER, STEAM, WET_SAND, LEAF;
 	}
 
-	public abstract ElementTypes getType();
+	
 
 	public abstract void resetVelocity();
 
@@ -87,6 +87,14 @@ public abstract class Element {
 	public abstract boolean extinguishesThings();
 
 	public abstract float getChanceToCatch();
+	
+	public ElementTypes getType() {
+		return type;
+	}
+	
+	public void setType(ElementTypes type) {
+		Element.type = type;
+	}
 
 	public float getDensity() {
 		return density;
@@ -108,11 +116,12 @@ public abstract class Element {
 		return floored + (Math.random() < mod ? 1 : 0);
 	}
 
-	public Element(int row, int column, CustomColor color, boolean isEmpty) {
+	public Element(int row, int column, CustomColor color, boolean isEmpty, ElementTypes type) {
 		setEmpty(isEmpty);
 		setRow(row);
 		setColumn(column);
 		setColor(color);
+		setType(type);
 	}
 
 	public void varyColor() {

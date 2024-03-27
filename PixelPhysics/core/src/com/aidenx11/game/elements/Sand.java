@@ -18,7 +18,7 @@ public class Sand extends Element {
 	public static CellularMatrix matrix = pixelPhysicsGame.matrix;
 
 	public Sand(int row, int column) {
-		super(row, column, new CustomColor(ColorValues.SAND_COLOR), false);
+		super(row, column, new CustomColor(ColorValues.SAND_COLOR), false, type);
 		super.setMovable(true);
 		super.setModified(true);
 		super.setMovesDown(true);
@@ -28,7 +28,7 @@ public class Sand extends Element {
 	}
 
 	public Sand(int row, int column, boolean isEmpty, boolean rainbow) {
-		super(row, column, new CustomColor(ColorManager.generateRainbowColor()), isEmpty);
+		super(row, column, new CustomColor(ColorManager.generateRainbowColor()), isEmpty, type);
 		super.setMovable(true);
 		super.setModified(true);
 		super.setMovesDown(true);
@@ -38,18 +38,13 @@ public class Sand extends Element {
 	}
 
 	public Sand(int row, int column, boolean isEmpty, int r, int g, int b) {
-		super(row, column, new CustomColor(r, g, b), isEmpty);
+		super(row, column, new CustomColor(r, g, b), isEmpty, type);
 		super.setMovable(true);
 		super.setModified(true);
 		super.setMovesDown(true);
 		super.setDensity(density);
 		super.setMovesSideways(false);
 		super.setLimitedLife(false);
-	}
-
-	@Override
-	public ElementTypes getType() {
-		return type;
 	}
 
 	public float getVelocity() {
@@ -115,5 +110,11 @@ public class Sand extends Element {
 
 	public void setWet(boolean wet) {
 		this.wet = wet;
+	}
+
+	@Override
+	public ElementTypes getType() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

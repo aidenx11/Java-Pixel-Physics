@@ -13,7 +13,7 @@ public class Water extends Element {
 	private float density = 6f;
 
 	public Water(int row, int column) {
-		super(row, column, new CustomColor(ColorValues.WATER), false);
+		super(row, column, new CustomColor(ColorValues.WATER), false, type);
 		super.setMovable(true);
 		super.setModified(true);
 		super.setMovesDown(true);

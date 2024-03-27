@@ -3,75 +3,76 @@ package com.aidenx11.game.elements;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.color.CustomColor.ColorValues;
 
-public class Fire extends Element {
+public class Leaf extends Element {
+	
+	public static ElementTypes type = ElementTypes.LEAF;
+	private float chanceToCatch = 0.03f;
+	private int burningTime = 50;
 
-	public static ElementTypes type = ElementTypes.FIRE;
-	int maxLife = 75 + (int) (75 * Math.random());
-
-	static CustomColor[] colors = new CustomColor[] { new CustomColor(253, 207, 88), new CustomColor(242, 125, 12),
-			new CustomColor(199, 14, 14), new CustomColor(240, 127, 19) };
-
-	public Fire(int row, int column) {
-		super(row, column, new CustomColor(ColorValues.FIRE), false, type);
+	public Leaf(int row, int column) {
+		super(row, column, new CustomColor(ColorValues.LEAF), false, type);
 		super.setMovable(false);
-		super.setLimitedLife(true);
-		super.setLifetime(maxLife);
-	}
-
-	public void flicker() {
-		this.setColor(colors[(int) Math.round(Math.random() * 3)]);
-		parentMatrix.setModifiedElements(true);
-	}
-
-	@Override
-	public ElementTypes getType() {
-		return type;
+		super.setLimitedLife(false);
+		super.setLifetime(burningTime);
 	}
 
 	@Override
 	public void resetVelocity() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void setVelocity(float f) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public float getMaxSpeed() {
+		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void setMaxSpeed(float maxSpeed) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public float getAcceleration() {
+		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void setAcceleration(float acceleration) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public boolean isFlammable() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean burnsThings() {
-		return true;
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
 	public boolean extinguishesThings() {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public float getChanceToCatch() {
-		return 0;
+		// TODO Auto-generated method stub
+		return chanceToCatch;
 	}
 
 }

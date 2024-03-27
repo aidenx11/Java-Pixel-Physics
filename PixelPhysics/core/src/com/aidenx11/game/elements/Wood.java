@@ -6,18 +6,21 @@ import com.aidenx11.game.color.CustomColor;
 public class Wood extends Element {
 	
 	public static ElementTypes type = ElementTypes.WOOD;
-	private float chanceToCatch = 0.01f;
+	private float chanceToCatch = 0.006f;
+	private int burningTime = 150;
 	
 	public Wood(int row, int column, boolean isEmpty) {
-		super(row, column, new CustomColor(ColorValues.WOOD_COLOR), isEmpty);
+		super(row, column, new CustomColor(ColorValues.WOOD_COLOR), isEmpty, type);
 		super.setMovable(false);
 		super.setLimitedLife(false);
+		super.setLifetime(burningTime);
 	}
 
 	public Wood(int row, int column) {
-		super(row, column, new CustomColor(ColorValues.WOOD_COLOR), false);
+		super(row, column, new CustomColor(ColorValues.WOOD_COLOR), false, type);
 		super.setMovable(false);
 		super.setLimitedLife(false);
+		super.setLifetime(burningTime);
 	}
 
 	@Override
