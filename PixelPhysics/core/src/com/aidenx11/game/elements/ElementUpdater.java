@@ -83,6 +83,9 @@ public class ElementUpdater {
 		case WET_SAND:
 			matrix.setElement(new WetSand(element.getRow(), element.getColumn()));
 			break;
+		case LEAF:
+			matrix.setElement(new Leaf(element.getRow(), element.getColumn()));
+			break;
 		default:
 			break;
 		}
@@ -255,6 +258,7 @@ public class ElementUpdater {
 		float chanceToCatch = element.getChanceToCatch() * numberOfFire;
 		if (Math.random() < chanceToCatch) {
 			setNewElement(element, ElementTypes.FIRE);
+			matrix.getElement(element.getRow(), element.getColumn()).setLifetime(element.getLifetime());
 		}
 
 		if (extinguished) {

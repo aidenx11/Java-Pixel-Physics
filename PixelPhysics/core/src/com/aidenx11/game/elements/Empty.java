@@ -6,7 +6,7 @@ public class Empty extends Element {
 	private float density = -1;
 
 	public Empty(int row, int column) {
-		super(row, column, null, true);
+		super(row, column, null, true, type);
 		super.setMovable(false);
 		super.setDensity(density);
 		super.setLimitedLife(false);

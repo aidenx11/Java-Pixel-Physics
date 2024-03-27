@@ -17,7 +17,7 @@ public class Smoke extends Element {
 			new CustomColor(199, 14, 14), new CustomColor(240, 127, 19) };
 
 	public Smoke(int row, int column) {
-		super(row, column, new CustomColor(ColorValues.SMOKE), false);
+		super(row, column, new CustomColor(ColorValues.SMOKE), false, type);
 		super.setMovable(true);
 		super.setMovesDown(false);
 		super.setDensity(density);

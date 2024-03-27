@@ -17,22 +17,23 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  * 
  */
 public class UIStage extends Stage {
-	
+
 	private Skin skinButton;
-	
+
 	final TextButton clearCanvasButton;
 	final TextButton emptyToolButton;
 	final TextButton sandToolButton;
 	final TextButton woodToolButton;
 	final TextButton fireToolButton;
 	final TextButton waterToolButton;
-	
+	final TextButton leafToolButton;
+
 	public UIStage(Viewport viewport, MouseInput mouseInput, CellularMatrix matrix) {
 
 		Gdx.gl.glLineWidth(3);
 
 		skinButton = new Skin(Gdx.files.internal("skin/uiskin.json"));
-		
+
 		clearCanvasButton = new TextButton("Clear Canvas", skinButton, "default");
 		clearCanvasButton.setWidth(115f);
 		clearCanvasButton.setHeight(20f);
@@ -44,7 +45,7 @@ public class UIStage extends Stage {
 				matrix.clear();
 			}
 		});
-		
+
 		emptyToolButton = new TextButton("Eraser", skinButton, "default");
 		emptyToolButton.setWidth(60f);
 		emptyToolButton.setHeight(20f);
@@ -59,25 +60,27 @@ public class UIStage extends Stage {
 				woodToolButton.setColor(Color.LIGHT_GRAY);
 				fireToolButton.setColor(Color.LIGHT_GRAY);
 				waterToolButton.setColor(Color.LIGHT_GRAY);
+				leafToolButton.setColor(Color.LIGHT_GRAY);
 			}
 		});
-		
+
 		sandToolButton = new TextButton("Sand", skinButton, "default");
 		sandToolButton.setWidth(60f);
 		sandToolButton.setHeight(20f);
 		sandToolButton.setPosition(210f, Gdx.graphics.getHeight() - 30f);
 		sandToolButton.setColor(Color.RED);
-		sandToolButton.addListener(new ClickListener(){
-            @Override 
-            public void clicked(InputEvent event, float x, float y){
-                mouseInput.setElementType(ElementTypes.SAND);
-                sandToolButton.setColor(Color.RED);
-                emptyToolButton.setColor(Color.LIGHT_GRAY);
+		sandToolButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				mouseInput.setElementType(ElementTypes.SAND);
+				sandToolButton.setColor(Color.RED);
+				emptyToolButton.setColor(Color.LIGHT_GRAY);
 				woodToolButton.setColor(Color.LIGHT_GRAY);
 				fireToolButton.setColor(Color.LIGHT_GRAY);
 				waterToolButton.setColor(Color.LIGHT_GRAY);
-            }
-        });
+				leafToolButton.setColor(Color.LIGHT_GRAY);
+			}
+		});
 
 		woodToolButton = new TextButton("Wood", skinButton, "default");
 		woodToolButton.setWidth(60f);
@@ -93,9 +96,10 @@ public class UIStage extends Stage {
 				emptyToolButton.setColor(Color.LIGHT_GRAY);
 				fireToolButton.setColor(Color.LIGHT_GRAY);
 				waterToolButton.setColor(Color.LIGHT_GRAY);
+				leafToolButton.setColor(Color.LIGHT_GRAY);
 			}
 		});
-		
+
 //		final TextButton randomizeColorButton = new TextButton("Make it rainbow!", skinButton, "default");
 //		randomizeColorButton.setWidth(150f);
 //		randomizeColorButton.setHeight(20f);
@@ -112,7 +116,7 @@ public class UIStage extends Stage {
 //				}
 //			}
 //		});
-		
+
 //		final TextButton smokeToolButton = new TextButton("Smoke", skinButton, "default");
 //		smokeToolButton.setWidth(70f);
 //		smokeToolButton.setHeight(20f);
@@ -123,7 +127,7 @@ public class UIStage extends Stage {
 //				mouseInput.setElementType(ElementTypes.SMOKE);
 //			}
 //		});
-		
+
 		fireToolButton = new TextButton("Fire", skinButton, "default");
 		fireToolButton.setWidth(60f);
 		fireToolButton.setHeight(20f);
@@ -138,9 +142,10 @@ public class UIStage extends Stage {
 				woodToolButton.setColor(Color.LIGHT_GRAY);
 				emptyToolButton.setColor(Color.LIGHT_GRAY);
 				waterToolButton.setColor(Color.LIGHT_GRAY);
+				leafToolButton.setColor(Color.LIGHT_GRAY);
 			}
 		});
-		
+
 		waterToolButton = new TextButton("Water", skinButton, "default");
 		waterToolButton.setWidth(70f);
 		waterToolButton.setHeight(20f);
@@ -155,9 +160,28 @@ public class UIStage extends Stage {
 				woodToolButton.setColor(Color.LIGHT_GRAY);
 				fireToolButton.setColor(Color.LIGHT_GRAY);
 				emptyToolButton.setColor(Color.LIGHT_GRAY);
+				leafToolButton.setColor(Color.LIGHT_GRAY);
 			}
 		});
-		
+
+		leafToolButton = new TextButton("Leaves", skinButton, "default");
+		leafToolButton.setWidth(75f);
+		leafToolButton.setHeight(20f);
+		leafToolButton.setPosition(500, Gdx.graphics.getHeight() - 30f);
+		leafToolButton.setColor(Color.LIGHT_GRAY);
+		leafToolButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				mouseInput.setElementType(ElementTypes.LEAF);
+				leafToolButton.setColor(Color.RED);
+				waterToolButton.setColor(Color.LIGHT_GRAY);
+				sandToolButton.setColor(Color.LIGHT_GRAY);
+				woodToolButton.setColor(Color.LIGHT_GRAY);
+				fireToolButton.setColor(Color.LIGHT_GRAY);
+				emptyToolButton.setColor(Color.LIGHT_GRAY);
+			}
+		});
+
 		final Slider brushSizeSlider = new Slider(1f, 50f, 1f, false, skinButton);
 		brushSizeSlider.setWidth(300f);
 		brushSizeSlider.setHeight(10f);
@@ -169,18 +193,17 @@ public class UIStage extends Stage {
 				mouseInput.setCursorSize((int) brushSizeSlider.getValue());
 			}
 		});
-		
-       
+
 		this.addActor(emptyToolButton);
-        this.addActor(sandToolButton);
-        this.addActor(clearCanvasButton);
-        this.addActor(woodToolButton);
+		this.addActor(sandToolButton);
+		this.addActor(clearCanvasButton);
+		this.addActor(woodToolButton);
 //      this.addActor(randomizeColorButton);
-        this.addActor(brushSizeSlider);
+		this.addActor(brushSizeSlider);
 //        this.addActor(smokeToolButton);
-        this.addActor(fireToolButton);
-        this.addActor(waterToolButton);
+		this.addActor(fireToolButton);
+		this.addActor(waterToolButton);
+		this.addActor(leafToolButton);
 	}
-	
 
 }

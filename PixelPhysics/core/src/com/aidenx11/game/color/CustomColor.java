@@ -28,7 +28,7 @@ public class CustomColor extends ColorManager {
 
 		SAND_COLOR(247, 222, 137), WOOD_COLOR(160, 121, 61), SKY_COLOR(53, 81, 92), RED(255, 0, 0), ORANGE(255, 127, 0),
 		YELLOW(255, 255, 0), GREEN(0, 255, 0), BLUE(0, 127, 255), PURPLE(127, 0, 255), SMOKE(132, 136, 132),
-		FIRE(242, 125, 12), WATER(28, 163, 236), WET_SAND(202, 164, 88), STEAM(199, 213, 224);
+		FIRE(242, 125, 12), WATER(28, 163, 236), WET_SAND(202, 164, 88), STEAM(199, 213, 224), LEAF(109, 179, 63);
 
 		/** Hex Code of the color */
 		private int r;

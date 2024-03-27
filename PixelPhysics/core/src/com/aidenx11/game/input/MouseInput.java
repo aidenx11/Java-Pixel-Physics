@@ -5,6 +5,7 @@ import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.elements.Empty;
 import com.aidenx11.game.elements.Fire;
+import com.aidenx11.game.elements.Leaf;
 import com.aidenx11.game.elements.Sand;
 import com.aidenx11.game.elements.Smoke;
 import com.aidenx11.game.elements.Steam;
@@ -160,16 +161,22 @@ public class MouseInput {
 			if (touchedRow < rows && touchedRow >= 0 && touchedCol >= 0 && touchedCol < columns) {
 				switch (elementType) {
 				case SAND:
-					// matrix.setElement(new Sand(touchedRow, touchedCol));
-					// drawSquare(touchedRow, touchedCol, 5, 0.8, elementType);
 					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 0.5);
 					break;
-				case EMPTY:
-				case WOOD:
-				case SMOKE:
-				case FIRE:
+				case LEAF:
+					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 0.2);
+					break;
 				case WATER:
+					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 0.4);
+					break;
+				case EMPTY:
 					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
+					break;
+				case WOOD:
+					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 0.9);
+					break;
+				case FIRE:
+					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 0.4);
 					break;
 				default:
 					break;
@@ -215,24 +222,30 @@ public class MouseInput {
 						matrix.setElement(new Empty(rowCount, colCount));
 						break;
 					case WOOD:
-						if (matrix.getElement(rowCount, colCount).getType() != ElementTypes.WOOD) {
+						if (matrix.getElement(rowCount, colCount).getType() != ElementTypes.WOOD && Math.random() < p) {
 							matrix.setElement(new Wood(rowCount, colCount));
 						}
 						break;
 					case SMOKE:
-						if (matrix.getElement(rowCount, colCount).getType() != ElementTypes.SMOKE) {
+						if (matrix.getElement(rowCount, colCount).getType() != ElementTypes.SMOKE && Math.random() < p) {
 							matrix.setElement(new Smoke(rowCount, colCount));
 						}
 						break;
 					case FIRE:
-						if (matrix.getElement(rowCount, colCount).getType() != ElementTypes.FIRE) {
+						if (matrix.getElement(rowCount, colCount).getType() != ElementTypes.FIRE && Math.random() < p) {
 							matrix.setElement(new Fire(rowCount, colCount));
 						}
 						break;
 					case WATER:
-						if (matrix.getElement(rowCount, colCount).getType() != ElementTypes.WATER) {
+						if (matrix.getElement(rowCount, colCount).getType() != ElementTypes.WATER && Math.random() < p) {
 							matrix.setElement(new Water(rowCount, colCount));
 						}
+						break;
+					case LEAF:
+						if (matrix.getElement(rowCount, colCount).getType() != ElementTypes.LEAF && Math.random() < p) {
+							matrix.setElement(new Leaf(rowCount, colCount));
+						}
+						break;
 					default:
 						break;
 					}
