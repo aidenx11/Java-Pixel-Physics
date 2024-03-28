@@ -8,7 +8,6 @@ import com.aidenx11.game.elements.Fire;
 import com.aidenx11.game.elements.Leaf;
 import com.aidenx11.game.elements.Sand;
 import com.aidenx11.game.elements.Smoke;
-import com.aidenx11.game.elements.Steam;
 import com.aidenx11.game.elements.Water;
 import com.aidenx11.game.elements.Wood;
 import com.badlogic.gdx.Gdx;
@@ -188,7 +187,7 @@ public class MouseInput {
 	}
 
 	/**
-	 * Draws a circle to the matrix, similar to drawSquare.
+	 * Draws a circle to the matrix of the given element, p% of the time
 	 * 
 	 * @param row    row of the center of the circle
 	 * @param column column of the center of the circle

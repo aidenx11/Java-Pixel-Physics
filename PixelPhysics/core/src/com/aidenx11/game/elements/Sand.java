@@ -2,7 +2,6 @@ package com.aidenx11.game.elements;
 
 import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.pixelPhysicsGame;
-import com.aidenx11.game.color.ColorManager;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.color.CustomColor.*;
 

@@ -5,6 +5,7 @@ import com.aidenx11.game.color.CustomColor.ColorValues;
 
 public class Steam extends Smoke {
 
+	@SuppressWarnings("static-access")
 	public Steam(int row, int column) {
 		super(row, column);
 		this.type = ElementTypes.STEAM;

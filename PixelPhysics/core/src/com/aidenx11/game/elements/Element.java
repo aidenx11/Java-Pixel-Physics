@@ -28,9 +28,6 @@ public abstract class Element {
 	/** Color of this element */
 	private CustomColor color;
 
-	/** Whether or not the color of this element has been varied */
-	private boolean colorHasBeenVaried;
-
 	/** Whether or not this element is movable */
 	private boolean isMovable;
 
@@ -39,12 +36,6 @@ public abstract class Element {
 
 	/** Whether or not element was modified this frame */
 	private boolean modified;
-
-	/** Acceleration of this element */
-	private float acceleration;
-
-	/** Max speed of this element */
-	private float maxSpeed;
 
 	/** Velocity of this element */
 	private float velocity;
@@ -59,8 +50,6 @@ public abstract class Element {
 	private boolean limitedLife;
 	/** Number of frames the element can stay alive if it has limited life */
 	private int lifetime;
-
-	private boolean flammable;
 
 	public enum ElementTypes {
 		SAND, EMPTY, WOOD, SMOKE, FIRE, WATER, STEAM, WET_SAND, LEAF;
@@ -225,10 +214,8 @@ public abstract class Element {
 
 	public void setFlammable(boolean flammable) {
 		if (flammable) {
-			this.flammable = flammable;
 			this.setLimitedLife(true);
 		}
-		this.flammable = flammable;
 	}
 
 	public void flicker() {

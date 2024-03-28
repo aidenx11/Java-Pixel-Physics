@@ -1,14 +1,17 @@
 package com.aidenx11.game.ui;
 
 import com.aidenx11.game.CellularMatrix;
+import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.input.MouseInput;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -32,13 +35,12 @@ public class UIStage extends Stage {
 
 		Gdx.gl.glLineWidth(3);
 
+		Table table = new Table();
+
 		skinButton = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
 		clearCanvasButton = new TextButton("Clear Canvas", skinButton, "default");
-		clearCanvasButton.setWidth(115f);
-		clearCanvasButton.setHeight(20f);
-		clearCanvasButton.setPosition(15f, Gdx.graphics.getHeight() - 30f);
-		clearCanvasButton.setColor(Color.LIGHT_GRAY);
+		clearCanvasButton.setColor(Color.CORAL);
 		clearCanvasButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -47,9 +49,6 @@ public class UIStage extends Stage {
 		});
 
 		emptyToolButton = new TextButton("Eraser", skinButton, "default");
-		emptyToolButton.setWidth(60f);
-		emptyToolButton.setHeight(20f);
-		emptyToolButton.setPosition(140f, Gdx.graphics.getHeight() - 30f);
 		emptyToolButton.setColor(Color.LIGHT_GRAY);
 		emptyToolButton.addListener(new ClickListener() {
 			@Override
@@ -65,9 +64,6 @@ public class UIStage extends Stage {
 		});
 
 		sandToolButton = new TextButton("Sand", skinButton, "default");
-		sandToolButton.setWidth(60f);
-		sandToolButton.setHeight(20f);
-		sandToolButton.setPosition(210f, Gdx.graphics.getHeight() - 30f);
 		sandToolButton.setColor(Color.RED);
 		sandToolButton.addListener(new ClickListener() {
 			@Override
@@ -83,9 +79,6 @@ public class UIStage extends Stage {
 		});
 
 		woodToolButton = new TextButton("Wood", skinButton, "default");
-		woodToolButton.setWidth(60f);
-		woodToolButton.setHeight(20f);
-		woodToolButton.setPosition(280f, Gdx.graphics.getHeight() - 30f);
 		woodToolButton.setColor(Color.LIGHT_GRAY);
 		woodToolButton.addListener(new ClickListener() {
 			@Override
@@ -100,38 +93,7 @@ public class UIStage extends Stage {
 			}
 		});
 
-//		final TextButton randomizeColorButton = new TextButton("Make it rainbow!", skinButton, "default");
-//		randomizeColorButton.setWidth(150f);
-//		randomizeColorButton.setHeight(20f);
-//		randomizeColorButton.setPosition(350f, Gdx.graphics.getHeight() - 30f);
-//		randomizeColorButton.addListener(new ClickListener() {
-//			@Override
-//			public void clicked(InputEvent event, float x, float y) {
-//				if (!mouseInput.isRandomizeColor()) {
-//					randomizeColorButton.setText("Stop the rainbow");
-//					mouseInput.setRandomizeColor(true);
-//				} else {
-//					randomizeColorButton.setText("Make it rainbow");
-//					mouseInput.setRandomizeColor(false);
-//				}
-//			}
-//		});
-
-//		final TextButton smokeToolButton = new TextButton("Smoke", skinButton, "default");
-//		smokeToolButton.setWidth(70f);
-//		smokeToolButton.setHeight(20f);
-//		smokeToolButton.setPosition(510, Gdx.graphics.getHeight() - 30f);
-//		smokeToolButton.addListener(new ClickListener() {
-//			@Override
-//			public void clicked(InputEvent event, float x, float y) {
-//				mouseInput.setElementType(ElementTypes.SMOKE);
-//			}
-//		});
-
 		fireToolButton = new TextButton("Fire", skinButton, "default");
-		fireToolButton.setWidth(60f);
-		fireToolButton.setHeight(20f);
-		fireToolButton.setPosition(350, Gdx.graphics.getHeight() - 30f);
 		fireToolButton.setColor(Color.LIGHT_GRAY);
 		fireToolButton.addListener(new ClickListener() {
 			@Override
@@ -147,9 +109,6 @@ public class UIStage extends Stage {
 		});
 
 		waterToolButton = new TextButton("Water", skinButton, "default");
-		waterToolButton.setWidth(70f);
-		waterToolButton.setHeight(20f);
-		waterToolButton.setPosition(420, Gdx.graphics.getHeight() - 30f);
 		waterToolButton.setColor(Color.LIGHT_GRAY);
 		waterToolButton.addListener(new ClickListener() {
 			@Override
@@ -165,9 +124,6 @@ public class UIStage extends Stage {
 		});
 
 		leafToolButton = new TextButton("Leaves", skinButton, "default");
-		leafToolButton.setWidth(75f);
-		leafToolButton.setHeight(20f);
-		leafToolButton.setPosition(500, Gdx.graphics.getHeight() - 30f);
 		leafToolButton.setColor(Color.LIGHT_GRAY);
 		leafToolButton.addListener(new ClickListener() {
 			@Override
@@ -182,10 +138,11 @@ public class UIStage extends Stage {
 			}
 		});
 
-		final Slider brushSizeSlider = new Slider(1f, 50f, 1f, false, skinButton);
-		brushSizeSlider.setWidth(300f);
-		brushSizeSlider.setHeight(10f);
-		brushSizeSlider.setPosition(Gdx.graphics.getWidth() - 350f, Gdx.graphics.getHeight() - 30f);
+		final Slider brushSizeSlider = new Slider(0f, 50f, 1f, true, skinButton);
+		brushSizeSlider.setWidth(10f);
+		brushSizeSlider.setHeight(200f);
+		brushSizeSlider.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 15,
+				640f);
 		brushSizeSlider.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -194,16 +151,23 @@ public class UIStage extends Stage {
 			}
 		});
 
-		this.addActor(emptyToolButton);
-		this.addActor(sandToolButton);
-		this.addActor(clearCanvasButton);
-		this.addActor(woodToolButton);
-//      this.addActor(randomizeColorButton);
+		table.add(clearCanvasButton).minWidth(120f).pad(5f);
+		table.row();
+		table.add(emptyToolButton).minWidth(120f).pad(5f);
+		table.row();
+		table.add(sandToolButton).minWidth(120f).pad(5f);
+		table.row();
+		table.add(woodToolButton).minWidth(120f).pad(5f);
+		table.row();
+		table.add(fireToolButton).minWidth(120f).pad(5f);
+		table.row();
+		table.add(waterToolButton).minWidth(120f).pad(5f);
+		table.row();
+		table.add(leafToolButton).minWidth(120f).pad(5f);
+
+		table.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset / 2 + 15, Gdx.graphics.getHeight() - 130f);
+		this.addActor(table);
 		this.addActor(brushSizeSlider);
-//        this.addActor(smokeToolButton);
-		this.addActor(fireToolButton);
-		this.addActor(waterToolButton);
-		this.addActor(leafToolButton);
 	}
 
 }

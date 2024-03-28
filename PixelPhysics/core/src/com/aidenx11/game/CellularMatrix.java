@@ -21,9 +21,6 @@ public class CellularMatrix {
 	/** The matrix itself. Stores elements */
 	private Array<Array<Element>> matrix;
 
-	/** Keeps track of whether or not elements were modified last frame */
-	private boolean modifiedElements;
-
 	/** Keeps track of number of frames since elements were modified */
 	private int framesSinceLastModifiedElement;
 
@@ -42,7 +39,6 @@ public class CellularMatrix {
 		this.columns = columns;
 		this.pixelSizeModifier = pixelSizeModifier;
 		this.matrix = generateMatrix();
-		setModifiedElements(false);
 	}
 
 	/**
@@ -90,21 +86,21 @@ public class CellularMatrix {
 		this.matrix = generateMatrix();
 	}
 
-	public boolean isModifiedElements() {
-		return modifiedElements;
-	}
-
-	public void setModifiedElements(boolean modifiedElements) {
-		if (modifiedElements) {
-			setFramesSinceLastModifiedElement(0);
-		}
-		this.modifiedElements = modifiedElements;
-	}
-
+	/**
+	 * Returns the number of frames since an element was modified
+	 * 
+	 * @return the number of frames since an element was modified
+	 */
 	public int getFramesSinceLastModifiedElement() {
 		return framesSinceLastModifiedElement;
 	}
 
+	/**
+	 * Sets the number of frames since an element was modified
+	 * 
+	 * @param framesSinceLastModifiedElement the number of frames since an element
+	 *                                       was modified
+	 */
 	public void setFramesSinceLastModifiedElement(int framesSinceLastModifiedElement) {
 		this.framesSinceLastModifiedElement = framesSinceLastModifiedElement;
 	}

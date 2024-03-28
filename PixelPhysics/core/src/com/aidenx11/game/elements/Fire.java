@@ -20,7 +20,7 @@ public class Fire extends Element {
 
 	public void flicker() {
 		this.setColor(colors[(int) Math.round(Math.random() * 3)]);
-		parentMatrix.setModifiedElements(true);
+		parentMatrix.setFramesSinceLastModifiedElement(0);
 	}
 
 	@Override

@@ -19,10 +19,12 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	public static final int SCREEN_WIDTH = 1447;
 	/** Height of the screen */
 	public static final int SCREEN_HEIGHT = 900;
+	/** Offset of the ui */
+	public static final int uiOffset = 170;
 	/** */
 	public static final float GRAVITY_ACCELERATION = 0.3f;
 	/** Pixel size modifier of the game */
-	public static int pixelSizeModifier = 7;
+	public static int pixelSizeModifier = 3;
 	/** Matrix for use in the game */
 	public static CellularMatrix matrix;
 
@@ -57,8 +59,8 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		shapeRenderer.setAutoShapeType(true);
 
-		rows = (int) Math.ceil((SCREEN_HEIGHT - 50) / pixelSizeModifier) + 1;
-		columns = (int) Math.ceil(SCREEN_WIDTH / pixelSizeModifier) + 1;
+		rows = (int) Math.ceil(SCREEN_HEIGHT / pixelSizeModifier);
+		columns = (int) Math.ceil((SCREEN_WIDTH - uiOffset) / pixelSizeModifier);
 
 		matrix = new CellularMatrix(rows, columns, pixelSizeModifier);
 
@@ -84,8 +86,10 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		ScreenUtils.clear(135 / 255f, 206 / 255f, 235 / 255f, 1);
 		
 		shapeRenderer.begin(ShapeType.Filled);
-		shapeRenderer.setColor(Color.BLACK);
-		shapeRenderer.rect(0, SCREEN_HEIGHT - 48, SCREEN_WIDTH, 1);
+		shapeRenderer.setColor(Color.GRAY);
+		shapeRenderer.rect(SCREEN_WIDTH - uiOffset, 0, uiOffset + 3, SCREEN_HEIGHT);
+		shapeRenderer.setColor(Color.BROWN);
+		shapeRenderer.rect(SCREEN_WIDTH - uiOffset - 2, 0, 2f, SCREEN_HEIGHT);
 		shapeRenderer.end();
 
 		// Draw the buttons to the screen

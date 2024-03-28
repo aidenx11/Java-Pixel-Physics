@@ -2,14 +2,25 @@ package com.aidenx11.game.elements;
 
 import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.pixelPhysicsGame;
-import com.aidenx11.game.color.ColorManager;
-import com.aidenx11.game.color.CustomColor;
-import com.aidenx11.game.color.CustomColor.ColorValues;
 import com.aidenx11.game.elements.Element.ElementTypes;
 
 public class ElementUpdater {
 
 	public static CellularMatrix matrix = pixelPhysicsGame.matrix;
+
+	public static void update(Element element) {
+		if (element.isMovable()) {
+			updateMovementLogic(element);
+		}
+		element.setModified(element.getVelocity() != 0 || element.limitedLife());
+		if (element.limitedLife()) {
+			updateElementLife(element);
+		}
+		if (element.isFlammable()) {
+			updateBurningLogic(element);
+		}
+
+	}
 
 	public static void updateVelocity(Element element) {
 		if (element instanceof WetSand) {
@@ -90,29 +101,6 @@ public class ElementUpdater {
 			break;
 		}
 	}
-
-//	private static void findAndSwapNextEmptyElement(Element element) {
-//		boolean blocked1 = false;
-//		boolean blocked2 = false;
-//		for (int i = 0; i < 70; i++) {
-//			int randDirection = Math.random() < 0.5 ? i : -i;
-//			Element element1 = matrix.getElement(element.getRow(), element.getColumn() - randDirection);
-//			Element element2 = matrix.getElement(element.getRow(), element.getColumn() + randDirection);
-//			if (!(element1 instanceof Empty) || !(element1 instanceof Water)) {
-//				blocked1 = true;
-//			}
-//			if (!(element2 instanceof Empty) || !(element2 instanceof Water)) {
-//				blocked2 = true;
-//			}
-//			if (element1 instanceof Empty && !blocked1) {
-//				matrix.swap(element, element1);
-//				return;
-//			} else if (element2 instanceof Empty && !blocked2) {
-//				matrix.swap(element, element2);
-//				return;
-//			}
-//		}
-//	}
 
 	public static void updateElementLife(Element element) {
 		if (element.getLifetime() == 0) {
@@ -302,16 +290,13 @@ public class ElementUpdater {
 			int delta = (int) Math.signum(element.getVelocity());
 			Element nextVertical = matrix.getElement(element.getRow() - delta, element.getColumn());
 			int randDirection = Math.random() > 0.5 ? 1 : -1;
-			if (element.getType() == ElementTypes.WATER && element.adjacentTo(ElementTypes.EMPTY) > 2) {
-				nextVertical1 = matrix.getElement(element.getRow() - delta,
-						element.getColumn() - randDirection * 7);
-				 nextVertical2 = matrix.getElement(element.getRow() - delta,
-						element.getColumn() + randDirection * 7);
+			if (element.getType() == ElementTypes.WATER && element.adjacentTo(ElementTypes.EMPTY) > 1
+					&& element.adjacentTo(ElementTypes.WOOD) == 0) {
+				nextVertical1 = matrix.getElement(element.getRow() - delta, element.getColumn() - randDirection * 5);
+				nextVertical2 = matrix.getElement(element.getRow() - delta, element.getColumn() + randDirection * 5);
 			} else {
-				 nextVertical1 = matrix.getElement(element.getRow() - delta,
-						element.getColumn() - randDirection);
-				 nextVertical2 = matrix.getElement(element.getRow() - delta,
-						element.getColumn() + randDirection);
+				nextVertical1 = matrix.getElement(element.getRow() - delta, element.getColumn() - randDirection);
+				nextVertical2 = matrix.getElement(element.getRow() - delta, element.getColumn() + randDirection);
 			}
 
 			if (nextVertical != null && nextVertical.getDensity() < element.getDensity()) {
@@ -322,19 +307,13 @@ public class ElementUpdater {
 				matrix.swap(element, nextVertical2);
 			} else {
 				element.setVelocity(0.5f);
-			} 
+			}
 
 			if (!(element instanceof WetSand)) {
 				checkWetness(element, nextVertical);
 				checkWetness(element, nextVertical1);
 				checkWetness(element, nextVertical2);
 			}
-
-//			if (element instanceof Water) {
-//				for (int i = 0; i < 5; i++) {
-//					findAndSwapNextEmptyElement(element);
-//				}
-//			}
 
 			if (element instanceof WetSand) {
 				moveThisLoop = Math.random() < 0.6;
@@ -357,17 +336,4 @@ public class ElementUpdater {
 		}
 	}
 
-	public static void update(Element element) {
-		if (element.isMovable()) {
-			updateMovementLogic(element);
-		}
-		element.setModified(element.getVelocity() != 0 || element.limitedLife());
-		if (element.limitedLife()) {
-			updateElementLife(element);
-		}
-		if (element.isFlammable()) {
-			updateBurningLogic(element);
-		}
-
-	}
 }

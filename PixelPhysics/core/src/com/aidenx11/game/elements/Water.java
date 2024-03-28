@@ -7,7 +7,7 @@ import com.aidenx11.game.color.CustomColor.ColorValues;
 public class Water extends Element {
 
 	public static ElementTypes type = ElementTypes.WATER;
-	private float velocity = 0f;
+	private float velocity = 3f;
 	private float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
 	private float maxSpeed = 15f;
 	private float density = 6f;
