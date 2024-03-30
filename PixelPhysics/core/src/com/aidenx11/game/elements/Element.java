@@ -3,6 +3,7 @@ package com.aidenx11.game.elements;
 import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
+import com.aidenx11.game.color.CustomColor.ColorValues;
 import com.badlogic.gdx.graphics.Color;
 
 /**
@@ -14,10 +15,8 @@ public abstract class Element {
 
 	public CellularMatrix parentMatrix = pixelPhysicsGame.matrix;
 
+	/** Type of this element */
 	public static ElementTypes type;
-
-	/** Whether or not the element is empty */
-	private boolean isEmpty;
 
 	/** Row location of this element */
 	private int row;
@@ -28,67 +27,211 @@ public abstract class Element {
 	/** Color of this element */
 	private CustomColor color;
 
-	/** Whether or not this element is movable */
-	private boolean isMovable;
-
-	/** Whether or not this element moves down */
-	private boolean movesDown;
-
 	/** Whether or not element was modified this frame */
 	private boolean modified;
-
-	/** Velocity of this element */
-	private float velocity;
 
 	/** Density of this element */
 	private float density;
 
-	/** Whether or not this element moves side to side */
-	private boolean movesSideways;
-
 	/** Whether or not this element has a limited life (can die) */
 	private boolean limitedLife;
+
 	/** Number of frames the element can stay alive if it has limited life */
 	private int lifetime;
+
+	private boolean isFlammable;
+
+	private boolean extinguishesThings;
+
+	private float chanceToCatch;
+
+	private boolean burnsThings;
+
+	private boolean movesDown;
+
+	private boolean onFire;
 
 	public enum ElementTypes {
 		SAND, EMPTY, WOOD, SMOKE, FIRE, WATER, STEAM, WET_SAND, LEAF;
 	}
 
-	
+	public static CustomColor[] fireColors = new CustomColor[] { new CustomColor(253, 207, 88),
+			new CustomColor(242, 125, 12), new CustomColor(199, 14, 14), new CustomColor(240, 127, 19) };
 
-	public abstract void resetVelocity();
+	public abstract void update();
 
-	public abstract void setVelocity(float f);
-
-	public abstract float getMaxSpeed();
-
-	public abstract void setMaxSpeed(float maxSpeed);
-
-	public abstract float getAcceleration();
-
-	public abstract void setAcceleration(float acceleration);
-
-	public abstract boolean isFlammable();
-
-	public abstract boolean burnsThings();
-
-	public abstract boolean extinguishesThings();
-
-	public abstract float getChanceToCatch();
-	
-	public Element(int row, int column, CustomColor color, boolean isEmpty, ElementTypes type) {
-		setEmpty(isEmpty);
+	public Element(ElementTypes type, int row, int column, CustomColor color, boolean canDie, int lifetime,
+			boolean flammable, boolean extinguishesThings, float chanceToCatch, boolean burnsThings,
+			boolean movesDown) {
 		setRow(row);
 		setColumn(column);
 		setColor(color);
 		setType(type);
+		setLifetime(lifetime);
+		setFlammable(flammable);
+		setExtinguishesThings(extinguishesThings);
+		setChanceToCatch(chanceToCatch);
+		setBurnsThings(burnsThings);
+		setLimitedLife(canDie);
+		setMovesDown(movesDown);
 	}
-	
+
+	public void updateElementLife() {
+		if (this.limitedLife() && this.getLifetime() < 1) {
+			switch (this.getType()) {
+			case SMOKE:
+				parentMatrix.setNewElement(this, ElementTypes.EMPTY);
+				break;
+			case FIRE:
+			case WOOD:
+				parentMatrix.setNewElement(this, ElementTypes.SMOKE);
+				break;
+			default:
+				parentMatrix.setNewElement(this, ElementTypes.SMOKE);
+				break;
+			}
+		}
+
+		if (this.isOnFire() && Math.random() < 0.1) {
+			this.flicker();
+		}
+		
+		this.setLifetime(this.getLifetime() - 1);
+	}
+
+	public void updateBurningLogic() {
+		boolean extinguished = false;
+		int numberOfFire = 0;
+		Element otherElement = parentMatrix.getElement(this.getRow() + 1, this.getColumn());
+		if (otherElement != null && otherElement.isOnFire()) {
+			numberOfFire++;
+		}
+		if (otherElement != null && otherElement.extinguishesThings()) {
+			if (this.isOnFire() && otherElement instanceof Water) {
+				parentMatrix.setNewElement(otherElement, ElementTypes.STEAM);
+			} else if (this.isOnFire() && otherElement instanceof WetSand) {
+				parentMatrix.setNewElement(this, ElementTypes.STEAM);
+				parentMatrix.setNewElement(otherElement, ElementTypes.SAND);
+			}
+			extinguished = true;
+
+		}
+		otherElement = parentMatrix.getElement(this.getRow() + 1, this.getColumn() + 1);
+		if (otherElement != null && otherElement.isOnFire()) {
+			numberOfFire++;
+		}
+		if (otherElement != null && otherElement.extinguishesThings()) {
+			if (this.isOnFire() && otherElement instanceof Water) {
+				parentMatrix.setNewElement(otherElement, ElementTypes.STEAM);
+			} else if (this.isOnFire() && otherElement instanceof WetSand) {
+				parentMatrix.setNewElement(this, ElementTypes.STEAM);
+				parentMatrix.setNewElement(otherElement, ElementTypes.SAND);
+			}
+			extinguished = true;
+
+		}
+		otherElement = parentMatrix.getElement(this.getRow() + 1, this.getColumn() - 1);
+		if (otherElement != null && otherElement.isOnFire()) {
+			numberOfFire++;
+		}
+		if (otherElement != null && otherElement.extinguishesThings()) {
+			if (this.isOnFire() && otherElement instanceof Water) {
+				parentMatrix.setNewElement(otherElement, ElementTypes.STEAM);
+			} else if (this.isOnFire() && otherElement instanceof WetSand) {
+				parentMatrix.setNewElement(this, ElementTypes.STEAM);
+				parentMatrix.setNewElement(otherElement, ElementTypes.SAND);
+			}
+			extinguished = true;
+
+		}
+		otherElement = parentMatrix.getElement(this.getRow(), this.getColumn() - 1);
+		if (otherElement != null && otherElement.isOnFire()) {
+			numberOfFire++;
+		}
+		if (otherElement != null && otherElement.extinguishesThings()) {
+			if (this.isOnFire() && otherElement instanceof Water) {
+				parentMatrix.setNewElement(otherElement, ElementTypes.STEAM);
+			} else if (this.isOnFire() && otherElement instanceof WetSand) {
+				parentMatrix.setNewElement(this, ElementTypes.STEAM);
+				parentMatrix.setNewElement(otherElement, ElementTypes.SAND);
+			}
+			extinguished = true;
+
+		}
+		otherElement = parentMatrix.getElement(this.getRow(), this.getColumn() + 1);
+		if (otherElement != null && otherElement.isOnFire()) {
+			numberOfFire++;
+		}
+		if (otherElement != null && otherElement.extinguishesThings()) {
+			if (this.isOnFire() && otherElement instanceof Water) {
+				parentMatrix.setNewElement(otherElement, ElementTypes.STEAM);
+			} else if (this.isOnFire() && otherElement instanceof WetSand) {
+				parentMatrix.setNewElement(this, ElementTypes.STEAM);
+				parentMatrix.setNewElement(otherElement, ElementTypes.SAND);
+			}
+			extinguished = true;
+
+		}
+		otherElement = parentMatrix.getElement(this.getRow() - 1, this.getColumn());
+		if (otherElement != null && otherElement.isOnFire()) {
+			numberOfFire++;
+		}
+		if (otherElement != null && otherElement.extinguishesThings()) {
+			if (this.isOnFire() && otherElement instanceof Water) {
+				parentMatrix.setNewElement(otherElement, ElementTypes.STEAM);
+			} else if (this.isOnFire() && otherElement instanceof WetSand) {
+				parentMatrix.setNewElement(this, ElementTypes.STEAM);
+				parentMatrix.setNewElement(otherElement, ElementTypes.SAND);
+			}
+			extinguished = true;
+
+		}
+		otherElement = parentMatrix.getElement(this.getRow() - 1, this.getColumn() + 1);
+		if (otherElement != null && otherElement.isOnFire()) {
+			numberOfFire++;
+		}
+		if (otherElement != null && otherElement.extinguishesThings()) {
+			if (this.isOnFire() && otherElement instanceof Water) {
+				parentMatrix.setNewElement(otherElement, ElementTypes.STEAM);
+			} else if (this.isOnFire() && otherElement instanceof WetSand) {
+				parentMatrix.setNewElement(this, ElementTypes.STEAM);
+				parentMatrix.setNewElement(otherElement, ElementTypes.SAND);
+			}
+			extinguished = true;
+
+		}
+		otherElement = parentMatrix.getElement(this.getRow() - 1, this.getColumn() - 1);
+		if (otherElement != null && otherElement.isOnFire()) {
+			numberOfFire++;
+		}
+		if (otherElement != null && otherElement.extinguishesThings()) {
+			if (this.isOnFire() && otherElement instanceof Water) {
+				parentMatrix.setNewElement(otherElement, ElementTypes.STEAM);
+			} else if (this.isOnFire() && otherElement instanceof WetSand) {
+				parentMatrix.setNewElement(this, ElementTypes.STEAM);
+				parentMatrix.setNewElement(otherElement, ElementTypes.SAND);
+			}
+			extinguished = true;
+
+		}
+
+		float chanceToCatch = this.getChanceToCatch() * numberOfFire;
+		if (Math.random() < chanceToCatch && !this.isOnFire()) {
+			this.setOnFire(true);
+		}
+
+		if (extinguished) {
+			if (this.isOnFire()) {
+				parentMatrix.setNewElement(this, ElementTypes.SMOKE);
+			}
+		}
+
+	}
+
 	public ElementTypes getType() {
 		return type;
 	}
-	
+
 	public void setType(ElementTypes type) {
 		Element.type = type;
 	}
@@ -101,22 +244,10 @@ public abstract class Element {
 		this.density = density;
 	}
 
-	public float getVelocity() {
-		return velocity;
-	}
-
-	public int getUpdateCount() {
-		float abs = Math.abs(getVelocity());
-		int floored = (int) Math.floor(abs);
-		float mod = abs - floored;
-
-		return floored + (Math.random() < mod ? 1 : 0);
-	}
-
 	public void setColor(CustomColor color) {
 		this.color = color;
 	}
-	
+
 	public void setColor(int[] rgb) {
 		this.color = new CustomColor(rgb);
 	}
@@ -145,30 +276,6 @@ public abstract class Element {
 		return color;
 	}
 
-	public boolean isEmpty() {
-		return isEmpty;
-	}
-
-	public void setEmpty(boolean isEmpty) {
-		this.isEmpty = isEmpty;
-	}
-
-	public boolean isMovable() {
-		return isMovable;
-	}
-
-	public void setMovable(boolean movable) {
-		if (movable) {
-			this.isMovable = movable;
-		} else {
-			this.isMovable = movable;
-			this.setMovesDown(false);
-			this.setMovesSideways(false);
-			this.setDensity(999);
-		}
-
-	}
-
 	public boolean isModified() {
 		return modified;
 	}
@@ -177,30 +284,11 @@ public abstract class Element {
 		this.modified = modified;
 	}
 
-	public void setMovesDown(boolean b) {
-		this.movesDown = b;
-	}
-
-	public boolean movesDown() {
-		return this.movesDown;
-	}
-
-	public boolean movesSideways() {
-		return movesSideways;
-	}
-
-	public void setMovesSideways(boolean movesSideways) {
-		this.movesSideways = movesSideways;
-	}
-
 	public boolean limitedLife() {
 		return limitedLife;
 	}
 
 	public void setLimitedLife(boolean limitedLife) {
-		if (!limitedLife) {
-			setLifetime(-1);
-		}
 		this.limitedLife = limitedLife;
 	}
 
@@ -218,50 +306,54 @@ public abstract class Element {
 		}
 	}
 
+	public boolean isFlammable() {
+		return isFlammable;
+	}
+
 	public void flicker() {
-
+		int idx = (int) (Math.round(Math.random() * 3));
+		this.setColor(fireColors[idx]);
 	}
 
-	public int adjacentTo(ElementTypes type) {
-		int numberOfAdjacencies = 0;
-		Element currentElement = parentMatrix.getElement(this.getRow(), this.getColumn() - 1);
-		if (currentElement != null && currentElement.getType() == type) {
-			numberOfAdjacencies++;
-		}
-		currentElement = parentMatrix.getElement(this.getRow() - 1, this.getColumn() - 1);
-		if (currentElement != null && currentElement.getType() == type) {
-			numberOfAdjacencies++;
-		}
-		currentElement = parentMatrix.getElement(this.getRow() + 1, this.getColumn() - 1);
-		if (currentElement != null && currentElement.getType() == type) {
-			numberOfAdjacencies++;
-		}
-		currentElement = parentMatrix.getElement(this.getRow() + 1, this.getColumn());
-		if (currentElement != null && currentElement.getType() == type) {
-			numberOfAdjacencies++;
-		}
-		currentElement = parentMatrix.getElement(this.getRow(), this.getColumn() + 1);
-		if (currentElement != null && currentElement.getType() == type) {
-			numberOfAdjacencies++;
-		}
-		currentElement = parentMatrix.getElement(this.getRow() + 1, this.getColumn() + 1);
-		if (currentElement != null && currentElement.getType() == type) {
-			numberOfAdjacencies++;
-		}
-		currentElement = parentMatrix.getElement(this.getRow() - 1, this.getColumn());
-		if (currentElement != null && currentElement.getType() == type) {
-			numberOfAdjacencies++;
-		}
-		currentElement = parentMatrix.getElement(this.getRow() - 1, this.getColumn() + 1);
-		if (currentElement != null && currentElement.getType() == type) {
-			numberOfAdjacencies++;
-		}
-
-		return numberOfAdjacencies;
+	public boolean burnsThings() {
+		return burnsThings;
 	}
 
-	public boolean isWet() {
-		return false;
+	public boolean extinguishesThings() {
+		return extinguishesThings;
+	}
+
+	public float getChanceToCatch() {
+		return chanceToCatch;
+	}
+
+	private void setBurnsThings(boolean burnsThings) {
+		this.burnsThings = burnsThings;
+	}
+
+	private void setChanceToCatch(float chanceToCatch) {
+		this.chanceToCatch = chanceToCatch;
+	}
+
+	private void setExtinguishesThings(boolean extinguishesThings) {
+		this.extinguishesThings = extinguishesThings;
+	}
+
+	public boolean movesDown() {
+		return movesDown;
+	}
+
+	public void setMovesDown(boolean movesDown) {
+		this.movesDown = movesDown;
+	}
+
+	public boolean isOnFire() {
+		return onFire;
+	}
+
+	public void setOnFire(boolean onFire) {
+		this.onFire = onFire;
+		this.setLimitedLife(true);
 	}
 
 }

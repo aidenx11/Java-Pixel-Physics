@@ -161,7 +161,7 @@ public class MouseInput {
 			if (touchedRow < rows && touchedRow >= 0 && touchedCol >= 0 && touchedCol < columns) {
 				switch (elementType) {
 				case SAND:
-					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 0.5);
+					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
 					break;
 				case LEAF:
 					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 0.2);
@@ -173,7 +173,7 @@ public class MouseInput {
 					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
 					break;
 				case WOOD:
-					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 0.9);
+					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
 					break;
 				case FIRE:
 					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 0.4);

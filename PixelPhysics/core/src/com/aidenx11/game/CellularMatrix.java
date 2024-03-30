@@ -1,8 +1,16 @@
 package com.aidenx11.game;
 
 import com.aidenx11.game.elements.Element;
-import com.aidenx11.game.elements.ElementUpdater;
 import com.aidenx11.game.elements.Empty;
+import com.aidenx11.game.elements.Fire;
+import com.aidenx11.game.elements.Leaf;
+import com.aidenx11.game.elements.Sand;
+import com.aidenx11.game.elements.Smoke;
+import com.aidenx11.game.elements.Steam;
+import com.aidenx11.game.elements.Water;
+import com.aidenx11.game.elements.WetSand;
+import com.aidenx11.game.elements.Wood;
+import com.aidenx11.game.elements.Element.ElementTypes;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
@@ -87,6 +95,15 @@ public class CellularMatrix {
 	}
 
 	/**
+	 * Sets the given element to empty
+	 * 
+	 * @param element element to set empty
+	 */
+	public void clearElement(Element element) {
+		this.setElement(new Empty(element.getRow(), element.getColumn()));
+	}
+
+	/**
 	 * Returns the number of frames since an element was modified
 	 * 
 	 * @return the number of frames since an element was modified
@@ -140,17 +157,6 @@ public class CellularMatrix {
 	}
 
 	/**
-	 * Checks if the given row and column's element is empty.
-	 * 
-	 * @param row    row of the element
-	 * @param column column of the element
-	 * @return whether or not the element is empty
-	 */
-	public boolean isEmpty(int row, int column) {
-		return this.getElement(row, column).isEmpty();
-	}
-
-	/**
 	 * Sets the given element at the element's corresponding row and column.
 	 * 
 	 * @param element element to set in the matrix
@@ -161,9 +167,10 @@ public class CellularMatrix {
 		Array<Element> rowArray = matrix.get(row);
 		rowArray.set(column, element);
 		matrix.set(row, rowArray);
-		setFramesSinceLastModifiedElement(0);
 	}
-
+	
+	
+	
 	/**
 	 * Draws the current matrix to the screen
 	 * 
@@ -174,9 +181,9 @@ public class CellularMatrix {
 		shapeRenderer.begin(ShapeType.Filled);
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < columns; x++) {
-				if (!this.isEmpty(y, x)) {
+				if (!(this.getElement(y, x) instanceof Empty)) {
 					Element thisElement = this.getElement(y, x);
-					if (!thisElement.isEmpty()) {
+					if (!(thisElement instanceof Empty)) {
 						shapeRenderer.setColor(thisElement.getColor());
 						shapeRenderer.rect(x * pixelSizeModifier, y * pixelSizeModifier, pixelSizeModifier,
 								pixelSizeModifier);
@@ -187,6 +194,40 @@ public class CellularMatrix {
 		shapeRenderer.end();
 	}
 
+	public void setNewElement(Element element, ElementTypes newElement) {
+		switch (newElement) {
+		case EMPTY:
+			this.setElement(new Empty(element.getRow(), element.getColumn()));
+			break;
+		case FIRE:
+			this.setElement(new Fire(element.getRow(), element.getColumn()));
+			break;
+		case SAND:
+			this.setElement(new Sand(element.getRow(), element.getColumn()));
+			break;
+		case SMOKE:
+			this.setElement(new Smoke(element.getRow(), element.getColumn()));
+			break;
+		case WOOD:
+			this.setElement(new Wood(element.getRow(), element.getColumn()));
+			break;
+		case WATER:
+			this.setElement(new Water(element.getRow(), element.getColumn()));
+			break;
+		case STEAM:
+			this.setElement(new Steam(element.getRow(), element.getColumn()));
+			break;
+		case WET_SAND:
+			this.setElement(new WetSand(element.getRow(), element.getColumn()));
+			break;
+		case LEAF:
+			this.setElement(new Leaf(element.getRow(), element.getColumn()));
+			break;
+		default:
+			break;
+		}
+	}
+
 	/**
 	 * Updates the frame. Updates all positions of all elements in the matrix based
 	 * on their type. If the element is movable, moves it.
@@ -195,24 +236,24 @@ public class CellularMatrix {
 	 */
 	public void updateFrame(ShapeRenderer sr) {
 
-		framesSinceLastModifiedElement++;
+//		framesSinceLastModifiedElement++;
 		direction = direction ? false : true;
 		Element element;
 
-		if (getFramesSinceLastModifiedElement() < 60) {
+//		if (getFramesSinceLastModifiedElement() < 60) {
 			for (int y = rows - 1; y >= 0; y--) {
 				if (direction) {
 					for (int x = 0; x < columns; x++) {
 						element = this.getElement(rows - 1 - y, x);
 						if (element.movesDown()) {
-							ElementUpdater.update(element);
+							element.update();
 						}
 					}
 				} else {
 					for (int x = columns - 1; x >= 0; x--) {
 						element = this.getElement(rows - 1 - y, x);
 						if (element.movesDown()) {
-							ElementUpdater.update(element);
+							element.update();
 						}
 					}
 				}
@@ -222,19 +263,19 @@ public class CellularMatrix {
 					for (int x = 0; x < columns; x++) {
 						element = this.getElement(rows - 1 - y, x);
 						if (!element.movesDown()) {
-							ElementUpdater.update(element);
+							element.update();
 						}
 					}
 				} else {
 					for (int x = columns - 1; x >= 0; x--) {
 						element = this.getElement(rows - 1 - y, x);
 						if (!element.movesDown()) {
-							ElementUpdater.update(element);
+							element.update();
 						}
 					}
 				}
 			}
-		}
+//		}
 	}
 
 }

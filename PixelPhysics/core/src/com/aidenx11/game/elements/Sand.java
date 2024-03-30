@@ -1,99 +1,67 @@
 package com.aidenx11.game.elements;
 
-import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.color.CustomColor.*;
+import com.aidenx11.game.elements.Element.ElementTypes;
 
-public class Sand extends Element {
+public class Sand extends MovableSolid {
 
 	public static ElementTypes type = ElementTypes.SAND;
-	private float velocity = 0.1f;
-	private float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
-	private float maxSpeed = 7f;
-	private float density = 5f;
-	private boolean wet = false;
-
-	public static CellularMatrix matrix = pixelPhysicsGame.matrix;
+	private static float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
+	private static float maxSpeed = 7f;
+	private static float density = 7f;
+	private static float inertialResistance = 0f;
+	private static float friction = 0.1f;
 
 	public Sand(int row, int column) {
-		super(row, column, new CustomColor(ColorValues.SAND_COLOR, true), false, type);
-		super.setMovable(true);
-		super.setModified(true);
-		super.setMovesDown(true);
-		super.setDensity(density);
-		super.setMovesSideways(false);
-		super.setLimitedLife(false);
-	}
-
-	public float getVelocity() {
-		return velocity;
-	}
-
-	public void setVelocity(float newVelocity) {
-		this.velocity = newVelocity;
-	}
-	
-	public void resetVelocity() {
-		setVelocity(0);
+		super(type, row, column, new CustomColor(ColorValues.SAND_COLOR, true), false, -1, false, true, 0, false, 0,
+				acceleration, maxSpeed, density, false, inertialResistance, friction);
+		super.setFreeFalling(true);
 	}
 
 	@Override
-	public float getMaxSpeed() {
-		return maxSpeed;
+	public void update() {
+		this.actOnOther();
+		super.updateMovementLogic();
 	}
 
-	@Override
-	public void setMaxSpeed(float maxSpeed) {
-		this.maxSpeed = maxSpeed;
-	}
+	public void actOnOther() {
 
-	@Override
-	public float getAcceleration() {
-		return acceleration;
-	}
+		Element left = parentMatrix.getElement(getRow(), getColumn() - 1);
+		Element right = parentMatrix.getElement(getRow(), getColumn() + 1);
+		Element downLeft = parentMatrix.getElement(getRow() - 1, getColumn() - 1);
+		Element downRight = parentMatrix.getElement(getRow() - 1, getColumn() + 1);
+		Element down = parentMatrix.getElement(getRow() - 1, getColumn());
+		Element above = parentMatrix.getElement(getRow() + 1, getColumn());
+		Element aboveLeft = parentMatrix.getElement(getRow() + 1, getColumn() - 1);
+		Element aboveRight = parentMatrix.getElement(getRow() + 1, getColumn() + 1);
 
-	@Override
-	public void setAcceleration(float acceleration) {
-		this.acceleration = acceleration;
-	}
-
-	@Override
-	public boolean isFlammable() {
-		return false;
-	}
-
-	@Override
-	public boolean burnsThings() {
-		return false;
-	}
-
-	@Override
-	public boolean extinguishesThings() {
-		if (Math.random() < 0.1) {
-			return true;
-		} else {
-			return false;
+		if (down instanceof Water) {
+			parentMatrix.setNewElement(down, ElementTypes.WET_SAND);
+			parentMatrix.clearElement(this);
+		} else if (downRight instanceof Water) {
+			parentMatrix.setNewElement(downRight, ElementTypes.WET_SAND);
+			parentMatrix.clearElement(this);
+		} else if (downLeft instanceof Water) {
+			parentMatrix.setNewElement(downLeft, ElementTypes.WET_SAND);
+			parentMatrix.clearElement(this);
+		} else if (left instanceof Water) {
+			parentMatrix.setNewElement(left, ElementTypes.WET_SAND);
+			parentMatrix.clearElement(this);
+		} else if (right instanceof Water) {
+			parentMatrix.setNewElement(right, ElementTypes.WET_SAND);
+			parentMatrix.clearElement(this);
+		} else if (above instanceof Water) {
+			parentMatrix.setNewElement(above, ElementTypes.WET_SAND);
+			parentMatrix.clearElement(this);
+		} else if (aboveLeft instanceof Water) {
+			parentMatrix.setNewElement(aboveLeft, ElementTypes.WET_SAND);
+			parentMatrix.clearElement(this);
+		} else if (aboveRight instanceof Water) {
+			parentMatrix.setNewElement(aboveRight, ElementTypes.WET_SAND);
+			parentMatrix.clearElement(this);
 		}
 	}
 
-	@Override
-	public float getChanceToCatch() {
-		return 0;
-	}
-
-	@Override
-	public boolean isWet() {
-		return wet;
-	}
-
-	public void setWet(boolean wet) {
-		this.wet = wet;
-	}
-
-	@Override
-	public ElementTypes getType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

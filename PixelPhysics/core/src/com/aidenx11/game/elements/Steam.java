@@ -3,16 +3,16 @@ package com.aidenx11.game.elements;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.color.CustomColor.ColorValues;
 
-public class Steam extends Smoke {
+public class Steam extends Gas {
+	
+	public static ElementTypes type = ElementTypes.STEAM;
+	private static float acceleration = -0.1f;
+	private static float maxSpeed = 0.35f;
+	private static float density = 1f;
 
-	@SuppressWarnings("static-access")
 	public Steam(int row, int column) {
-		super(row, column);
-		this.type = ElementTypes.STEAM;
-		super.setColor(new CustomColor(ColorValues.STEAM, true));
-		super.setMovesSideways(false);
-		super.setDensity(0.5f);
-		super.setLifetime(100 + (int) (130 * Math.random()));
+		super(type, row, column, new CustomColor(ColorValues.STEAM, true), true, (int) (150 + Math.random() * 100), false, false, 0, false, 0,
+				acceleration, maxSpeed, density, true);
 	}
 
 }
