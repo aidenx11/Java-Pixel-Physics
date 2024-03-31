@@ -4,6 +4,7 @@ import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.input.MouseInput;
+import com.aidenx11.game.input.MouseInput.BrushTypes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -29,14 +30,40 @@ public class UIStage extends Stage {
 	final TextButton fireToolButton;
 	final TextButton waterToolButton;
 	final TextButton leafToolButton;
+	final TextButton squareBrushButton;
+	final TextButton circleBrushButton;
+	final TextButton dirtToolButton;
 
 	public UIStage(Viewport viewport, MouseInput mouseInput, CellularMatrix matrix) {
 
 		Gdx.gl.glLineWidth(3);
 
-		Table table = new Table();
+		Table elementTable = new Table();
+		Table brushTypeTable = new Table();
 
 		skinButton = new Skin(Gdx.files.internal("skin/uiskin.json"));
+		
+		circleBrushButton = new TextButton("Circle", skinButton, "default");
+		circleBrushButton.setColor(Color.LIGHT_GRAY);
+		circleBrushButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				mouseInput.setBrushType(BrushTypes.CIRCLE);
+				circleBrushButton.setColor(Color.RED);
+				squareBrushButton.setColor(Color.LIGHT_GRAY);
+			}
+		});
+		
+		squareBrushButton = new TextButton("Square", skinButton, "default");
+		squareBrushButton.setColor(Color.LIGHT_GRAY);
+		squareBrushButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				mouseInput.setBrushType(BrushTypes.SQUARE);
+				circleBrushButton.setColor(Color.LIGHT_GRAY);
+				squareBrushButton.setColor(Color.RED);
+			}
+		});
 
 		clearCanvasButton = new TextButton("Clear Canvas", skinButton, "default");
 		clearCanvasButton.setColor(Color.CORAL);
@@ -59,6 +86,7 @@ public class UIStage extends Stage {
 				fireToolButton.setColor(Color.LIGHT_GRAY);
 				waterToolButton.setColor(Color.LIGHT_GRAY);
 				leafToolButton.setColor(Color.LIGHT_GRAY);
+				dirtToolButton.setColor(Color.LIGHT_GRAY);
 			}
 		});
 
@@ -74,6 +102,7 @@ public class UIStage extends Stage {
 				fireToolButton.setColor(Color.LIGHT_GRAY);
 				waterToolButton.setColor(Color.LIGHT_GRAY);
 				leafToolButton.setColor(Color.LIGHT_GRAY);
+				dirtToolButton.setColor(Color.LIGHT_GRAY);
 			}
 		});
 
@@ -89,6 +118,7 @@ public class UIStage extends Stage {
 				fireToolButton.setColor(Color.LIGHT_GRAY);
 				waterToolButton.setColor(Color.LIGHT_GRAY);
 				leafToolButton.setColor(Color.LIGHT_GRAY);
+				dirtToolButton.setColor(Color.LIGHT_GRAY);
 			}
 		});
 
@@ -104,6 +134,7 @@ public class UIStage extends Stage {
 				emptyToolButton.setColor(Color.LIGHT_GRAY);
 				waterToolButton.setColor(Color.LIGHT_GRAY);
 				leafToolButton.setColor(Color.LIGHT_GRAY);
+				dirtToolButton.setColor(Color.LIGHT_GRAY);
 			}
 		});
 
@@ -119,6 +150,7 @@ public class UIStage extends Stage {
 				fireToolButton.setColor(Color.LIGHT_GRAY);
 				emptyToolButton.setColor(Color.LIGHT_GRAY);
 				leafToolButton.setColor(Color.LIGHT_GRAY);
+				dirtToolButton.setColor(Color.LIGHT_GRAY);
 			}
 		});
 
@@ -134,10 +166,27 @@ public class UIStage extends Stage {
 				woodToolButton.setColor(Color.LIGHT_GRAY);
 				fireToolButton.setColor(Color.LIGHT_GRAY);
 				emptyToolButton.setColor(Color.LIGHT_GRAY);
+				dirtToolButton.setColor(Color.LIGHT_GRAY);
+			}
+		});
+		
+		dirtToolButton = new TextButton("Dirt", skinButton, "default");
+		dirtToolButton.setColor(Color.LIGHT_GRAY);
+		dirtToolButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				mouseInput.setElementType(ElementTypes.DIRT);
+				dirtToolButton.setColor(Color.RED);
+				waterToolButton.setColor(Color.LIGHT_GRAY);
+				sandToolButton.setColor(Color.LIGHT_GRAY);
+				woodToolButton.setColor(Color.LIGHT_GRAY);
+				fireToolButton.setColor(Color.LIGHT_GRAY);
+				emptyToolButton.setColor(Color.LIGHT_GRAY);
+				leafToolButton.setColor(Color.LIGHT_GRAY);
 			}
 		});
 
-		final Slider brushSizeSlider = new Slider(0f, 50f, 1f, true, skinButton);
+		final Slider brushSizeSlider = new Slider(1f, 50f, 1f, true, skinButton);
 		brushSizeSlider.setWidth(10f);
 		brushSizeSlider.setHeight(200f);
 		brushSizeSlider.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 15,
@@ -150,22 +199,32 @@ public class UIStage extends Stage {
 			}
 		});
 
-		table.add(clearCanvasButton).minWidth(120f).pad(5f);
-		table.row();
-		table.add(emptyToolButton).minWidth(120f).pad(5f);
-		table.row();
-		table.add(sandToolButton).minWidth(120f).pad(5f);
-		table.row();
-		table.add(woodToolButton).minWidth(120f).pad(5f);
-		table.row();
-		table.add(fireToolButton).minWidth(120f).pad(5f);
-		table.row();
-		table.add(waterToolButton).minWidth(120f).pad(5f);
-		table.row();
-		table.add(leafToolButton).minWidth(120f).pad(5f);
-
-		table.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset / 2 + 15, Gdx.graphics.getHeight() - 130f);
-		this.addActor(table);
+		elementTable.add(clearCanvasButton).minWidth(120f).pad(5f);
+		elementTable.row();
+		elementTable.add(emptyToolButton).minWidth(120f).pad(5f);
+		elementTable.row();
+		elementTable.add(sandToolButton).minWidth(120f).pad(5f);
+		elementTable.row();
+		elementTable.add(woodToolButton).minWidth(120f).pad(5f);
+		elementTable.row();
+		elementTable.add(fireToolButton).minWidth(120f).pad(5f);
+		elementTable.row();
+		elementTable.add(waterToolButton).minWidth(120f).pad(5f);
+		elementTable.row();
+		elementTable.add(leafToolButton).minWidth(120f).pad(5f);
+		elementTable.row();
+		elementTable.add(dirtToolButton).minWidth(120f).pad(5f);
+		
+		brushTypeTable.add(circleBrushButton).minWidth(60f).pad(5f);
+		brushTypeTable.row();
+		brushTypeTable.add(squareBrushButton).minWidth(60f).pad(5f);
+		
+		squareBrushButton.setColor(Color.RED);
+		
+		brushTypeTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 35, Gdx.graphics.getHeight() - 300f);
+		elementTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset / 2 + 15, Gdx.graphics.getHeight() - 155f);
+		this.addActor(brushTypeTable);
+		this.addActor(elementTable);
 		this.addActor(brushSizeSlider);
 	}
 

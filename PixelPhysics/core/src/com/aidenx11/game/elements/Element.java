@@ -52,7 +52,7 @@ public abstract class Element {
 	private boolean onFire;
 
 	public enum ElementTypes {
-		SAND, EMPTY, WOOD, SMOKE, FIRE, WATER, STEAM, WET_SAND, LEAF;
+		SAND, EMPTY, WOOD, SMOKE, FIRE, WATER, STEAM, WET_SAND, LEAF, DIRT;
 	}
 
 	public static CustomColor[] fireColors = new CustomColor[] { new CustomColor(253, 207, 88),

@@ -1,5 +1,6 @@
 package com.aidenx11.game;
 
+import com.aidenx11.game.elements.Dirt;
 import com.aidenx11.game.elements.Element;
 import com.aidenx11.game.elements.Empty;
 import com.aidenx11.game.elements.Fire;
@@ -222,6 +223,9 @@ public class CellularMatrix {
 			break;
 		case LEAF:
 			this.setElement(new Leaf(element.getRow(), element.getColumn()));
+			break;
+		case DIRT:
+			this.setElement(new Dirt(element.getRow(), element.getColumn()));
 			break;
 		default:
 			break;

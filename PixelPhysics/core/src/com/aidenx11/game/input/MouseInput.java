@@ -2,6 +2,7 @@ package com.aidenx11.game.input;
 
 import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.pixelPhysicsGame;
+import com.aidenx11.game.elements.Dirt;
 import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.elements.Empty;
 import com.aidenx11.game.elements.Fire;
@@ -48,6 +49,12 @@ public class MouseInput {
 
 	/** Whether or not the color of the sand should be random */
 	private boolean randomizeColor = false;
+
+	private BrushTypes brushType;
+
+	public enum BrushTypes {
+		CIRCLE, SQUARE
+	}
 
 	/**
 	 * Constructs the MouseInput with given matrix and camera
@@ -141,8 +148,14 @@ public class MouseInput {
 	public void drawCursor(ShapeRenderer sr) {
 		sr.begin();
 		sr.setColor(Color.WHITE);
-		sr.circle(Gdx.input.getX(), pixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY(),
-				getCursorSize() * pixelSizeModifier, 100);
+		if (getBrushType() == BrushTypes.CIRCLE) {
+			sr.circle(Gdx.input.getX(), pixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY(),
+					getCursorSize() * pixelSizeModifier, 100);
+		} else if (getBrushType() == BrushTypes.SQUARE) {
+			sr.rect(Gdx.input.getX() - getCursorSize() * 2 + getCursorSize() / 2,
+					pixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY() - getCursorSize() * 2 + getCursorSize() / 2 - 5,
+					getCursorSize() * pixelSizeModifier, getCursorSize() * pixelSizeModifier);
+		}
 		sr.end();
 	}
 
@@ -161,23 +174,67 @@ public class MouseInput {
 			if (touchedRow < rows && touchedRow >= 0 && touchedCol >= 0 && touchedCol < columns) {
 				switch (elementType) {
 				case SAND:
-					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
+					if (getBrushSize() == 1) {
+						matrix.setElement(new Sand(touchedRow, touchedCol));
+					} else if (getBrushType() == BrushTypes.CIRCLE) {
+						drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
+					} else if (getBrushType() == BrushTypes.SQUARE) {
+						drawSquare(touchedRow, touchedCol, getBrushSize(), 1);
+					}
 					break;
 				case LEAF:
-					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 0.2);
+					if (getBrushSize() == 1) {
+						matrix.setElement(new Leaf(touchedRow, touchedCol));
+					} else if (getBrushType() == BrushTypes.CIRCLE) {
+						drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 0.2);
+					} else if (getBrushType() == BrushTypes.SQUARE) {
+						drawSquare(touchedRow, touchedCol, getBrushSize(), 0.2);
+					}
 					break;
 				case WATER:
-					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 0.4);
+					if (getBrushSize() == 1) {
+						matrix.setElement(new Water(touchedRow, touchedCol));
+					} else if (getBrushType() == BrushTypes.CIRCLE) {
+						drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 0.4);
+					} else if (getBrushType() == BrushTypes.SQUARE) {
+						drawSquare(touchedRow, touchedCol, getBrushSize(), 0.4);
+					}
 					break;
 				case EMPTY:
-					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
+					if (getBrushSize() == 1) {
+						matrix.setElement(new Empty(touchedRow, touchedCol));
+					} else if (getBrushType() == BrushTypes.CIRCLE) {
+						drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
+					} else if (getBrushType() == BrushTypes.SQUARE) {
+						drawSquare(touchedRow, touchedCol, getBrushSize(), 1);
+					}
 					break;
 				case WOOD:
-					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
+					if (getBrushSize() == 1) {
+						matrix.setElement(new Wood(touchedRow, touchedCol));
+					} else if (getBrushType() == BrushTypes.CIRCLE) {
+						drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
+					} else if (getBrushType() == BrushTypes.SQUARE) {
+						drawSquare(touchedRow, touchedCol, getBrushSize(), 1);
+					}
 					break;
 				case FIRE:
-					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 0.4);
+					if (getBrushSize() == 1) {
+						matrix.setElement(new Fire(touchedRow, touchedCol));
+					} else if (getBrushType() == BrushTypes.CIRCLE) {
+						drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 0.4);
+					} else if (getBrushType() == BrushTypes.SQUARE) {
+						drawSquare(touchedRow, touchedCol, getBrushSize(), 0.4);
+					}
 					break;
+				case DIRT:if (getBrushSize() == 1) {
+					matrix.setElement(new Dirt(touchedRow, touchedCol));
+				} else if (getBrushType() == BrushTypes.CIRCLE) {
+					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
+				} else if (getBrushType() == BrushTypes.SQUARE) {
+					drawSquare(touchedRow, touchedCol, getBrushSize(), 1);
+				}
+				break;
 				default:
 					break;
 				}
@@ -242,6 +299,10 @@ public class MouseInput {
 							matrix.setElement(new Leaf(rowCount, colCount));
 						}
 						break;
+					case DIRT:
+						if (!(matrix.getElement(rowCount, colCount) instanceof Dirt) && Math.random() < p) {
+							matrix.setElement(new Dirt(rowCount, colCount));
+						}
 					default:
 						break;
 					}
@@ -256,6 +317,78 @@ public class MouseInput {
 		double dy = centerRow - cellRow;
 		double distanceSquared = dx * dx + dy * dy;
 		return distanceSquared <= radius * radius;
+	}
+
+	/**
+	 * Draws a square of the given element type to the matrix.
+	 * 
+	 * @param row    row of the center of the square
+	 * @param column column of the center of the square
+	 * @param width  width of the square
+	 * @param p      probability of each pixel in the square being drawn
+	 * @param type   element type to be drawn
+	 */
+	public void drawSquare(int row, int column, int width, double p) {
+		for (int rowCount = row - width / 2; rowCount < row + width / 2; rowCount++) {
+			for (int colCount = column - width / 2; colCount < column + width / 2; colCount++) {
+				if (rowCount < 0 || rowCount >= rows || colCount < 0 || colCount >= columns) {
+					continue;
+				}
+
+				switch (this.elementType) {
+				case SAND:
+					if (!(matrix.getElement(rowCount, colCount) instanceof Sand)) {
+						matrix.setElement(new Sand(rowCount, colCount));
+					}
+					break;
+				case EMPTY:
+					if (!(matrix.getElement(rowCount, colCount) instanceof Empty)) {
+						matrix.setElement(new Empty(rowCount, colCount));
+					}
+					break;
+				case WOOD:
+					if (!(matrix.getElement(rowCount, colCount) instanceof Wood)) {
+						matrix.setElement(new Wood(rowCount, colCount));
+					}
+					break;
+				case FIRE:
+					if (!(matrix.getElement(rowCount, colCount) instanceof Fire)) {
+						matrix.setElement(new Fire(rowCount, colCount));
+					}
+					break;
+				case LEAF:
+					if (!(matrix.getElement(rowCount, colCount) instanceof Leaf)) {
+						matrix.setElement(new Leaf(rowCount, colCount));
+					}
+					break;
+				case WATER:
+					if (!(matrix.getElement(rowCount, colCount) instanceof Water)) {
+						matrix.setElement(new Water(rowCount, colCount));
+					}
+					break;
+				case DIRT:
+					if (!(matrix.getElement(rowCount, colCount) instanceof Dirt)) {
+						matrix.setElement(new Dirt(rowCount, colCount));
+					}
+				case SMOKE:
+					break;
+				case STEAM:
+					break;
+				case WET_SAND:
+					break;
+				default:
+					break;
+				}
+			}
+		}
+	}
+
+	public BrushTypes getBrushType() {
+		return brushType;
+	}
+
+	public void setBrushType(BrushTypes brushType) {
+		this.brushType = brushType;
 	}
 
 }

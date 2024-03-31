@@ -9,10 +9,10 @@ public class Sand extends MovableSolid {
 
 	public static ElementTypes type = ElementTypes.SAND;
 	private static float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
-	private static float maxSpeed = 7f;
+	private static float maxSpeed = 4f;
 	private static float density = 7f;
-	private static float inertialResistance = 0f;
-	private static float friction = 0.1f;
+	private static float inertialResistance = 0.01f;
+	private static float friction = 0.09f;
 
 	public Sand(int row, int column) {
 		super(type, row, column, new CustomColor(ColorValues.SAND_COLOR, true), false, -1, false, true, 0, false, 0,

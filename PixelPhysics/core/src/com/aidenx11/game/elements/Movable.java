@@ -138,7 +138,7 @@ public abstract class Movable extends Element {
 	}
 
 	public boolean setElementFreeFalling(MovableSolid sideways1) {
-		if (Math.random() >= sideways1.getInertialResistance()) {
+		if (Math.random() > sideways1.getInertialResistance()) {
 			sideways1.setFreeFalling(true);
 			return true;
 		}

@@ -2,6 +2,7 @@ package com.aidenx11.game;
 
 import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.input.MouseInput;
+import com.aidenx11.game.input.MouseInput.BrushTypes;
 import com.aidenx11.game.ui.UIStage;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -22,7 +23,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	/** Offset of the ui */
 	public static final int uiOffset = 170;
 	/** */
-	public static final float GRAVITY_ACCELERATION = 0.2f;
+	public static final float GRAVITY_ACCELERATION = 0.1f;
 	/** Pixel size modifier of the game */
 	public static int pixelSizeModifier = 3;
 	/** Matrix for use in the game */
@@ -66,6 +67,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 
 		mouse = new MouseInput(matrix, camera);
 		mouse.setElementType(ElementTypes.SAND);
+		mouse.setBrushType(BrushTypes.SQUARE);
 
 		buttonStage = new UIStage(viewport, mouse, matrix);
 

@@ -36,6 +36,8 @@ public abstract class MovableSolid extends Movable {
 				setFreeFalling(true);
 				parentMatrix.swap(this, nextVertical);
 				setDirection(randDirection);
+				setHorizontalVelocity(0f);
+				updateVerticalVelocity();
 			} else if (nextVertical1 != null && nextVertical1.getDensity() < this.getDensity()
 					&& this.isFreeFalling()) {
 				parentMatrix.swap(this, nextVertical1);
@@ -46,10 +48,10 @@ public abstract class MovableSolid extends Movable {
 				setDirection(randDirection);
 			} else {
 				if (this.getHorizontalVelocity() == 0 && isFreeFalling()) {
-					this.setHorizontalVelocity(getVerticalVelocity() / 2f);
+					this.setHorizontalVelocity(getVerticalVelocity());
 				}
-				this.setVerticalVelocity(0f);
 				setFreeFalling(false);
+				setVerticalVelocity(0f);
 			}
 
 			if (this.isFreeFalling()) {
@@ -63,27 +65,38 @@ public abstract class MovableSolid extends Movable {
 
 		}
 
-		
 		for (int h = 0; h < getHorizontalUpdateCount(); h++) {
-			this.updateHorizontalVelocity();
+			updateHorizontalVelocity();
 			if (getDirection() > 0) {
 				Element elementInDirection = parentMatrix.getElement(getRow(), getColumn() + 1);
+				Element elementBelowDirection = parentMatrix.getElement(getRow() - 1, getColumn() + 1);
 				if (elementInDirection != null && elementInDirection.getDensity() < this.getDensity()) {
-					parentMatrix.swap(this, parentMatrix.getElement(getRow(), getColumn() + 1));
+					if (elementBelowDirection != null && elementBelowDirection.getDensity() < this.getDensity()) {
+						parentMatrix.swap(this, elementBelowDirection);
+					} else {
+						parentMatrix.swap(this, elementInDirection);
+					}
+					this.updateHorizontalVelocity();
 				} else {
 					setHorizontalVelocity(0);
 					setDirection(0);
 				}
 			} else if (getDirection() < 0) {
 				Element elementInDirection = parentMatrix.getElement(getRow(), getColumn() - 1);
+				Element elementBelowDirection = parentMatrix.getElement(getRow() - 1, getColumn() - 1);
 				if (elementInDirection != null && elementInDirection.getDensity() < this.getDensity()) {
-					parentMatrix.swap(this, parentMatrix.getElement(getRow(), getColumn() - 1));
+					if (elementBelowDirection != null && elementBelowDirection.getDensity() < this.getDensity()) {
+						parentMatrix.swap(this, elementBelowDirection);
+					} else {
+						parentMatrix.swap(this, elementInDirection);
+					}
+					this.updateHorizontalVelocity();
 				} else {
 					setHorizontalVelocity(0);
 					setDirection(0);
 				}
 			} else {
-				break;
+				continue;
 			}
 		}
 	}
