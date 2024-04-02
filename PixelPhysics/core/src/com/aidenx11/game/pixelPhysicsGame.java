@@ -68,6 +68,8 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		mouse = new MouseInput(matrix, camera);
 		mouse.setElementType(ElementTypes.SAND);
 		mouse.setBrushType(BrushTypes.SQUARE);
+		mouse.setBrushSize(1);
+		mouse.setCursorSize(1);
 
 		buttonStage = new UIStage(viewport, mouse, matrix);
 

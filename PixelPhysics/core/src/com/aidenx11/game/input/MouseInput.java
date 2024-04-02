@@ -1,5 +1,7 @@
 package com.aidenx11.game.input;
 
+import java.util.ArrayList;
+
 import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.elements.Dirt;
@@ -33,7 +35,9 @@ public class MouseInput {
 	private static int pixelSizeModifier = pixelPhysicsGame.pixelSizeModifier;
 
 	/** Position of the mouse in 3D space. Z is always zero */
-	Vector3 mousePos = new Vector3();
+	public Vector3 mousePos = new Vector3();
+
+	public Vector3 lastMousePos = new Vector3(1, 1, 0);
 
 	/** Number of rows in the matrix */
 	private static int rows = pixelPhysicsGame.rows;
@@ -166,77 +170,43 @@ public class MouseInput {
 	public void detectInput() {
 
 		if (Gdx.input.isTouched()) {
+			lastMousePos.set(mousePos);
 			mousePos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			camera.unproject(mousePos);
 
-			int touchedRow = (int) Math.floor(mousePos.y / pixelSizeModifier);
-			int touchedCol = (int) Math.floor(mousePos.x / pixelSizeModifier);
-			if (touchedRow < rows && touchedRow >= 0 && touchedCol >= 0 && touchedCol < columns) {
-				switch (elementType) {
-				case SAND:
-					if (getBrushSize() == 1) {
-						matrix.setElement(new Sand(touchedRow, touchedCol));
-					} else if (getBrushType() == BrushTypes.CIRCLE) {
-						drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
-					} else if (getBrushType() == BrushTypes.SQUARE) {
-						drawSquare(touchedRow, touchedCol, getBrushSize(), 1);
+			ArrayList<int[]> points = matrix.traverseMatrix(lastMousePos.x, lastMousePos.y, mousePos.x, mousePos.y);
+			if (points.isEmpty()) {
+				points.add(
+						new int[] { (int) (mousePos.y / pixelSizeModifier), (int) (mousePos.x / pixelSizeModifier) });
+			}
+			for (int[] point : points) {
+				if (matrix.isWithinBounds(point[0], point[1])) {
+					float probability;
+					switch (elementType) {
+					case SAND:
+					case EMPTY:
+					case WOOD:
+					case DIRT:
+						probability = 1;
+						break;
+					case LEAF:
+						probability = 0.2f;
+						break;
+					case WATER:
+					case FIRE:
+						probability = 0.4f;
+						break;
+					default:
+						probability = 1;
+						break;
 					}
-					break;
-				case LEAF:
-					if (getBrushSize() == 1) {
-						matrix.setElement(new Leaf(touchedRow, touchedCol));
-					} else if (getBrushType() == BrushTypes.CIRCLE) {
-						drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 0.2);
+
+					if (getBrushType() == BrushTypes.CIRCLE) {
+						drawCircle(point[0], point[1], getBrushSize(), elementType, probability);
 					} else if (getBrushType() == BrushTypes.SQUARE) {
-						drawSquare(touchedRow, touchedCol, getBrushSize(), 0.2);
+						drawSquare(point[0], point[1], getBrushSize(), probability);
 					}
-					break;
-				case WATER:
-					if (getBrushSize() == 1) {
-						matrix.setElement(new Water(touchedRow, touchedCol));
-					} else if (getBrushType() == BrushTypes.CIRCLE) {
-						drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 0.4);
-					} else if (getBrushType() == BrushTypes.SQUARE) {
-						drawSquare(touchedRow, touchedCol, getBrushSize(), 0.4);
-					}
-					break;
-				case EMPTY:
-					if (getBrushSize() == 1) {
-						matrix.setElement(new Empty(touchedRow, touchedCol));
-					} else if (getBrushType() == BrushTypes.CIRCLE) {
-						drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
-					} else if (getBrushType() == BrushTypes.SQUARE) {
-						drawSquare(touchedRow, touchedCol, getBrushSize(), 1);
-					}
-					break;
-				case WOOD:
-					if (getBrushSize() == 1) {
-						matrix.setElement(new Wood(touchedRow, touchedCol));
-					} else if (getBrushType() == BrushTypes.CIRCLE) {
-						drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
-					} else if (getBrushType() == BrushTypes.SQUARE) {
-						drawSquare(touchedRow, touchedCol, getBrushSize(), 1);
-					}
-					break;
-				case FIRE:
-					if (getBrushSize() == 1) {
-						matrix.setElement(new Fire(touchedRow, touchedCol));
-					} else if (getBrushType() == BrushTypes.CIRCLE) {
-						drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 0.4);
-					} else if (getBrushType() == BrushTypes.SQUARE) {
-						drawSquare(touchedRow, touchedCol, getBrushSize(), 0.4);
-					}
-					break;
-				case DIRT:if (getBrushSize() == 1) {
-					matrix.setElement(new Dirt(touchedRow, touchedCol));
-				} else if (getBrushType() == BrushTypes.CIRCLE) {
-					drawCircle(touchedRow, touchedCol, getBrushSize(), elementType, 1);
-				} else if (getBrushType() == BrushTypes.SQUARE) {
-					drawSquare(touchedRow, touchedCol, getBrushSize(), 1);
-				}
-				break;
-				default:
-					break;
+
 				}
 
 			}
@@ -253,6 +223,12 @@ public class MouseInput {
 	 * @param p      probability of each pixel in the square being drawn
 	 */
 	public void drawCircle(int row, int column, int radius, ElementTypes type, double p) {
+
+		if (radius == 1) {
+			drawSquare(row, column, 1, p);
+			return;
+		}
+
 		// Define bounding box
 		int top = (int) (Math.ceil(row + radius) < 0 ? 0 : Math.ceil(row + radius));
 		int bottom = (int) (Math.floor(row - radius) < 0 ? 0 : Math.floor(row - radius));
@@ -262,8 +238,8 @@ public class MouseInput {
 		for (int rowCount = bottom; rowCount <= top; rowCount++) {
 			for (int colCount = left; colCount <= right; colCount++) {
 				if (insideCircle(row, column, radius, rowCount, colCount)) {
-					if (rowCount < 0 || rowCount >= rows || colCount < 0 || colCount >= columns) {
-						break;
+					if (!matrix.isWithinBounds(rowCount, colCount)) {
+						continue;
 					}
 					switch (type) {
 					case SAND:
@@ -329,9 +305,13 @@ public class MouseInput {
 	 * @param type   element type to be drawn
 	 */
 	public void drawSquare(int row, int column, int width, double p) {
-		for (int rowCount = row - width / 2; rowCount < row + width / 2; rowCount++) {
-			for (int colCount = column - width / 2; colCount < column + width / 2; colCount++) {
-				if (rowCount < 0 || rowCount >= rows || colCount < 0 || colCount >= columns) {
+		
+		int difference = width / 2 < 1 ? 1 : width / 2;
+
+		for (int rowCount = row - difference; rowCount < row + difference; rowCount++) {
+			for (int colCount = column - difference; colCount < column + difference; colCount++) {
+
+				if (!matrix.isWithinBounds(rowCount, colCount)) {
 					continue;
 				}
 

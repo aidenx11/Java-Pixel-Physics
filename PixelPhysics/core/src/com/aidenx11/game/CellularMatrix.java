@@ -1,5 +1,9 @@
 package com.aidenx11.game;
 
+import java.util.ArrayList;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import com.aidenx11.game.elements.Dirt;
 import com.aidenx11.game.elements.Element;
 import com.aidenx11.game.elements.Empty;
@@ -14,6 +18,7 @@ import com.aidenx11.game.elements.Wood;
 import com.aidenx11.game.elements.Element.ElementTypes;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 public class CellularMatrix {
@@ -150,7 +155,7 @@ public class CellularMatrix {
 	 */
 	public Element getElement(int row, int column) {
 
-		if (row < 0 || row >= rows || column < 0 || column >= columns) {
+		if (!isWithinBounds(row, column)) {
 			return null;
 		}
 
@@ -165,13 +170,14 @@ public class CellularMatrix {
 	public void setElement(Element element) {
 		int row = element.getRow();
 		int column = element.getColumn();
-		Array<Element> rowArray = matrix.get(row);
-		rowArray.set(column, element);
-		matrix.set(row, rowArray);
+
+		if (isWithinBounds(row, column)) {
+			Array<Element> rowArray = matrix.get(row);
+			rowArray.set(column, element);
+			matrix.set(row, rowArray);
+		}
 	}
-	
-	
-	
+
 	/**
 	 * Draws the current matrix to the screen
 	 * 
@@ -182,7 +188,7 @@ public class CellularMatrix {
 		shapeRenderer.begin(ShapeType.Filled);
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < columns; x++) {
-				if (!(this.getElement(y, x) instanceof Empty)) {
+				if (!(this.getElement(y, x) instanceof Empty) && isWithinBounds(y, x)) {
 					Element thisElement = this.getElement(y, x);
 					if (!(thisElement instanceof Empty)) {
 						shapeRenderer.setColor(thisElement.getColor());
@@ -240,46 +246,88 @@ public class CellularMatrix {
 	 */
 	public void updateFrame(ShapeRenderer sr) {
 
-//		framesSinceLastModifiedElement++;
 		direction = direction ? false : true;
 		Element element;
 
-//		if (getFramesSinceLastModifiedElement() < 60) {
-			for (int y = rows - 1; y >= 0; y--) {
-				if (direction) {
-					for (int x = 0; x < columns; x++) {
-						element = this.getElement(rows - 1 - y, x);
-						if (element.movesDown()) {
-							element.update();
-						}
+		for (int y = rows - 1; y >= 0; y--) {
+			if (direction) {
+				for (int x = 0; x < columns; x++) {
+					element = this.getElement(rows - 1 - y, x);
+					if (element.movesDown()) {
+						element.update();
 					}
-				} else {
-					for (int x = columns - 1; x >= 0; x--) {
-						element = this.getElement(rows - 1 - y, x);
-						if (element.movesDown()) {
-							element.update();
-						}
+				}
+			} else {
+				for (int x = columns - 1; x >= 0; x--) {
+					element = this.getElement(rows - 1 - y, x);
+					if (element.movesDown()) {
+						element.update();
 					}
 				}
 			}
-			for (int y = 0; y < rows; y++) {
-				if (direction) {
-					for (int x = 0; x < columns; x++) {
-						element = this.getElement(rows - 1 - y, x);
-						if (!element.movesDown()) {
-							element.update();
-						}
+		}
+		for (int y = 0; y < rows; y++) {
+			if (direction) {
+				for (int x = 0; x < columns; x++) {
+					element = this.getElement(rows - 1 - y, x);
+					if (!element.movesDown()) {
+						element.update();
 					}
-				} else {
-					for (int x = columns - 1; x >= 0; x--) {
-						element = this.getElement(rows - 1 - y, x);
-						if (!element.movesDown()) {
-							element.update();
-						}
+				}
+			} else {
+				for (int x = columns - 1; x >= 0; x--) {
+					element = this.getElement(rows - 1 - y, x);
+					if (!element.movesDown()) {
+						element.update();
 					}
 				}
 			}
+		}
 //		}
+	}
+
+	public boolean isWithinBounds(int row, int col) {
+		return row >= 0 && row < rows && col >= 0 && col < columns;
+	}
+
+	public ArrayList<int[]> traverseMatrix(float x1, float y1, float x2, float y2) {
+		int col1 = (int) Math.floor(x1 / pixelSizeModifier);
+		int row1 = (int) Math.floor(y1 / pixelSizeModifier);
+		int col2 = (int) Math.floor(x2 / pixelSizeModifier);
+		int row2 = (int) Math.floor(y2 / pixelSizeModifier);
+
+		int xDifference = col2 - col1;
+		int yDifference = row2 - row1;
+		boolean xDifferenceLarger = Math.abs(xDifference) > Math.abs(yDifference);
+
+		int xModifier = xDifference < 0 ? 1 : -1;
+		int yModifier = yDifference < 0 ? 1 : -1;
+
+		int upperBound = Math.max(Math.abs(xDifference), Math.abs(yDifference));
+		int min = Math.min(Math.abs(xDifference), Math.abs(yDifference));
+		float slope = (min == 0 || upperBound == 0) ? 0 : ((float) (min + 1) / (upperBound + 1));
+
+		ArrayList<int[]> points = new ArrayList<int[]>();
+
+		int smallerCount;
+		for (int i = 1; i <= upperBound; i++) {
+			smallerCount = (int) Math.floor(i * slope);
+			int yIncrease, xIncrease;
+			if (xDifferenceLarger) {
+				xIncrease = i;
+				yIncrease = smallerCount;
+			} else {
+				yIncrease = i;
+				xIncrease = smallerCount;
+			}
+			int currentY = row1 + (yIncrease * yModifier);
+			int currentX = col1 + (xIncrease * xModifier);
+			if (isWithinBounds(currentY, currentX)) {
+				points.add(new int[] { currentY, currentX });
+			}
+		}
+
+		return points;
 	}
 
 }
