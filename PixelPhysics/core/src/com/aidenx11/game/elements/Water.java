@@ -8,7 +8,7 @@ public class Water extends Liquid {
 
 	public static ElementTypes type = ElementTypes.WATER;
 	private static float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
-	private static float maxSpeed = 15f;
+	private static float maxSpeed = 20f;
 	private static float density = 6f;
 
 	int[] darkerWater = new int[] { 15, 94, 156 };

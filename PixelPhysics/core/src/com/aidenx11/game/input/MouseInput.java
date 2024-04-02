@@ -11,6 +11,7 @@ import com.aidenx11.game.elements.Fire;
 import com.aidenx11.game.elements.Leaf;
 import com.aidenx11.game.elements.Sand;
 import com.aidenx11.game.elements.Smoke;
+import com.aidenx11.game.elements.Stone;
 import com.aidenx11.game.elements.Water;
 import com.aidenx11.game.elements.Wood;
 import com.badlogic.gdx.Gdx;
@@ -39,10 +40,6 @@ public class MouseInput {
 
 	public Vector3 lastMousePos = new Vector3(1, 1, 0);
 
-	/** Number of rows in the matrix */
-	private static int rows = pixelPhysicsGame.rows;
-	/** Number of columns in the matrix */
-	private static int columns = pixelPhysicsGame.columns;
 	/** Size of brush (radius of circle) */
 	private int brushSize;
 	/** Size of cursor */
@@ -154,7 +151,7 @@ public class MouseInput {
 		sr.setColor(Color.WHITE);
 		if (getBrushType() == BrushTypes.CIRCLE) {
 			sr.circle(Gdx.input.getX(), pixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY(),
-					getCursorSize() * pixelSizeModifier, 100);
+					getCursorSize() * pixelSizeModifier);
 		} else if (getBrushType() == BrushTypes.SQUARE) {
 			sr.rect(Gdx.input.getX() - getCursorSize() * 2 + getCursorSize() / 2,
 					pixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY() - getCursorSize() * 2 + getCursorSize() / 2 - 5,
@@ -193,14 +190,15 @@ public class MouseInput {
 					case EMPTY:
 					case WOOD:
 					case DIRT:
+					case STONE:
 						probability = 1;
 						break;
 					case LEAF:
-						probability = 0.2f;
+						probability = 0.005f * (51 - this.brushSize);
 						break;
 					case WATER:
 					case FIRE:
-						probability = 0.4f;
+						probability = 0.01f * (51 - this.brushSize);
 						break;
 					default:
 						probability = 1;
@@ -244,12 +242,12 @@ public class MouseInput {
 		for (int rowCount = bottom; rowCount <= top; rowCount++) {
 			for (int colCount = left; colCount <= right; colCount++) {
 				if (insideCircle(row, column, radius, rowCount, colCount)) {
-					if (!matrix.isWithinBounds(rowCount, colCount)) {
+					if (!matrix.isWithinBounds(rowCount, colCount) || Math.random() > p) {
 						continue;
 					}
 					switch (type) {
 					case SAND:
-						if (Math.random() < p && !(matrix.getElement(rowCount, colCount) instanceof Sand)) {
+						if (!(matrix.getElement(rowCount, colCount) instanceof Sand)) {
 							matrix.setElement(new Sand(rowCount, colCount));
 						}
 						break;
@@ -257,34 +255,40 @@ public class MouseInput {
 						matrix.setElement(new Empty(rowCount, colCount));
 						break;
 					case WOOD:
-						if (!(matrix.getElement(rowCount, colCount) instanceof Wood) && Math.random() < p) {
+						if (!(matrix.getElement(rowCount, colCount) instanceof Wood)) {
 							matrix.setElement(new Wood(rowCount, colCount));
 						}
 						break;
 					case SMOKE:
-						if (!(matrix.getElement(rowCount, colCount) instanceof Smoke) && Math.random() < p) {
+						if (!(matrix.getElement(rowCount, colCount) instanceof Smoke)) {
 							matrix.setElement(new Smoke(rowCount, colCount));
 						}
 						break;
 					case FIRE:
-						if (!(matrix.getElement(rowCount, colCount) instanceof Fire) && Math.random() < p) {
+						if (!(matrix.getElement(rowCount, colCount) instanceof Fire)) {
 							matrix.setElement(new Fire(rowCount, colCount));
 						}
 						break;
 					case WATER:
-						if (!(matrix.getElement(rowCount, colCount) instanceof Water) && Math.random() < p) {
+						if (!(matrix.getElement(rowCount, colCount) instanceof Water)) {
 							matrix.setElement(new Water(rowCount, colCount));
 						}
 						break;
 					case LEAF:
-						if (!(matrix.getElement(rowCount, colCount) instanceof Leaf) && Math.random() < p) {
+						if (!(matrix.getElement(rowCount, colCount) instanceof Leaf)) {
 							matrix.setElement(new Leaf(rowCount, colCount));
 						}
 						break;
 					case DIRT:
-						if (!(matrix.getElement(rowCount, colCount) instanceof Dirt) && Math.random() < p) {
+						if (!(matrix.getElement(rowCount, colCount) instanceof Dirt)) {
 							matrix.setElement(new Dirt(rowCount, colCount));
 						}
+						break;
+					case STONE:
+						if (!(matrix.getElement(rowCount, colCount) instanceof Stone)) {
+							matrix.setElement(new Stone(rowCount, colCount));
+						}
+						break;
 					default:
 						break;
 					}
@@ -312,12 +316,14 @@ public class MouseInput {
 	 */
 	public void drawSquare(int row, int column, int width, double p) {
 
-		int difference = width / 2 < 1 ? 1 : width / 2;
+		int difference = width / 2 < 1 ? 1 : Math.round(width / 2);
+		int addToMax = difference == 1 ? 0 : difference;
+		int amountToSubtract = addToMax == 0 ? 0 : 1;
 
-		for (int rowCount = row - difference; rowCount < row + difference; rowCount++) {
-			for (int colCount = column - difference; colCount < column + difference; colCount++) {
+		for (int rowCount = row - difference; rowCount < row + addToMax - amountToSubtract; rowCount++) {
+			for (int colCount = column - difference; colCount < column + addToMax; colCount++) {
 
-				if (!matrix.isWithinBounds(rowCount, colCount)) {
+				if (!matrix.isWithinBounds(rowCount, colCount) || (Math.random() > p)) {
 					continue;
 				}
 
@@ -356,10 +362,12 @@ public class MouseInput {
 					if (!(matrix.getElement(rowCount, colCount) instanceof Dirt)) {
 						matrix.setElement(new Dirt(rowCount, colCount));
 					}
+				case STONE:
+					if (!(matrix.getElement(rowCount, colCount) instanceof Stone)) {
+						matrix.setElement(new Stone(rowCount, colCount));
+					}
 				case SMOKE:
-					break;
 				case STEAM:
-					break;
 				case WET_SAND:
 					break;
 				default:

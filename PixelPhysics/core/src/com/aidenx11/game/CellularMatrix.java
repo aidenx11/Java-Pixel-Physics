@@ -1,9 +1,6 @@
 package com.aidenx11.game;
 
 import java.util.ArrayList;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 import com.aidenx11.game.elements.Dirt;
 import com.aidenx11.game.elements.Element;
 import com.aidenx11.game.elements.Empty;
@@ -12,13 +9,14 @@ import com.aidenx11.game.elements.Leaf;
 import com.aidenx11.game.elements.Sand;
 import com.aidenx11.game.elements.Smoke;
 import com.aidenx11.game.elements.Steam;
+import com.aidenx11.game.elements.Stone;
 import com.aidenx11.game.elements.Water;
+import com.aidenx11.game.elements.WetDirt;
 import com.aidenx11.game.elements.WetSand;
 import com.aidenx11.game.elements.Wood;
 import com.aidenx11.game.elements.Element.ElementTypes;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 public class CellularMatrix {
@@ -232,6 +230,12 @@ public class CellularMatrix {
 			break;
 		case DIRT:
 			this.setElement(new Dirt(element.getRow(), element.getColumn()));
+			break;
+		case WET_DIRT:
+			this.setElement(new WetDirt(element.getRow(), element.getColumn()));
+			break;
+		case STONE:
+			this.setElement(new Stone(element.getRow(), element.getColumn()));
 			break;
 		default:
 			break;

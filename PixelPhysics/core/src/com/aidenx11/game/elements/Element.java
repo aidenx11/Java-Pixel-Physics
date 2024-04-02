@@ -3,7 +3,6 @@ package com.aidenx11.game.elements;
 import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
-import com.aidenx11.game.color.CustomColor.ColorValues;
 import com.badlogic.gdx.graphics.Color;
 
 /**
@@ -52,7 +51,7 @@ public abstract class Element {
 	private boolean onFire;
 
 	public enum ElementTypes {
-		SAND, EMPTY, WOOD, SMOKE, FIRE, WATER, STEAM, WET_SAND, LEAF, DIRT;
+		SAND, EMPTY, WOOD, SMOKE, FIRE, WATER, STEAM, WET_SAND, LEAF, DIRT, WET_DIRT, STONE;
 	}
 
 	public static CustomColor[] fireColors = new CustomColor[] { new CustomColor(253, 207, 88),

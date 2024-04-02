@@ -91,14 +91,9 @@ public abstract class Movable extends Element {
 			int delta = (int) Math.signum(this.getVerticalVelocity());
 			Element nextVertical = parentMatrix.getElement(this.getRow() - delta, this.getColumn());
 			int randDirection = Math.random() > 0.5 ? 1 : -1;
-
-			if (this instanceof Water) {
-				nextVertical1 = parentMatrix.getElement(this.getRow() - delta, this.getColumn() - randDirection * 5);
-				nextVertical2 = parentMatrix.getElement(this.getRow() - delta, this.getColumn() + randDirection * 5);
-			} else {
-				nextVertical1 = parentMatrix.getElement(this.getRow() - delta, this.getColumn() - randDirection);
-				nextVertical2 = parentMatrix.getElement(this.getRow() - delta, this.getColumn() + randDirection);
-			}
+			
+			nextVertical1 = parentMatrix.getElement(this.getRow() - delta, this.getColumn() - randDirection);
+			nextVertical2 = parentMatrix.getElement(this.getRow() - delta, this.getColumn() + randDirection);
 
 			Element sideways1 = parentMatrix.getElement(this.getRow(), this.getColumn() - randDirection);
 			Element sideways2 = parentMatrix.getElement(this.getRow(), this.getColumn() + randDirection);

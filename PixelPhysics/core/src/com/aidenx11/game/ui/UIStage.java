@@ -33,6 +33,7 @@ public class UIStage extends Stage {
 	final TextButton squareBrushButton;
 	final TextButton circleBrushButton;
 	final TextButton dirtToolButton;
+	final TextButton stoneToolButton;
 
 	public UIStage(Viewport viewport, MouseInput mouseInput, CellularMatrix matrix) {
 
@@ -80,13 +81,8 @@ public class UIStage extends Stage {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				mouseInput.setElementType(ElementTypes.EMPTY);
+				resetButtonColors();
 				emptyToolButton.setColor(Color.RED);
-				sandToolButton.setColor(Color.LIGHT_GRAY);
-				woodToolButton.setColor(Color.LIGHT_GRAY);
-				fireToolButton.setColor(Color.LIGHT_GRAY);
-				waterToolButton.setColor(Color.LIGHT_GRAY);
-				leafToolButton.setColor(Color.LIGHT_GRAY);
-				dirtToolButton.setColor(Color.LIGHT_GRAY);
 			}
 		});
 
@@ -96,13 +92,8 @@ public class UIStage extends Stage {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				mouseInput.setElementType(ElementTypes.SAND);
+				resetButtonColors();
 				sandToolButton.setColor(Color.RED);
-				emptyToolButton.setColor(Color.LIGHT_GRAY);
-				woodToolButton.setColor(Color.LIGHT_GRAY);
-				fireToolButton.setColor(Color.LIGHT_GRAY);
-				waterToolButton.setColor(Color.LIGHT_GRAY);
-				leafToolButton.setColor(Color.LIGHT_GRAY);
-				dirtToolButton.setColor(Color.LIGHT_GRAY);
 			}
 		});
 
@@ -112,13 +103,8 @@ public class UIStage extends Stage {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				mouseInput.setElementType(ElementTypes.WOOD);
+				resetButtonColors();
 				woodToolButton.setColor(Color.RED);
-				sandToolButton.setColor(Color.LIGHT_GRAY);
-				emptyToolButton.setColor(Color.LIGHT_GRAY);
-				fireToolButton.setColor(Color.LIGHT_GRAY);
-				waterToolButton.setColor(Color.LIGHT_GRAY);
-				leafToolButton.setColor(Color.LIGHT_GRAY);
-				dirtToolButton.setColor(Color.LIGHT_GRAY);
 			}
 		});
 
@@ -128,13 +114,8 @@ public class UIStage extends Stage {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				mouseInput.setElementType(ElementTypes.FIRE);
+				resetButtonColors();
 				fireToolButton.setColor(Color.RED);
-				sandToolButton.setColor(Color.LIGHT_GRAY);
-				woodToolButton.setColor(Color.LIGHT_GRAY);
-				emptyToolButton.setColor(Color.LIGHT_GRAY);
-				waterToolButton.setColor(Color.LIGHT_GRAY);
-				leafToolButton.setColor(Color.LIGHT_GRAY);
-				dirtToolButton.setColor(Color.LIGHT_GRAY);
 			}
 		});
 
@@ -144,13 +125,8 @@ public class UIStage extends Stage {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				mouseInput.setElementType(ElementTypes.WATER);
+				resetButtonColors();
 				waterToolButton.setColor(Color.RED);
-				sandToolButton.setColor(Color.LIGHT_GRAY);
-				woodToolButton.setColor(Color.LIGHT_GRAY);
-				fireToolButton.setColor(Color.LIGHT_GRAY);
-				emptyToolButton.setColor(Color.LIGHT_GRAY);
-				leafToolButton.setColor(Color.LIGHT_GRAY);
-				dirtToolButton.setColor(Color.LIGHT_GRAY);
 			}
 		});
 
@@ -160,13 +136,8 @@ public class UIStage extends Stage {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				mouseInput.setElementType(ElementTypes.LEAF);
+				resetButtonColors();
 				leafToolButton.setColor(Color.RED);
-				waterToolButton.setColor(Color.LIGHT_GRAY);
-				sandToolButton.setColor(Color.LIGHT_GRAY);
-				woodToolButton.setColor(Color.LIGHT_GRAY);
-				fireToolButton.setColor(Color.LIGHT_GRAY);
-				emptyToolButton.setColor(Color.LIGHT_GRAY);
-				dirtToolButton.setColor(Color.LIGHT_GRAY);
 			}
 		});
 		
@@ -176,13 +147,19 @@ public class UIStage extends Stage {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				mouseInput.setElementType(ElementTypes.DIRT);
+				resetButtonColors();
 				dirtToolButton.setColor(Color.RED);
-				waterToolButton.setColor(Color.LIGHT_GRAY);
-				sandToolButton.setColor(Color.LIGHT_GRAY);
-				woodToolButton.setColor(Color.LIGHT_GRAY);
-				fireToolButton.setColor(Color.LIGHT_GRAY);
-				emptyToolButton.setColor(Color.LIGHT_GRAY);
-				leafToolButton.setColor(Color.LIGHT_GRAY);
+			}
+		});
+		
+		stoneToolButton = new TextButton("Stone", skinButton, "default");
+		stoneToolButton.setColor(Color.LIGHT_GRAY);
+		stoneToolButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				mouseInput.setElementType(ElementTypes.STONE);
+				resetButtonColors();
+				stoneToolButton.setColor(Color.RED);
 			}
 		});
 
@@ -214,6 +191,8 @@ public class UIStage extends Stage {
 		elementTable.add(leafToolButton).minWidth(120f).pad(5f);
 		elementTable.row();
 		elementTable.add(dirtToolButton).minWidth(120f).pad(5f);
+		elementTable.row();
+		elementTable.add(stoneToolButton).minWidth(120f).pad(5f);
 		
 		brushTypeTable.add(circleBrushButton).minWidth(60f).pad(5f);
 		brushTypeTable.row();
@@ -221,11 +200,22 @@ public class UIStage extends Stage {
 		
 		squareBrushButton.setColor(Color.RED);
 		
-		brushTypeTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 35, Gdx.graphics.getHeight() - 300f);
-		elementTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset / 2 + 15, Gdx.graphics.getHeight() - 155f);
+		brushTypeTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 35, Gdx.graphics.getHeight() - 390f);
+		elementTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset / 2 + 15, Gdx.graphics.getHeight() - 175f);
 		this.addActor(brushTypeTable);
 		this.addActor(elementTable);
 		this.addActor(brushSizeSlider);
+	}
+	
+	public void resetButtonColors() {
+		dirtToolButton.setColor(Color.LIGHT_GRAY);
+		waterToolButton.setColor(Color.LIGHT_GRAY);
+		sandToolButton.setColor(Color.LIGHT_GRAY);
+		woodToolButton.setColor(Color.LIGHT_GRAY);
+		fireToolButton.setColor(Color.LIGHT_GRAY);
+		emptyToolButton.setColor(Color.LIGHT_GRAY);
+		leafToolButton.setColor(Color.LIGHT_GRAY);
+		stoneToolButton.setColor(Color.LIGHT_GRAY);
 	}
 
 }

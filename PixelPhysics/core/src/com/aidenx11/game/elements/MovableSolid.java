@@ -50,7 +50,9 @@ public abstract class MovableSolid extends Movable {
 				if (this.getHorizontalVelocity() == 0 && isFreeFalling()) {
 					this.setHorizontalVelocity(getVerticalVelocity());
 				}
-				setFreeFalling(false);
+				if (!(nextVertical instanceof MovableSolid) || !((Movable) nextVertical).isFreeFalling()) {
+					setFreeFalling(false);
+				}
 				setVerticalVelocity(0f);
 			}
 
