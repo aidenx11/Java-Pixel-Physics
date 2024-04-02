@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -28,6 +29,8 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	public static int pixelSizeModifier = 3;
 	/** Matrix for use in the game */
 	public static CellularMatrix matrix;
+	
+	
 
 	/** Number of rows of the matrix */
 	public static int rows;
@@ -42,6 +45,8 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	private Viewport viewport;
 	/** Mouse input controller */
 	private MouseInput mouse;
+	
+	public static Vector3 mousePosLastFrame = new Vector3();
 	/** Stage to handle buttons/ui elements */
 	private UIStage buttonStage;
 	
@@ -92,6 +97,8 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 
 		// Draw the buttons to the screen
 		buttonStage.draw();
+		
+		mousePosLastFrame.set(Gdx.input.getX(), SCREEN_HEIGHT - Gdx.input.getY(), 0);
 
 		// Detects mouse input and sets pixel if it is in bounds
 		mouse.detectInput();

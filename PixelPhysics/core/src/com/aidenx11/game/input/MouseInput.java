@@ -170,11 +170,17 @@ public class MouseInput {
 	public void detectInput() {
 
 		if (Gdx.input.isTouched()) {
-			lastMousePos.set(mousePos);
+
+			if (Gdx.input.justTouched()) {
+				lastMousePos.set(pixelPhysicsGame.mousePosLastFrame);
+			} else {
+				lastMousePos.set(mousePos.x, mousePos.y, 0);
+			}
+
 			mousePos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			camera.unproject(mousePos);
 
-			ArrayList<int[]> points = matrix.traverseMatrix(lastMousePos.x, lastMousePos.y, mousePos.x, mousePos.y);
+			ArrayList<int[]> points = matrix.traverseMatrix(mousePos.x, mousePos.y, lastMousePos.x, lastMousePos.y);
 			if (points.isEmpty()) {
 				points.add(
 						new int[] { (int) (mousePos.y / pixelSizeModifier), (int) (mousePos.x / pixelSizeModifier) });
@@ -305,7 +311,7 @@ public class MouseInput {
 	 * @param type   element type to be drawn
 	 */
 	public void drawSquare(int row, int column, int width, double p) {
-		
+
 		int difference = width / 2 < 1 ? 1 : width / 2;
 
 		for (int rowCount = row - difference; rowCount < row + difference; rowCount++) {

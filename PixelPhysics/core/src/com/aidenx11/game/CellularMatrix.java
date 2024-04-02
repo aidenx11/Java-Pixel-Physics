@@ -300,8 +300,8 @@ public class CellularMatrix {
 		int yDifference = row2 - row1;
 		boolean xDifferenceLarger = Math.abs(xDifference) > Math.abs(yDifference);
 
-		int xModifier = xDifference < 0 ? 1 : -1;
-		int yModifier = yDifference < 0 ? 1 : -1;
+		int xModifier = xDifference < 0 ? -1 : 1;
+		int yModifier = yDifference < 0 ? -1 : 1;
 
 		int upperBound = Math.max(Math.abs(xDifference), Math.abs(yDifference));
 		int min = Math.min(Math.abs(xDifference), Math.abs(yDifference));
