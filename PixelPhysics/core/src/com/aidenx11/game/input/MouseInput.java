@@ -8,6 +8,7 @@ import com.aidenx11.game.elements.Dirt;
 import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.elements.Empty;
 import com.aidenx11.game.elements.Fire;
+import com.aidenx11.game.elements.Lava;
 import com.aidenx11.game.elements.Leaf;
 import com.aidenx11.game.elements.Sand;
 import com.aidenx11.game.elements.Smoke;
@@ -178,19 +179,20 @@ public class MouseInput {
 			mousePos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			camera.unproject(mousePos);
 
-			ArrayList<int[]> points = matrix.traverseMatrix(mousePos.x, mousePos.y, lastMousePos.x, lastMousePos.y);
+			ArrayList<int[]> points = CellularMatrix.traverseMatrix(mousePos.x, mousePos.y, lastMousePos.x, lastMousePos.y);
 			if (points.isEmpty()) {
 				points.add(
 						new int[] { (int) (mousePos.y / pixelSizeModifier), (int) (mousePos.x / pixelSizeModifier) });
 			}
 			for (int[] point : points) {
-				if (matrix.isWithinBounds(point[0], point[1])) {
+				if (CellularMatrix.isWithinBounds(point[0], point[1])) {
 					float probability;
 					switch (elementType) {
 					case SAND:
 					case EMPTY:
 					case WOOD:
 					case DIRT:
+					case LAVA:
 					case STONE:
 						probability = 1;
 						break;
@@ -243,7 +245,7 @@ public class MouseInput {
 		for (int rowCount = bottom; rowCount <= top; rowCount++) {
 			for (int colCount = left; colCount <= right; colCount++) {
 				if (insideCircle(row, column, radius, rowCount, colCount)) {
-					if (!matrix.isWithinBounds(rowCount, colCount) || Math.random() > p) {
+					if (!CellularMatrix.isWithinBounds(rowCount, colCount) || Math.random() > p) {
 						continue;
 					}
 					switch (type) {
@@ -290,6 +292,11 @@ public class MouseInput {
 							matrix.setElement(new Stone(rowCount, colCount));
 						}
 						break;
+					case LAVA:
+						if (!(matrix.getElement(rowCount, colCount) instanceof Lava)) {
+							matrix.setElement(new Lava(rowCount, colCount));
+						}
+						break;
 					default:
 						break;
 					}
@@ -330,7 +337,7 @@ public class MouseInput {
 		for (int rowCount = row - difference; rowCount <= row + difference - mod; rowCount++) {
 			for (int colCount = column - difference; colCount <= column + difference; colCount++) {
 
-				if (!matrix.isWithinBounds(rowCount, colCount) || (Math.random() > p)) {
+				if (!CellularMatrix.isWithinBounds(rowCount, colCount) || (Math.random() > p)) {
 					continue;
 				}
 
@@ -373,6 +380,11 @@ public class MouseInput {
 				case STONE:
 					if (!(matrix.getElement(rowCount, colCount) instanceof Stone)) {
 						matrix.setElement(new Stone(rowCount, colCount));
+					}
+					break;
+				case LAVA:
+					if (!(matrix.getElement(rowCount, colCount) instanceof Lava)) {
+						matrix.setElement(new Lava(rowCount, colCount));
 					}
 					break;
 				case SMOKE:

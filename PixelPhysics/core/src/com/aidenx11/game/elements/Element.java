@@ -37,6 +37,8 @@ public abstract class Element {
 
 	/** Number of frames the element can stay alive if it has limited life */
 	private int lifetime;
+	
+	private int meltingPoint;
 
 	private boolean isFlammable;
 
@@ -51,7 +53,7 @@ public abstract class Element {
 	private boolean onFire;
 
 	public enum ElementTypes {
-		SAND, EMPTY, WOOD, SMOKE, FIRE, WATER, STEAM, WET_SAND, LEAF, DIRT, WET_DIRT, STONE;
+		SAND, EMPTY, WOOD, SMOKE, FIRE, WATER, STEAM, WET_SAND, LEAF, DIRT, WET_DIRT, STONE, LAVA;
 	}
 
 	public static CustomColor[] fireColors = new CustomColor[] { new CustomColor(253, 207, 88),
@@ -61,7 +63,7 @@ public abstract class Element {
 
 	public Element(ElementTypes type, int row, int column, CustomColor color, boolean canDie, int lifetime,
 			boolean flammable, boolean extinguishesThings, float chanceToCatch, boolean burnsThings,
-			boolean movesDown) {
+			boolean movesDown, int temperature) {
 		setRow(row);
 		setColumn(column);
 		setColor(color);
@@ -73,6 +75,7 @@ public abstract class Element {
 		setBurnsThings(burnsThings);
 		setLimitedLife(canDie);
 		setMovesDown(movesDown);
+		setTemperature(temperature);
 	}
 
 	public void updateElementLife() {
@@ -101,19 +104,19 @@ public abstract class Element {
 	private boolean updateDryingLogic(Element[] elements) {
 		boolean extinguished = false;
 		for (int i = 0; i < elements.length; i++) {
-			if (elements[i] != null && elements[i].extinguishesThings()) {
-				if (this.isOnFire() && elements[i] instanceof Water) {
+			if (elements[i] != null && elements[i].extinguishesThings() && this.isOnFire()) {
+				if (elements[i] instanceof Water) {
 					parentMatrix.setNewElement(elements[i], ElementTypes.STEAM);
 					extinguished = true;
-				} else if (this.isOnFire() && elements[i] instanceof WetSand) {
+				} else if (elements[i] instanceof WetSand) {
 					parentMatrix.setNewElement(this, ElementTypes.STEAM);
 					parentMatrix.setNewElement(elements[i], ElementTypes.SAND);
 					extinguished = true;
-				} else if (this.isOnFire() && elements[i] instanceof WetDirt) {
+				} else if (elements[i] instanceof WetDirt) {
 					parentMatrix.setNewElement(this, ElementTypes.STEAM);
 					parentMatrix.setNewElement(elements[i], ElementTypes.DIRT);
 					extinguished = true;
-				}
+				} 
 			}
 		}
 		return extinguished;
@@ -274,6 +277,14 @@ public abstract class Element {
 	public void setOnFire(boolean onFire) {
 		this.onFire = onFire;
 		this.setLimitedLife(true);
+	}
+
+	public int getTemperature() {
+		return meltingPoint;
+	}
+
+	public void setTemperature(int temperature) {
+		this.meltingPoint = temperature;
 	}
 
 }

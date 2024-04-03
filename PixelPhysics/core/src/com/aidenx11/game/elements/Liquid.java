@@ -8,9 +8,9 @@ public class Liquid extends Movable {
 
 	public Liquid(ElementTypes type, int row, int column, CustomColor color, boolean canDie, int lifetime,
 			boolean flammable, boolean extinguishesThings, float chanceToCatch, boolean burnsThings, float velocity,
-			float acceleration, float maxSpeed, float density, boolean movesSideways, int dispersionRate) {
+			float acceleration, float maxSpeed, float density, boolean movesSideways, int dispersionRate, int meltingPoint) {
 		super(type, row, column, color, canDie, lifetime, flammable, extinguishesThings, chanceToCatch, burnsThings,
-				velocity, acceleration, maxSpeed, density, movesSideways, true, 0f);
+				velocity, acceleration, maxSpeed, density, movesSideways, true, 0f, meltingPoint);
 		super.setFreeFalling(true);
 		setDispersionRate(dispersionRate);
 	}

@@ -11,7 +11,7 @@ public class Wood extends Immovable {
 
 	public Wood(int row, int column) {
 		super(type, row, column, new CustomColor(ColorValues.WOOD_COLOR, true), false, lifetime, true, false,
-				chanceToCatch, false);
+				chanceToCatch, false, -1);
 	}
 
 }

@@ -35,6 +35,7 @@ public class UIStage extends Stage {
 	final TextButton dirtToolButton;
 	final TextButton stoneToolButton;
 	final TextButton canvasColorButton;
+	final TextButton lavaToolButton;
 
 	MouseInput mouse;
 
@@ -148,6 +149,15 @@ public class UIStage extends Stage {
 				resetButtonColors();
 			}
 		});
+		
+		lavaToolButton = new TextButton("Lava", skinButton, "default");
+		lavaToolButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				mouseInput.setElementType(ElementTypes.LAVA);
+				resetButtonColors();
+			}
+		});
 
 		final Slider brushSizeSlider = new Slider(1f, 40f, 1f, true, skinButton);
 		brushSizeSlider.setWidth(10f);
@@ -198,6 +208,8 @@ public class UIStage extends Stage {
 		elementTable.add(dirtToolButton).minWidth(120f).pad(5f);
 		elementTable.row();
 		elementTable.add(stoneToolButton).minWidth(120f).pad(5f);
+		elementTable.row();
+		elementTable.add(lavaToolButton).minWidth(120f).pad(5f);
 
 		brushTypeTable.add(circleBrushButton).minWidth(60f).pad(5f);
 		brushTypeTable.row();
@@ -208,9 +220,9 @@ public class UIStage extends Stage {
 		resetButtonColors();
 
 		brushTypeTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 40,
-				Gdx.graphics.getHeight() - 400f);
+				Gdx.graphics.getHeight() - 440f);
 		elementTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset / 2 + 15,
-				Gdx.graphics.getHeight() - 175f);
+				Gdx.graphics.getHeight() - 195f);
 		this.addActor(brushTypeTable);
 		this.addActor(elementTable);
 		this.addActor(brushSizeSlider);
@@ -258,6 +270,11 @@ public class UIStage extends Stage {
 				stoneToolButton.setColor(Color.LIGHT_GRAY);
 			} else {
 				stoneToolButton.setColor(Color.RED);
+			}
+			if (mouse.getElementType() != ElementTypes.LAVA) {
+				lavaToolButton.setColor(Color.LIGHT_GRAY);
+			} else {
+				lavaToolButton.setColor(Color.RED);
 			}
 			clearCanvasButton.setColor(Color.LIGHT_GRAY);
 			if (mouse.getBrushType() == BrushTypes.CIRCLE) {
@@ -311,6 +328,11 @@ public class UIStage extends Stage {
 				stoneToolButton.setColor(Color.GRAY);
 			} else {
 				stoneToolButton.setColor(Color.RED);
+			}
+			if (mouse.getElementType() != ElementTypes.LAVA) {
+				lavaToolButton.setColor(Color.GRAY);
+			} else {
+				lavaToolButton.setColor(Color.RED);
 			}
 			clearCanvasButton.setColor(Color.GRAY);
 			if (mouse.getBrushType() == BrushTypes.CIRCLE) {

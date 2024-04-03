@@ -11,7 +11,7 @@ public class Leaf extends Immovable {
 
 	public Leaf(int row, int column) {
 		super(type, row, column, new CustomColor(ColorValues.LEAF, true), false, lifetime, true, false, chanceToCatch,
-				false);
+				false, -1);
 	}
 
 }

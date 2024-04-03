@@ -112,8 +112,8 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		mouse.detectInput();
 
 		// Perform sand settling logic
-		matrix.draw(shapeRenderer);
 		matrix.updateFrame(shapeRenderer);
+		matrix.draw(shapeRenderer);
 
 		mouse.drawCursor(shapeRenderer);
 

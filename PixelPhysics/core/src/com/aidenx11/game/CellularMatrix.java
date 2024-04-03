@@ -5,6 +5,7 @@ import com.aidenx11.game.elements.Dirt;
 import com.aidenx11.game.elements.Element;
 import com.aidenx11.game.elements.Empty;
 import com.aidenx11.game.elements.Fire;
+import com.aidenx11.game.elements.Lava;
 import com.aidenx11.game.elements.Leaf;
 import com.aidenx11.game.elements.Sand;
 import com.aidenx11.game.elements.Smoke;
@@ -47,9 +48,9 @@ public class CellularMatrix {
 	 * @param pixelSizeModifier size of the pixels
 	 */
 	public CellularMatrix(int rows, int columns, int pixelSizeModifier) {
-		this.rows = rows;
-		this.columns = columns;
-		this.pixelSizeModifier = pixelSizeModifier;
+		CellularMatrix.rows = rows;
+		CellularMatrix.columns = columns;
+		CellularMatrix.pixelSizeModifier = pixelSizeModifier;
 		this.matrix = generateMatrix();
 	}
 
@@ -237,6 +238,9 @@ public class CellularMatrix {
 		case STONE:
 			this.setElement(new Stone(element.getRow(), element.getColumn()));
 			break;
+		case LAVA:
+			this.setElement(new Lava(element.getRow(), element.getColumn()));
+			break;
 		default:
 			break;
 		}
@@ -287,7 +291,6 @@ public class CellularMatrix {
 				}
 			}
 		}
-//		}
 	}
 
 	

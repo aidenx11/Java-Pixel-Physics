@@ -15,7 +15,7 @@ public class Sand extends MovableSolid {
 
 	public Sand(int row, int column) {
 		super(type, row, column, new CustomColor(ColorValues.SAND_COLOR, true), false, -1, false, true, 0, false, 0,
-				acceleration, maxSpeed, density, false, inertialResistance, friction);
+				acceleration, maxSpeed, density, false, inertialResistance, friction, -1);
 		super.setFreeFalling(true);
 	}
 
@@ -26,40 +26,15 @@ public class Sand extends MovableSolid {
 	}
 
 	public void actOnOther() {
-
-		Element left = parentMatrix.getElement(getRow(), getColumn() - 1);
-		Element right = parentMatrix.getElement(getRow(), getColumn() + 1);
-		Element downLeft = parentMatrix.getElement(getRow() - 1, getColumn() - 1);
-		Element downRight = parentMatrix.getElement(getRow() - 1, getColumn() + 1);
-		Element down = parentMatrix.getElement(getRow() - 1, getColumn());
-		Element above = parentMatrix.getElement(getRow() + 1, getColumn());
-		Element aboveLeft = parentMatrix.getElement(getRow() + 1, getColumn() - 1);
-		Element aboveRight = parentMatrix.getElement(getRow() + 1, getColumn() + 1);
-
-		if (down instanceof Water) {
-			parentMatrix.setNewElement(down, ElementTypes.WET_SAND);
-			parentMatrix.clearElement(this);
-		} else if (downRight instanceof Water) {
-			parentMatrix.setNewElement(downRight, ElementTypes.WET_SAND);
-			parentMatrix.clearElement(this);
-		} else if (downLeft instanceof Water) {
-			parentMatrix.setNewElement(downLeft, ElementTypes.WET_SAND);
-			parentMatrix.clearElement(this);
-		} else if (left instanceof Water) {
-			parentMatrix.setNewElement(left, ElementTypes.WET_SAND);
-			parentMatrix.clearElement(this);
-		} else if (right instanceof Water) {
-			parentMatrix.setNewElement(right, ElementTypes.WET_SAND);
-			parentMatrix.clearElement(this);
-		} else if (above instanceof Water) {
-			parentMatrix.setNewElement(above, ElementTypes.WET_SAND);
-			parentMatrix.clearElement(this);
-		} else if (aboveLeft instanceof Water) {
-			parentMatrix.setNewElement(aboveLeft, ElementTypes.WET_SAND);
-			parentMatrix.clearElement(this);
-		} else if (aboveRight instanceof Water) {
-			parentMatrix.setNewElement(aboveRight, ElementTypes.WET_SAND);
-			parentMatrix.clearElement(this);
+		
+		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
+		
+		for (int i = 0; i < adjacentElements.length; i++) {
+			if (adjacentElements[i] instanceof Water) {
+				parentMatrix.setNewElement(adjacentElements[i], ElementTypes.WET_SAND);
+				parentMatrix.clearElement(this);
+				return;
+			}
 		}
 	}
 

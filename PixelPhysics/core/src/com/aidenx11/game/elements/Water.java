@@ -16,7 +16,7 @@ public class Water extends Liquid {
 
 	public Water(int row, int column) {
 		super(type, row, column, new CustomColor(ColorValues.WATER, false), false, 1, true, true, 0, false,
-				2f, acceleration, maxSpeed, density, true, dispersionRate);
+				2f, acceleration, maxSpeed, density, true, dispersionRate, -1);
 	}
 
 }

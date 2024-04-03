@@ -15,7 +15,7 @@ public class WetDirt extends MovableSolid {
 
 	public WetDirt(int row, int column) {
 		super(type, row, column, new CustomColor(ColorValues.DIRT, true), false, -1, false, Math.random() < 0.8, 0, false,
-				0, acceleration, maxSpeed, density, false, inertialResistance, friction);
+				0, acceleration, maxSpeed, density, false, inertialResistance, friction, -1);
 		super.setFreeFalling(true);
 	}
 
