@@ -155,8 +155,8 @@ public class MouseInput {
 			sr.circle(Gdx.input.getX(), pixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY(),
 					(getCursorSize() * pixelSizeModifier) / 2);
 		} else if (getBrushType() == BrushTypes.SQUARE) {
-			sr.rect(Gdx.input.getX() - getCursorSize() * 2 + getCursorSize() / 2,
-					pixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY() - getCursorSize() * 2 + getCursorSize() / 2 - 5,
+			sr.rect(Gdx.input.getX() - getBrushSize() * pixelSizeModifier / 2,
+					pixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY() - getBrushSize() * pixelSizeModifier / 2 - pixelSizeModifier,
 					getCursorSize() * pixelSizeModifier, getCursorSize() * pixelSizeModifier);
 		}
 		sr.end();
