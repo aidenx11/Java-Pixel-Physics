@@ -11,8 +11,8 @@ public class Dirt extends MovableSolid {
 	private static float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
 	private static float maxSpeed = 10f;
 	private static float density = 7f;
-	private static float inertialResistance = 0.4f;
-	private static float friction = 0.3f;
+	private static float inertialResistance = 0.5f;
+	private static float friction = 0.4f;
 
 	public Dirt(int row, int column) {
 		super(type, row, column, new CustomColor(ColorValues.WET_DIRT, true), false, -1, false, Math.random() < 0.8, 0, false,

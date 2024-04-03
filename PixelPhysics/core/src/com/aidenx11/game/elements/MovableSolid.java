@@ -28,6 +28,8 @@ public abstract class MovableSolid extends Movable {
 
 			Element sideways1 = parentMatrix.getElement(this.getRow(), this.getColumn() - randDirection);
 			Element sideways2 = parentMatrix.getElement(this.getRow(), this.getColumn() + randDirection);
+			
+			boolean inContainer = sideways1 instanceof Immovable || sideways2 instanceof Immovable;
 
 			nextVertical1 = parentMatrix.getElement(this.getRow() - delta, this.getColumn() - randDirection);
 			nextVertical2 = parentMatrix.getElement(this.getRow() - delta, this.getColumn() + randDirection);
@@ -39,16 +41,16 @@ public abstract class MovableSolid extends Movable {
 				setHorizontalVelocity(0f);
 				updateVerticalVelocity();
 			} else if (nextVertical1 != null && nextVertical1.getDensity() < this.getDensity()
-					&& this.isFreeFalling()) {
+					&& this.isFreeFalling() && !inContainer) {
 				parentMatrix.swap(this, nextVertical1);
 				setDirection(randDirection);
 			} else if (nextVertical2 != null && nextVertical2.getDensity() < this.getDensity()
-					&& this.isFreeFalling()) {
+					&& this.isFreeFalling() && !inContainer) {
 				parentMatrix.swap(this, nextVertical2);
 				setDirection(randDirection);
 			} else {
 				if (this.getHorizontalVelocity() == 0 && isFreeFalling()) {
-					this.setHorizontalVelocity(getVerticalVelocity());
+					this.setHorizontalVelocity((float) (getVerticalVelocity() * (Math.random() + 0.5f)));
 				}
 				if (!(nextVertical instanceof MovableSolid) || !((Movable) nextVertical).isFreeFalling()) {
 					setFreeFalling(false);

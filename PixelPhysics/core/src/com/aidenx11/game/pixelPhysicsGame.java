@@ -24,13 +24,11 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	/** Offset of the ui */
 	public static final int uiOffset = 170;
 	/** */
-	public static final float GRAVITY_ACCELERATION = 0.4f;
+	public static final float GRAVITY_ACCELERATION = 0.1f;
 	/** Pixel size modifier of the game */
 	public static int pixelSizeModifier = 3;
 	/** Matrix for use in the game */
 	public static CellularMatrix matrix;
-	
-	
 
 	/** Number of rows of the matrix */
 	public static int rows;

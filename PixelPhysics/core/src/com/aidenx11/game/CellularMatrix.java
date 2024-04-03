@@ -290,6 +290,8 @@ public class CellularMatrix {
 //		}
 	}
 
+	
+
 	public boolean isWithinBounds(int row, int col) {
 		return row >= 0 && row < rows && col >= 0 && col < columns;
 	}

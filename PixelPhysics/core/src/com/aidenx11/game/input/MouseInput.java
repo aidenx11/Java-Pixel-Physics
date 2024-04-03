@@ -28,6 +28,7 @@ import com.badlogic.gdx.math.Vector3;
  */
 public class MouseInput {
 
+	private static final BrushTypes RECTANGLE = null;
 	/** Camera to base the mouse on */
 	private OrthographicCamera camera;
 	/** Matrix to be modified by the mouse */
@@ -362,10 +363,12 @@ public class MouseInput {
 					if (!(matrix.getElement(rowCount, colCount) instanceof Dirt)) {
 						matrix.setElement(new Dirt(rowCount, colCount));
 					}
+					break;
 				case STONE:
 					if (!(matrix.getElement(rowCount, colCount) instanceof Stone)) {
 						matrix.setElement(new Stone(rowCount, colCount));
 					}
+					break;
 				case SMOKE:
 				case STEAM:
 				case WET_SAND:

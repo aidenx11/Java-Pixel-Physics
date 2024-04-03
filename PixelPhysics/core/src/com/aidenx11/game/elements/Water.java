@@ -8,14 +8,15 @@ public class Water extends Liquid {
 
 	public static ElementTypes type = ElementTypes.WATER;
 	private static float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
-	private static float maxSpeed = 20f;
+	private static float maxSpeed = 15f;
 	private static float density = 6f;
+	private static int dispersionRate = 8;
 
 	int[] darkerWater = new int[] { 15, 94, 156 };
 
 	public Water(int row, int column) {
 		super(type, row, column, new CustomColor(ColorValues.WATER, false), false, 1, true, true, 0, false,
-				0f, acceleration, maxSpeed, density, true);
+				2f, acceleration, maxSpeed, density, true, dispersionRate);
 	}
 
 }
