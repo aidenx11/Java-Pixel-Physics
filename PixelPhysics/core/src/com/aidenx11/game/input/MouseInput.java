@@ -152,7 +152,7 @@ public class MouseInput {
 		sr.setColor(Color.WHITE);
 		if (getBrushType() == BrushTypes.CIRCLE) {
 			sr.circle(Gdx.input.getX(), pixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY(),
-					getCursorSize() * pixelSizeModifier);
+					(getCursorSize() * pixelSizeModifier) / 2);
 		} else if (getBrushType() == BrushTypes.SQUARE) {
 			sr.rect(Gdx.input.getX() - getCursorSize() * 2 + getCursorSize() / 2,
 					pixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY() - getCursorSize() * 2 + getCursorSize() / 2 - 5,
@@ -207,7 +207,7 @@ public class MouseInput {
 					}
 
 					if (getBrushType() == BrushTypes.CIRCLE) {
-						drawCircle(point[0], point[1], getBrushSize(), elementType, probability);
+						drawCircle(point[0], point[1], getBrushSize() / 2, elementType, probability);
 					} else if (getBrushType() == BrushTypes.SQUARE) {
 						drawSquare(point[0], point[1], getBrushSize(), probability);
 					}
@@ -317,12 +317,18 @@ public class MouseInput {
 	 */
 	public void drawSquare(int row, int column, int width, double p) {
 
-		int difference = width / 2 < 1 ? 1 : Math.round(width / 2);
-		int addToMax = difference == 1 ? 0 : difference;
-		int amountToSubtract = addToMax == 0 ? 0 : 1;
+		int difference;
+		int mod;
+		if (width == 1) {
+			difference = 0;
+			mod = 0;
+		} else {
+			difference = width / 2;
+			mod = 2;
+		}
 
-		for (int rowCount = row - difference; rowCount < row + addToMax - amountToSubtract; rowCount++) {
-			for (int colCount = column - difference; colCount < column + addToMax; colCount++) {
+		for (int rowCount = row - difference; rowCount <= row + difference - mod; rowCount++) {
+			for (int colCount = column - difference; colCount <= column + difference; colCount++) {
 
 				if (!matrix.isWithinBounds(rowCount, colCount) || (Math.random() > p)) {
 					continue;
@@ -387,7 +393,7 @@ public class MouseInput {
 	public void setBrushType(BrushTypes brushType) {
 		this.brushType = brushType;
 	}
-	
+
 	public ElementTypes getElementType() {
 		return elementType;
 	}

@@ -22,13 +22,13 @@ import com.badlogic.gdx.utils.Array;
 public class CellularMatrix {
 
 	/** Number of rows in the matrix */
-	public int rows;
+	public static int rows;
 
 	/** Number of columns in the matrix */
-	public int columns;
+	public static int columns;
 
 	/** Pixel size modifier of the matrix */
-	public int pixelSizeModifier;
+	public static int pixelSizeModifier;
 
 	/** The matrix itself. Stores elements */
 	private Array<Array<Element>> matrix;
@@ -292,11 +292,11 @@ public class CellularMatrix {
 
 	
 
-	public boolean isWithinBounds(int row, int col) {
+	public static boolean isWithinBounds(int row, int col) {
 		return row >= 0 && row < rows && col >= 0 && col < columns;
 	}
 
-	public ArrayList<int[]> traverseMatrix(float x1, float y1, float x2, float y2) {
+	public static ArrayList<int[]> traverseMatrix(float x1, float y1, float x2, float y2) {
 		int col1 = (int) Math.floor(x1 / pixelSizeModifier);
 		int row1 = (int) Math.floor(y1 / pixelSizeModifier);
 		int col2 = (int) Math.floor(x2 / pixelSizeModifier);
@@ -334,6 +334,26 @@ public class CellularMatrix {
 		}
 
 		return points;
+	}
+	
+	/**
+	 * top left, top, top right, left, right, bottom left, bottom, bottom right
+	 * @param element
+	 * @return
+	 */
+	public Element[] getAdjacentElements(Element element) {
+		Element[] adjacentElements = new Element[8];
+		
+		adjacentElements[0] = this.getElement(element.getRow() + 1, element.getColumn() - 1);
+		adjacentElements[1] = this.getElement(element.getRow() + 1, element.getColumn());
+		adjacentElements[2] = this.getElement(element.getRow() + 1, element.getColumn() + 1);
+		adjacentElements[3] = this.getElement(element.getRow(), element.getColumn() - 1);
+		adjacentElements[4] = this.getElement(element.getRow(), element.getColumn() + 1);
+		adjacentElements[5] = this.getElement(element.getRow() - 1, element.getColumn() - 1);
+		adjacentElements[6] = this.getElement(element.getRow() - 1, element.getColumn());
+		adjacentElements[7] = this.getElement(element.getRow() - 1, element.getColumn() + 1);
+		
+		return adjacentElements;
 	}
 
 }

@@ -94,125 +94,46 @@ public abstract class Element {
 		if (this.isOnFire() && Math.random() < 0.1) {
 			this.flicker();
 		}
-		
+
 		this.setLifetime(this.getLifetime() - 1);
 	}
 
-	public void updateBurningLogic() {
+	private boolean updateDryingLogic(Element[] elements) {
 		boolean extinguished = false;
+		for (int i = 0; i < elements.length; i++) {
+			if (elements[i] != null && elements[i].extinguishesThings()) {
+				if (this.isOnFire() && elements[i] instanceof Water) {
+					parentMatrix.setNewElement(elements[i], ElementTypes.STEAM);
+					extinguished = true;
+				} else if (this.isOnFire() && elements[i] instanceof WetSand) {
+					parentMatrix.setNewElement(this, ElementTypes.STEAM);
+					parentMatrix.setNewElement(elements[i], ElementTypes.SAND);
+					extinguished = true;
+				} else if (this.isOnFire() && elements[i] instanceof WetDirt) {
+					parentMatrix.setNewElement(this, ElementTypes.STEAM);
+					parentMatrix.setNewElement(elements[i], ElementTypes.DIRT);
+					extinguished = true;
+				}
+			}
+		}
+		return extinguished;
+	}
+
+	private int updateNumberOfAdjacentFire(Element[] elements) {
 		int numberOfFire = 0;
-		Element otherElement = parentMatrix.getElement(this.getRow() + 1, this.getColumn());
-		if (otherElement != null && otherElement.isOnFire()) {
-			numberOfFire++;
-		}
-		if (otherElement != null && otherElement.extinguishesThings()) {
-			if (this.isOnFire() && otherElement instanceof Water) {
-				parentMatrix.setNewElement(otherElement, ElementTypes.STEAM);
-			} else if (this.isOnFire() && otherElement instanceof WetSand) {
-				parentMatrix.setNewElement(this, ElementTypes.STEAM);
-				parentMatrix.setNewElement(otherElement, ElementTypes.SAND);
+		for (int i = 0; i < elements.length; i++) {
+			if (elements[i] != null && elements[i].isOnFire()) {
+				numberOfFire++;
 			}
-			extinguished = true;
+		}
+		return numberOfFire;
+	}
 
-		}
-		otherElement = parentMatrix.getElement(this.getRow() + 1, this.getColumn() + 1);
-		if (otherElement != null && otherElement.isOnFire()) {
-			numberOfFire++;
-		}
-		if (otherElement != null && otherElement.extinguishesThings()) {
-			if (this.isOnFire() && otherElement instanceof Water) {
-				parentMatrix.setNewElement(otherElement, ElementTypes.STEAM);
-			} else if (this.isOnFire() && otherElement instanceof WetSand) {
-				parentMatrix.setNewElement(this, ElementTypes.STEAM);
-				parentMatrix.setNewElement(otherElement, ElementTypes.SAND);
-			}
-			extinguished = true;
-
-		}
-		otherElement = parentMatrix.getElement(this.getRow() + 1, this.getColumn() - 1);
-		if (otherElement != null && otherElement.isOnFire()) {
-			numberOfFire++;
-		}
-		if (otherElement != null && otherElement.extinguishesThings()) {
-			if (this.isOnFire() && otherElement instanceof Water) {
-				parentMatrix.setNewElement(otherElement, ElementTypes.STEAM);
-			} else if (this.isOnFire() && otherElement instanceof WetSand) {
-				parentMatrix.setNewElement(this, ElementTypes.STEAM);
-				parentMatrix.setNewElement(otherElement, ElementTypes.SAND);
-			}
-			extinguished = true;
-
-		}
-		otherElement = parentMatrix.getElement(this.getRow(), this.getColumn() - 1);
-		if (otherElement != null && otherElement.isOnFire()) {
-			numberOfFire++;
-		}
-		if (otherElement != null && otherElement.extinguishesThings()) {
-			if (this.isOnFire() && otherElement instanceof Water) {
-				parentMatrix.setNewElement(otherElement, ElementTypes.STEAM);
-			} else if (this.isOnFire() && otherElement instanceof WetSand) {
-				parentMatrix.setNewElement(this, ElementTypes.STEAM);
-				parentMatrix.setNewElement(otherElement, ElementTypes.SAND);
-			}
-			extinguished = true;
-
-		}
-		otherElement = parentMatrix.getElement(this.getRow(), this.getColumn() + 1);
-		if (otherElement != null && otherElement.isOnFire()) {
-			numberOfFire++;
-		}
-		if (otherElement != null && otherElement.extinguishesThings()) {
-			if (this.isOnFire() && otherElement instanceof Water) {
-				parentMatrix.setNewElement(otherElement, ElementTypes.STEAM);
-			} else if (this.isOnFire() && otherElement instanceof WetSand) {
-				parentMatrix.setNewElement(this, ElementTypes.STEAM);
-				parentMatrix.setNewElement(otherElement, ElementTypes.SAND);
-			}
-			extinguished = true;
-
-		}
-		otherElement = parentMatrix.getElement(this.getRow() - 1, this.getColumn());
-		if (otherElement != null && otherElement.isOnFire()) {
-			numberOfFire++;
-		}
-		if (otherElement != null && otherElement.extinguishesThings()) {
-			if (this.isOnFire() && otherElement instanceof Water) {
-				parentMatrix.setNewElement(otherElement, ElementTypes.STEAM);
-			} else if (this.isOnFire() && otherElement instanceof WetSand) {
-				parentMatrix.setNewElement(this, ElementTypes.STEAM);
-				parentMatrix.setNewElement(otherElement, ElementTypes.SAND);
-			}
-			extinguished = true;
-
-		}
-		otherElement = parentMatrix.getElement(this.getRow() - 1, this.getColumn() + 1);
-		if (otherElement != null && otherElement.isOnFire()) {
-			numberOfFire++;
-		}
-		if (otherElement != null && otherElement.extinguishesThings()) {
-			if (this.isOnFire() && otherElement instanceof Water) {
-				parentMatrix.setNewElement(otherElement, ElementTypes.STEAM);
-			} else if (this.isOnFire() && otherElement instanceof WetSand) {
-				parentMatrix.setNewElement(this, ElementTypes.STEAM);
-				parentMatrix.setNewElement(otherElement, ElementTypes.SAND);
-			}
-			extinguished = true;
-
-		}
-		otherElement = parentMatrix.getElement(this.getRow() - 1, this.getColumn() - 1);
-		if (otherElement != null && otherElement.isOnFire()) {
-			numberOfFire++;
-		}
-		if (otherElement != null && otherElement.extinguishesThings()) {
-			if (this.isOnFire() && otherElement instanceof Water) {
-				parentMatrix.setNewElement(otherElement, ElementTypes.STEAM);
-			} else if (this.isOnFire() && otherElement instanceof WetSand) {
-				parentMatrix.setNewElement(this, ElementTypes.STEAM);
-				parentMatrix.setNewElement(otherElement, ElementTypes.SAND);
-			}
-			extinguished = true;
-
-		}
+	public void updateBurningLogic() {
+		
+		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
+		boolean extinguished = updateDryingLogic(adjacentElements);
+		int numberOfFire = updateNumberOfAdjacentFire(adjacentElements);
 
 		float chanceToCatch = this.getChanceToCatch() * numberOfFire;
 		if (Math.random() < chanceToCatch && !this.isOnFire()) {

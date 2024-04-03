@@ -149,7 +149,7 @@ public class UIStage extends Stage {
 			}
 		});
 
-		final Slider brushSizeSlider = new Slider(1f, 50f, 1f, true, skinButton);
+		final Slider brushSizeSlider = new Slider(1f, 40f, 1f, true, skinButton);
 		brushSizeSlider.setWidth(10f);
 		brushSizeSlider.setHeight(200f);
 		brushSizeSlider.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 15, 640f);
