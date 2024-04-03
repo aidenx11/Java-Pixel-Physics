@@ -387,5 +387,9 @@ public class MouseInput {
 	public void setBrushType(BrushTypes brushType) {
 		this.brushType = brushType;
 	}
+	
+	public ElementTypes getElementType() {
+		return elementType;
+	}
 
 }

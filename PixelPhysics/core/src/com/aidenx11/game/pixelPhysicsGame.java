@@ -29,6 +29,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	public static int pixelSizeModifier = 3;
 	/** Matrix for use in the game */
 	public static CellularMatrix matrix;
+	public static boolean lightsOn;
 
 	/** Number of rows of the matrix */
 	public static int rows;
@@ -43,11 +44,11 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	private Viewport viewport;
 	/** Mouse input controller */
 	private MouseInput mouse;
-	
+
 	public static Vector3 mousePosLastFrame = new Vector3();
 	/** Stage to handle buttons/ui elements */
 	private UIStage buttonStage;
-	
+
 //	private Label frameLabel;
 
 	@Override
@@ -74,6 +75,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		mouse.setBrushSize(1);
 		mouse.setCursorSize(1);
 
+		lightsOn = true;
 		buttonStage = new UIStage(viewport, mouse, matrix);
 
 		Gdx.input.setInputProcessor(buttonStage);
@@ -84,10 +86,18 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	public void render() {
 
 		// Set blue background
-		ScreenUtils.clear(135 / 255f, 206 / 255f, 235 / 255f, 1);
-		
+		if (lightsOn) {
+			ScreenUtils.clear(135 / 255f, 206 / 255f, 235 / 255f, 1);
+		} else {
+			ScreenUtils.clear(9 / 255f, 30 / 255f, 54 / 255f, 1);
+		}
+
 		shapeRenderer.begin(ShapeType.Filled);
-		shapeRenderer.setColor(Color.GRAY);
+		if (lightsOn) {
+			shapeRenderer.setColor(Color.GRAY);
+		} else {
+			shapeRenderer.setColor(Color.DARK_GRAY);
+		}
 		shapeRenderer.rect(SCREEN_WIDTH - uiOffset, 0, uiOffset + 3, SCREEN_HEIGHT);
 		shapeRenderer.setColor(Color.BROWN);
 		shapeRenderer.rect(SCREEN_WIDTH - uiOffset - 2, 0, 2f, SCREEN_HEIGHT);
@@ -95,7 +105,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 
 		// Draw the buttons to the screen
 		buttonStage.draw();
-		
+
 		mousePosLastFrame.set(Gdx.input.getX(), SCREEN_HEIGHT - Gdx.input.getY(), 0);
 
 		// Detects mouse input and sets pixel if it is in bounds
