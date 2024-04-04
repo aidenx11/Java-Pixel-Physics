@@ -14,7 +14,7 @@ public class WetSand extends MovableSolid {
 	private static float friction = 1f;
 
 	public WetSand(int row, int column) {
-		super(type, row, column, new CustomColor(ColorValues.WET_SAND, true), false, -1, false, true, 0, false, 0,
+		super(type, row, column, new CustomColor(ColorValues.WET_SAND, true), false, -1, false, true, 0, false, 1f,
 				acceleration, maxSpeed, density, false, inertialResistance, friction, -1);
 		super.setFreeFalling(true);
 	}

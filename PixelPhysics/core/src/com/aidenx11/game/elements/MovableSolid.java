@@ -50,7 +50,7 @@ public abstract class MovableSolid extends Movable {
 				setDirection(randDirection);
 			} else {
 				if (this.getHorizontalVelocity() == 0 && isFreeFalling()) {
-					this.setHorizontalVelocity((float) (getVerticalVelocity() * (Math.random() + 0.5f)));
+					this.setHorizontalVelocity((float) (getVerticalVelocity() * (Math.random() + 0.2f)));
 				}
 				if (!(nextVertical instanceof MovableSolid) || !((Movable) nextVertical).isFreeFalling()) {
 					setFreeFalling(false);
@@ -68,8 +68,9 @@ public abstract class MovableSolid extends Movable {
 			}
 
 		}
-
-		for (int h = 0; h < getHorizontalUpdateCount(); h++) {
+		
+		int h = getHorizontalUpdateCount();
+		if (h > 0) {
 			updateHorizontalVelocity();
 			if (getDirection() > 0) {
 				Element elementInDirection = parentMatrix.getElement(getRow(), getColumn() + 1);
@@ -99,9 +100,7 @@ public abstract class MovableSolid extends Movable {
 					setHorizontalVelocity(0);
 					setDirection(0);
 				}
-			} else {
-				continue;
-			}
+			} 
 		}
 	}
 

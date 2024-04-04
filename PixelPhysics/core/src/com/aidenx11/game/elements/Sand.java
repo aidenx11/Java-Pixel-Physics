@@ -21,11 +21,12 @@ public class Sand extends MovableSolid {
 
 	@Override
 	public void update() {
-		this.actOnOther();
-		super.updateMovementLogic();
+		if (!this.actOnOther()) {
+			super.update();
+		}
 	}
 
-	public void actOnOther() {
+	public boolean actOnOther() {
 		
 		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
 		
@@ -33,9 +34,10 @@ public class Sand extends MovableSolid {
 			if (adjacentElements[i] instanceof Water) {
 				parentMatrix.setNewElement(adjacentElements[i], ElementTypes.WET_SAND);
 				parentMatrix.clearElement(this);
-				return;
+				return true;
 			}
 		}
+		return false;
 	}
 
 }

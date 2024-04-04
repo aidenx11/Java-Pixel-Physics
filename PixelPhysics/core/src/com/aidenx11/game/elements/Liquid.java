@@ -8,7 +8,8 @@ public class Liquid extends Movable {
 
 	public Liquid(ElementTypes type, int row, int column, CustomColor color, boolean canDie, int lifetime,
 			boolean flammable, boolean extinguishesThings, float chanceToCatch, boolean burnsThings, float velocity,
-			float acceleration, float maxSpeed, float density, boolean movesSideways, int dispersionRate, int meltingPoint) {
+			float acceleration, float maxSpeed, float density, boolean movesSideways, int dispersionRate,
+			int meltingPoint) {
 		super(type, row, column, color, canDie, lifetime, flammable, extinguishesThings, chanceToCatch, burnsThings,
 				velocity, acceleration, maxSpeed, density, movesSideways, true, 0f, meltingPoint);
 		super.setFreeFalling(true);
@@ -31,7 +32,8 @@ public class Liquid extends Movable {
 			for (int i = 0; i <= dispersionRate; i++) {
 				Element currentElement = parentMatrix.getElement(this.getRow() - delta,
 						this.getColumn() - randDirection * i);
-				if ((!(currentElement instanceof Empty) && !(currentElement instanceof Liquid)) || i == dispersionRate) {
+				if ((!(currentElement instanceof Empty) && !(currentElement instanceof Liquid))
+						|| i == dispersionRate) {
 					nextVertical1 = parentMatrix.getElement(this.getRow() - delta,
 							this.getColumn() - randDirection * (i));
 					break;
@@ -41,7 +43,8 @@ public class Liquid extends Movable {
 			for (int i = 0; i <= dispersionRate; i++) {
 				Element currentElement = parentMatrix.getElement(this.getRow() - delta,
 						this.getColumn() + randDirection * i);
-				if ((!(currentElement instanceof Empty) && !(currentElement instanceof Liquid)) || i == dispersionRate) {
+				if ((!(currentElement instanceof Empty) && !(currentElement instanceof Liquid))
+						|| i == dispersionRate) {
 					nextVertical2 = parentMatrix.getElement(this.getRow() - delta,
 							this.getColumn() + randDirection * (i));
 					break;
@@ -68,10 +71,7 @@ public class Liquid extends Movable {
 			if (sideways2 instanceof MovableSolid) {
 				setElementFreeFalling((MovableSolid) sideways2);
 			}
-
-			sideways1 = parentMatrix.getElement(this.getRow(), this.getColumn() - randDirection);
-			sideways2 = parentMatrix.getElement(this.getRow(), this.getColumn() + randDirection);
-
+			
 			if (sideways1 != null && sideways1.getDensity() < this.getDensity()) {
 				parentMatrix.swap(this, sideways1);
 			} else if (sideways2 != null && sideways2.getDensity() < this.getDensity()) {
