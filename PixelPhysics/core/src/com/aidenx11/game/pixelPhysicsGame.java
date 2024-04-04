@@ -26,7 +26,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	/** */
 	public static final float GRAVITY_ACCELERATION = 0.1f;
 	/** Pixel size modifier of the game */
-	public static int pixelSizeModifier = 5;
+	public static int pixelSizeModifier = 4;
 	/** Matrix for use in the game */
 	public static CellularMatrix matrix;
 	public static boolean lightsOn;

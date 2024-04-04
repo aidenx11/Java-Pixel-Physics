@@ -36,6 +36,7 @@ public class UIStage extends Stage {
 	final TextButton stoneToolButton;
 	final TextButton canvasColorButton;
 	final TextButton lavaToolButton;
+	final TextButton obsidianToolButton;
 
 	MouseInput mouse;
 
@@ -158,6 +159,15 @@ public class UIStage extends Stage {
 				resetButtonColors();
 			}
 		});
+		
+		obsidianToolButton = new TextButton("Obsidian", skinButton, "default");
+		obsidianToolButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				mouseInput.setElementType(ElementTypes.OBSIDIAN);
+				resetButtonColors();
+			}
+		});
 
 		final Slider brushSizeSlider = new Slider(1f, 40f, 1f, true, skinButton);
 		brushSizeSlider.setWidth(10f);
@@ -210,6 +220,9 @@ public class UIStage extends Stage {
 		elementTable.add(stoneToolButton).minWidth(120f).pad(5f);
 		elementTable.row();
 		elementTable.add(lavaToolButton).minWidth(120f).pad(5f);
+		elementTable.row();
+		elementTable.add(obsidianToolButton).minWidth(120f).pad(5f);
+		
 
 		brushTypeTable.add(circleBrushButton).minWidth(60f).pad(5f);
 		brushTypeTable.row();
@@ -220,9 +233,9 @@ public class UIStage extends Stage {
 		resetButtonColors();
 
 		brushTypeTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 40,
-				Gdx.graphics.getHeight() - 440f);
+				Gdx.graphics.getHeight() - 470f);
 		elementTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset / 2 + 15,
-				Gdx.graphics.getHeight() - 195f);
+				Gdx.graphics.getHeight() - 215f);
 		this.addActor(brushTypeTable);
 		this.addActor(elementTable);
 		this.addActor(brushSizeSlider);
@@ -275,6 +288,11 @@ public class UIStage extends Stage {
 				lavaToolButton.setColor(Color.LIGHT_GRAY);
 			} else {
 				lavaToolButton.setColor(Color.RED);
+			}
+			if (mouse.getElementType() != ElementTypes.OBSIDIAN) {
+				obsidianToolButton.setColor(Color.LIGHT_GRAY);
+			} else {
+				obsidianToolButton.setColor(Color.RED);
 			}
 			clearCanvasButton.setColor(Color.LIGHT_GRAY);
 			if (mouse.getBrushType() == BrushTypes.CIRCLE) {
@@ -333,6 +351,11 @@ public class UIStage extends Stage {
 				lavaToolButton.setColor(Color.GRAY);
 			} else {
 				lavaToolButton.setColor(Color.RED);
+			}
+			if (mouse.getElementType() != ElementTypes.OBSIDIAN) {
+				obsidianToolButton.setColor(Color.GRAY);
+			} else {
+				obsidianToolButton.setColor(Color.RED);
 			}
 			clearCanvasButton.setColor(Color.GRAY);
 			if (mouse.getBrushType() == BrushTypes.CIRCLE) {

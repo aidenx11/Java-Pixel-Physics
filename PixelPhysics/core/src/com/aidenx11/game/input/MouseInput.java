@@ -10,6 +10,7 @@ import com.aidenx11.game.elements.Empty;
 import com.aidenx11.game.elements.Fire;
 import com.aidenx11.game.elements.Lava;
 import com.aidenx11.game.elements.Leaf;
+import com.aidenx11.game.elements.Obsidian;
 import com.aidenx11.game.elements.Sand;
 import com.aidenx11.game.elements.Smoke;
 import com.aidenx11.game.elements.Stone;
@@ -194,6 +195,7 @@ public class MouseInput {
 					case DIRT:
 					case LAVA:
 					case STONE:
+					case OBSIDIAN:
 						probability = 1;
 						break;
 					case LEAF:
@@ -297,6 +299,11 @@ public class MouseInput {
 							matrix.setElement(new Lava(rowCount, colCount));
 						}
 						break;
+					case OBSIDIAN:
+						if (!(matrix.getElement(rowCount, colCount) instanceof Obsidian)) {
+							matrix.setElement(new Obsidian(rowCount, colCount));
+						}
+						break;
 					default:
 						break;
 					}
@@ -385,6 +392,11 @@ public class MouseInput {
 				case LAVA:
 					if (!(matrix.getElement(rowCount, colCount) instanceof Lava)) {
 						matrix.setElement(new Lava(rowCount, colCount));
+					}
+					break;
+				case OBSIDIAN:
+					if (!(matrix.getElement(rowCount, colCount) instanceof Obsidian)) {
+						matrix.setElement(new Obsidian(rowCount, colCount));
 					}
 					break;
 				case SMOKE:
