@@ -201,7 +201,7 @@ public class CellularMatrix {
 		shapeRenderer.end();
 	}
 
-	public void setNewElement(Element element, ElementTypes newElement) {
+	public Element setNewElement(Element element, ElementTypes newElement) {
 		switch (newElement) {
 		case EMPTY:
 			this.setElement(new Empty(element.getRow(), element.getColumn()));
@@ -248,6 +248,7 @@ public class CellularMatrix {
 		default:
 			break;
 		}
+		return this.getElement(element.getRow(), element.getColumn());
 	}
 
 	/**

@@ -30,7 +30,7 @@ public class CustomColor extends ColorManager {
 		YELLOW(255, 255, 0), GREEN(0, 255, 0), BLUE(0, 127, 255), PURPLE(127, 0, 255), SMOKE(132, 136, 132),
 		FIRE(242, 125, 12), WATER(15, 94, 156), WET_SAND(202, 164, 88), STEAM(199, 213, 224), LEAF(109, 179, 63),
 		DIRT(89, 58, 14), WET_DIRT(153, 117, 65), STONE(126, 124, 128), LAVA_RED(207, 51, 30),
-		LAVA_ORANGE(242, 157, 44), OBSIDIAN(51, 35, 64);
+		LAVA_ORANGE(242, 157, 44), OBSIDIAN(51, 35, 64), LAVA_YELLOW(219, 173, 36);
 
 		/** Hex Code of the color */
 		private int r;
