@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
-import com.aidenx11.game.color.CustomColor.ColorValues;
 
 public class Lava extends Liquid {
 
@@ -181,12 +180,12 @@ public class Lava extends Liquid {
 				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
 				return;
 			} else if (shuffledElements.get(i) instanceof WetSand) {
+				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 50);
 				parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.SAND);
-				parentMatrix.setNewElement(this, ElementTypes.OBSIDIAN);
 				return;
 			} else if (shuffledElements.get(i) instanceof WetDirt) {
+				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 50);
 				parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.DIRT);
-				parentMatrix.setNewElement(this, ElementTypes.OBSIDIAN);
 				return;
 			} else if (shuffledElements.get(i) instanceof Water) {
 				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 50);
@@ -206,7 +205,7 @@ public class Lava extends Liquid {
 				return;
 			}
 			if (shuffledElements.get(i) instanceof Stone) {
-				if (this.numberOfMeltsToHarden <= 150) {
+				if (this.numberOfMeltsToHarden <= 175) {
 					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
 				} else if (Math.random() < chanceToMeltStone) {
 					newElement = parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
@@ -216,21 +215,21 @@ public class Lava extends Liquid {
 				return;
 			}
 			if (shuffledElements.get(i) instanceof Sand) {
-				if (this.numberOfMeltsToHarden <= 100) {
+				if (this.numberOfMeltsToHarden <= 150) {
 					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
 				} else if (Math.random() < chanceToMeltSand) {
 					newElement = parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
-					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 75);
+					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 100);
 					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden());
 				}
 				return;
 			}
 			if (shuffledElements.get(i) instanceof Dirt) {
-				if (this.numberOfMeltsToHarden <= 100) {
+				if (this.numberOfMeltsToHarden <= 150) {
 					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
 				} else if (Math.random() < chanceToMeltDirt) {
 					newElement = parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
-					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 80);
+					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 100);
 					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden());
 				}
 				return;
