@@ -1,4 +1,4 @@
-package com.aidenx11.game.elements;
+package com.aidenx11.game.elements.immovable;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -6,6 +6,11 @@ import java.util.List;
 
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.color.CustomColor.ColorValues;
+import com.aidenx11.game.elements.Element;
+import com.aidenx11.game.elements.Element.ElementTypes;
+import com.aidenx11.game.elements.Empty;
+import com.aidenx11.game.elements.movable.liquid.Water;
+import com.aidenx11.game.elements.movable.movable_solid.Rust;
 
 public class Steel extends Immovable {
 

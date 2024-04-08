@@ -1,7 +1,9 @@
-package com.aidenx11.game.elements;
+package com.aidenx11.game.elements.movable.gas;
 
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.color.CustomColor.ColorValues;
+import com.aidenx11.game.elements.Element;
+import com.aidenx11.game.elements.Element.ElementTypes;
 
 public class Steam extends Gas {
 	

@@ -1,7 +1,13 @@
-package com.aidenx11.game.elements;
+package com.aidenx11.game.elements.movable.movable_solid;
 
 import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.color.CustomColor;
+import com.aidenx11.game.elements.Element;
+import com.aidenx11.game.elements.Element.ElementTypes;
+import com.aidenx11.game.elements.Empty;
+import com.aidenx11.game.elements.immovable.Immovable;
+import com.aidenx11.game.elements.movable.Movable;
+import com.aidenx11.game.elements.movable.liquid.Water;
 
 public abstract class MovableSolid extends Movable {
 

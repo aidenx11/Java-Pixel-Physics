@@ -1,6 +1,12 @@
-package com.aidenx11.game.elements;
+package com.aidenx11.game.elements.movable.liquid;
 
 import com.aidenx11.game.color.CustomColor;
+import com.aidenx11.game.elements.Element;
+import com.aidenx11.game.elements.Element.ElementTypes;
+import com.aidenx11.game.elements.movable.Movable;
+import com.aidenx11.game.elements.movable.gas.Gas;
+import com.aidenx11.game.elements.movable.movable_solid.MovableSolid;
+import com.aidenx11.game.elements.Empty;
 
 public class Liquid extends Movable {
 

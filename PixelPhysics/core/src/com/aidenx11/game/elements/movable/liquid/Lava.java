@@ -1,4 +1,4 @@
-package com.aidenx11.game.elements;
+package com.aidenx11.game.elements.movable.liquid;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -6,6 +6,18 @@ import java.util.List;
 
 import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
+import com.aidenx11.game.elements.Element;
+import com.aidenx11.game.elements.Element.ElementTypes;
+import com.aidenx11.game.elements.Empty;
+import com.aidenx11.game.elements.immovable.Steel;
+import com.aidenx11.game.elements.immovable.Stone;
+import com.aidenx11.game.elements.immovable.Wood;
+import com.aidenx11.game.elements.movable.movable_solid.Dirt;
+import com.aidenx11.game.elements.movable.movable_solid.MovableSolid;
+import com.aidenx11.game.elements.movable.movable_solid.Obsidian;
+import com.aidenx11.game.elements.movable.movable_solid.Sand;
+import com.aidenx11.game.elements.movable.movable_solid.WetDirt;
+import com.aidenx11.game.elements.movable.movable_solid.WetSand;
 
 public class Lava extends Liquid {
 

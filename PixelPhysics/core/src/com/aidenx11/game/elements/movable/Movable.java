@@ -1,6 +1,9 @@
-package com.aidenx11.game.elements;
+package com.aidenx11.game.elements.movable;
 
 import com.aidenx11.game.color.CustomColor;
+import com.aidenx11.game.elements.Element;
+import com.aidenx11.game.elements.Element.ElementTypes;
+import com.aidenx11.game.elements.movable.movable_solid.MovableSolid;
 
 public abstract class Movable extends Element {
 

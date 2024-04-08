@@ -8,6 +8,15 @@ import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.elements.Element.ElementTypes;
+import com.aidenx11.game.elements.immovable.Fire;
+import com.aidenx11.game.elements.immovable.Steel;
+import com.aidenx11.game.elements.movable.gas.Smoke;
+import com.aidenx11.game.elements.movable.gas.Steam;
+import com.aidenx11.game.elements.movable.liquid.Water;
+import com.aidenx11.game.elements.movable.movable_solid.Dirt;
+import com.aidenx11.game.elements.movable.movable_solid.Sand;
+import com.aidenx11.game.elements.movable.movable_solid.WetDirt;
+import com.aidenx11.game.elements.movable.movable_solid.WetSand;
 import com.badlogic.gdx.graphics.Color;
 
 /**

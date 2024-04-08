@@ -1,4 +1,4 @@
-package com.aidenx11.game.elements;
+package com.aidenx11.game.elements.movable.liquid;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -7,6 +7,11 @@ import java.util.List;
 import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.color.CustomColor.ColorValues;
+import com.aidenx11.game.elements.Element;
+import com.aidenx11.game.elements.Element.ElementTypes;
+import com.aidenx11.game.elements.movable.Movable;
+import com.aidenx11.game.elements.movable.movable_solid.Dirt;
+import com.aidenx11.game.elements.movable.movable_solid.Sand;
 
 public class Water extends Liquid {
 

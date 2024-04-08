@@ -1,6 +1,8 @@
-package com.aidenx11.game.elements;
+package com.aidenx11.game.elements.immovable;
 
 import com.aidenx11.game.color.CustomColor.ColorValues;
+import com.aidenx11.game.elements.Element;
+import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.color.CustomColor;
 
 public class Wood extends Immovable {

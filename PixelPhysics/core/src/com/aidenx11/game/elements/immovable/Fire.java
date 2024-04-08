@@ -1,4 +1,7 @@
-package com.aidenx11.game.elements;
+package com.aidenx11.game.elements.immovable;
+
+import com.aidenx11.game.elements.Element;
+import com.aidenx11.game.elements.Element.ElementTypes;
 
 public class Fire extends Immovable {
 
