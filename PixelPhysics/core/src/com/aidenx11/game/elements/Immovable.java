@@ -8,6 +8,7 @@ public class Immovable extends Element {
 			boolean flammable, boolean extinguishesThings, float chanceToCatch, boolean burnsThings, int temperature) {
 		super(type, row, column, color, canDie, lifetime, flammable, extinguishesThings, chanceToCatch, burnsThings,
 				false, temperature);
+		super.setDensity(999f);
 	}
 
 	@Override
@@ -18,9 +19,5 @@ public class Immovable extends Element {
 		}
 	}
 	
-	@Override
-	public float getDensity() {
-		return 999;
-	}
-
+	
 }

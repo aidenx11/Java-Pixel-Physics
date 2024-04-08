@@ -37,6 +37,7 @@ public class UIStage extends Stage {
 	final TextButton canvasColorButton;
 	final TextButton lavaToolButton;
 	final TextButton obsidianToolButton;
+	final TextButton steelToolButton;
 
 	MouseInput mouse;
 
@@ -168,8 +169,17 @@ public class UIStage extends Stage {
 				resetButtonColors();
 			}
 		});
+		
+		steelToolButton = new TextButton("Steel", skinButton, "default");
+		steelToolButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				mouseInput.setElementType(ElementTypes.STEEL);
+				resetButtonColors();
+			}
+		});
 
-		final Slider brushSizeSlider = new Slider(1f, 40f, 1f, true, skinButton);
+		final Slider brushSizeSlider = new Slider(1f, 75f, 1f, true, skinButton);
 		brushSizeSlider.setWidth(10f);
 		brushSizeSlider.setHeight(200f);
 		brushSizeSlider.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 15, 640f);
@@ -222,6 +232,8 @@ public class UIStage extends Stage {
 		elementTable.add(lavaToolButton).minWidth(120f).pad(5f);
 		elementTable.row();
 		elementTable.add(obsidianToolButton).minWidth(120f).pad(5f);
+		elementTable.row();
+		elementTable.add(steelToolButton).minWidth(120f).pad(5f);
 		
 
 		brushTypeTable.add(circleBrushButton).minWidth(60f).pad(5f);
@@ -233,9 +245,9 @@ public class UIStage extends Stage {
 		resetButtonColors();
 
 		brushTypeTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 40,
-				Gdx.graphics.getHeight() - 470f);
+				Gdx.graphics.getHeight() - 510f);
 		elementTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset / 2 + 15,
-				Gdx.graphics.getHeight() - 215f);
+				Gdx.graphics.getHeight() - 235f);
 		this.addActor(brushTypeTable);
 		this.addActor(elementTable);
 		this.addActor(brushSizeSlider);
@@ -293,6 +305,11 @@ public class UIStage extends Stage {
 				obsidianToolButton.setColor(Color.LIGHT_GRAY);
 			} else {
 				obsidianToolButton.setColor(Color.RED);
+			}
+			if (mouse.getElementType() != ElementTypes.STEEL) {
+				steelToolButton.setColor(Color.LIGHT_GRAY);
+			} else {
+				steelToolButton.setColor(Color.RED);
 			}
 			clearCanvasButton.setColor(Color.LIGHT_GRAY);
 			if (mouse.getBrushType() == BrushTypes.CIRCLE) {
@@ -356,6 +373,11 @@ public class UIStage extends Stage {
 				obsidianToolButton.setColor(Color.GRAY);
 			} else {
 				obsidianToolButton.setColor(Color.RED);
+			}
+			if (mouse.getElementType() != ElementTypes.STEEL) {
+				steelToolButton.setColor(Color.GRAY);
+			} else {
+				steelToolButton.setColor(Color.RED);
 			}
 			clearCanvasButton.setColor(Color.GRAY);
 			if (mouse.getBrushType() == BrushTypes.CIRCLE) {

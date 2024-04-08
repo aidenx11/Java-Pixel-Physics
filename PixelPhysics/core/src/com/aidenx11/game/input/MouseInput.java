@@ -13,6 +13,7 @@ import com.aidenx11.game.elements.Leaf;
 import com.aidenx11.game.elements.Obsidian;
 import com.aidenx11.game.elements.Sand;
 import com.aidenx11.game.elements.Smoke;
+import com.aidenx11.game.elements.Steel;
 import com.aidenx11.game.elements.Stone;
 import com.aidenx11.game.elements.Water;
 import com.aidenx11.game.elements.Wood;
@@ -20,7 +21,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -31,7 +31,6 @@ import com.badlogic.gdx.math.Vector3;
  */
 public class MouseInput {
 
-	private static final BrushTypes RECTANGLE = null;
 	/** Camera to base the mouse on */
 	private OrthographicCamera camera;
 	/** Matrix to be modified by the mouse */
@@ -158,7 +157,8 @@ public class MouseInput {
 					(getCursorSize() * pixelSizeModifier) / 2);
 		} else if (getBrushType() == BrushTypes.SQUARE) {
 			sr.rect(Gdx.input.getX() - getBrushSize() * pixelSizeModifier / 2,
-					pixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY() - getBrushSize() * pixelSizeModifier / 2 - pixelSizeModifier,
+					pixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY() - getBrushSize() * pixelSizeModifier / 2
+							- pixelSizeModifier,
 					getCursorSize() * pixelSizeModifier, getCursorSize() * pixelSizeModifier);
 		}
 		sr.end();
@@ -198,14 +198,15 @@ public class MouseInput {
 					case LAVA:
 					case STONE:
 					case OBSIDIAN:
+					case STEEL:
 						probability = 1;
 						break;
 					case LEAF:
-						probability = 0.005f * (51 - this.brushSize);
+						probability = 0.005f * (76 - this.brushSize);
 						break;
 					case WATER:
 					case FIRE:
-						probability = 0.01f * (51 - this.brushSize);
+						probability = 0.03f * (76 - this.brushSize);
 						break;
 					default:
 						probability = 1;
@@ -306,6 +307,11 @@ public class MouseInput {
 							matrix.setElement(new Obsidian(rowCount, colCount));
 						}
 						break;
+					case STEEL:
+						if (!(matrix.getElement(rowCount, colCount) instanceof Steel)) {
+							matrix.setElement(new Steel(rowCount, colCount));
+						}
+						break;
 					default:
 						break;
 					}
@@ -399,6 +405,11 @@ public class MouseInput {
 				case OBSIDIAN:
 					if (!(matrix.getElement(rowCount, colCount) instanceof Obsidian)) {
 						matrix.setElement(new Obsidian(rowCount, colCount));
+					}
+					break;
+				case STEEL:
+					if (!(matrix.getElement(rowCount, colCount) instanceof Steel)) {
+						matrix.setElement(new Steel(rowCount, colCount));
 					}
 					break;
 				case SMOKE:

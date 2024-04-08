@@ -1,5 +1,9 @@
 package com.aidenx11.game.elements;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
@@ -51,9 +55,11 @@ public abstract class Element {
 	private boolean movesDown;
 
 	private boolean onFire;
+	
+	private boolean fallingThroughAir = false;
 
 	public enum ElementTypes {
-		SAND, EMPTY, WOOD, SMOKE, FIRE, WATER, STEAM, WET_SAND, LEAF, DIRT, WET_DIRT, STONE, LAVA, OBSIDIAN;
+		SAND, EMPTY, WOOD, SMOKE, FIRE, WATER, STEAM, WET_SAND, LEAF, DIRT, WET_DIRT, STONE, LAVA, OBSIDIAN, STEEL, RUST;
 	}
 
 	public static CustomColor[] fireColors = new CustomColor[] { new CustomColor(253, 207, 88),
@@ -88,8 +94,9 @@ public abstract class Element {
 				} else {
 					parentMatrix.clearElement(this);
 				}
+			} else if (this instanceof Steel) {
+				parentMatrix.setNewElement(this, ElementTypes.RUST);
 			}
-
 		}
 
 		if (this.isOnFire() && Math.random() < 0.1) {
@@ -97,6 +104,20 @@ public abstract class Element {
 		}
 
 		this.setLifetime(this.getLifetime() - 1);
+	}
+	
+	public void causeRust() {
+		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
+		List<Element> shuffledElements = Arrays.asList(adjacentElements);
+		Collections.shuffle(shuffledElements);
+		Element nextElement;
+		for (int i = 0; i < shuffledElements.size(); i++) {
+			nextElement = shuffledElements.get(i);
+			if (nextElement instanceof Steel && !nextElement.limitedLife()
+					&& Math.random() < ((Steel) nextElement).getChanceToRust()) {
+				nextElement.setLimitedLife(true);
+			}
+		}
 	}
 
 	private boolean updateDryingLogic(Element[] elements) {
@@ -283,6 +304,14 @@ public abstract class Element {
 
 	public void setTemperature(int temperature) {
 		this.meltingPoint = temperature;
+	}
+
+	public boolean isFallingThroughAir() {
+		return fallingThroughAir;
+	}
+
+	public void setFallingThroughAir(boolean fallingThroughAir) {
+		this.fallingThroughAir = fallingThroughAir;
 	}
 
 }

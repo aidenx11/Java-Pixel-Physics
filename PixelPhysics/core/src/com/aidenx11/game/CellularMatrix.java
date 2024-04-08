@@ -8,9 +8,11 @@ import com.aidenx11.game.elements.Fire;
 import com.aidenx11.game.elements.Lava;
 import com.aidenx11.game.elements.Leaf;
 import com.aidenx11.game.elements.Obsidian;
+import com.aidenx11.game.elements.Rust;
 import com.aidenx11.game.elements.Sand;
 import com.aidenx11.game.elements.Smoke;
 import com.aidenx11.game.elements.Steam;
+import com.aidenx11.game.elements.Steel;
 import com.aidenx11.game.elements.Stone;
 import com.aidenx11.game.elements.Water;
 import com.aidenx11.game.elements.WetDirt;
@@ -244,6 +246,12 @@ public class CellularMatrix {
 			break;
 		case OBSIDIAN:
 			this.setElement(new Obsidian(element.getRow(), element.getColumn()));
+			break;
+		case STEEL:
+			this.setElement(new Steel(element.getRow(), element.getColumn()));
+			break;
+		case RUST:
+			this.setElement(new Rust(element.getRow(), element.getColumn()));
 			break;
 		default:
 			break;

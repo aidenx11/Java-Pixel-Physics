@@ -18,5 +18,11 @@ public class WetDirt extends MovableSolid {
 				1f, acceleration, maxSpeed, density, false, inertialResistance, friction, -1);
 		super.setFreeFalling(true);
 	}
+	
+	@Override
+	public void update() {
+		this.causeRust();
+		super.update();
+	}
 
 }

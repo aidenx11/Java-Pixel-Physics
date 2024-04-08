@@ -1,5 +1,6 @@
 package com.aidenx11.game.elements;
 
+import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.color.CustomColor;
 
 public abstract class MovableSolid extends Movable {
@@ -21,30 +22,56 @@ public abstract class MovableSolid extends Movable {
 
 			Element nextVertical1;
 			Element nextVertical2;
+			if (this.isFallingThroughAir()) {
+				this.setFallingThroughAir(false);
+			}
 
 			int delta = (int) Math.signum(this.getVerticalVelocity());
+			if (delta > 0) {
+				for (int i = this.getRow() - delta; i >= 0; i--) {
+					if (parentMatrix.getElement(i, this.getColumn()) instanceof Immovable) {
+						break;
+					}
+					if (parentMatrix.getElement(i, this.getColumn()) instanceof Empty) {
+						setFallingThroughAir(true);
+						break;
+					}
+				}
+			} else if (delta < 0) {
+				for (int i = this.getRow() - delta; i <= CellularMatrix.rows; i++) {
+					if (parentMatrix.getElement(i, this.getColumn()) instanceof Immovable) {
+						break;
+					}
+					if (parentMatrix.getElement(i, this.getColumn()) instanceof Empty) {
+						setFallingThroughAir(true);
+						break;
+					}
+				}
+			}
 			Element nextVertical = parentMatrix.getElement(this.getRow() - delta, this.getColumn());
 			int randDirection = Math.random() > 0.5 ? 1 : -1;
 
 			Element sideways1 = parentMatrix.getElement(this.getRow(), this.getColumn() - randDirection);
 			Element sideways2 = parentMatrix.getElement(this.getRow(), this.getColumn() + randDirection);
-			
+
 			boolean inContainer = sideways1 instanceof Immovable || sideways2 instanceof Immovable;
 
 			nextVertical1 = parentMatrix.getElement(this.getRow() - delta, this.getColumn() - randDirection);
 			nextVertical2 = parentMatrix.getElement(this.getRow() - delta, this.getColumn() + randDirection);
 
-			if (nextVertical != null && nextVertical.getDensity() < this.getDensity()) {
+			if (nextVertical != null && (nextVertical.getDensity() < this.getDensity() || this.isFallingThroughAir())) {
 				setFreeFalling(true);
 				parentMatrix.swap(this, nextVertical);
 				setDirection(randDirection);
 				setHorizontalVelocity(0f);
 				updateVerticalVelocity();
-			} else if (nextVertical1 != null && nextVertical1.getDensity() < this.getDensity()
+			} else if (nextVertical1 != null
+					&& (nextVertical1.getDensity() < this.getDensity() || nextVertical1.isFallingThroughAir())
 					&& this.isFreeFalling() && !inContainer) {
 				parentMatrix.swap(this, nextVertical1);
 				setDirection(randDirection);
-			} else if (nextVertical2 != null && nextVertical2.getDensity() < this.getDensity()
+			} else if (nextVertical2 != null
+					&& (nextVertical2.getDensity() < this.getDensity() || nextVertical2.isFallingThroughAir())
 					&& this.isFreeFalling() && !inContainer) {
 				parentMatrix.swap(this, nextVertical2);
 				setDirection(randDirection);
@@ -68,7 +95,7 @@ public abstract class MovableSolid extends Movable {
 			}
 
 		}
-		
+
 		int h = getHorizontalUpdateCount();
 		if (h > 0) {
 			updateHorizontalVelocity();
@@ -100,7 +127,7 @@ public abstract class MovableSolid extends Movable {
 					setHorizontalVelocity(0);
 					setDirection(0);
 				}
-			} 
+			}
 		}
 	}
 

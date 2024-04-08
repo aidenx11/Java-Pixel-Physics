@@ -19,5 +19,10 @@ public class WetSand extends MovableSolid {
 		super.setFreeFalling(true);
 	}
 	
+	@Override
+	public void update() {
+		this.causeRust();
+		super.update();
+	}
 	
 }
