@@ -13,7 +13,7 @@ public class Water extends Liquid {
 	public static ElementTypes type = ElementTypes.WATER;
 	private static float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION + 0.2f;
 	private static float maxSpeed = 15f;
-	private static float density = 6f;
+	private static float density = 7f;
 	private static int dispersionRate = 8;
 
 	int[] darkerWater = new int[] { 15, 94, 156 };
@@ -40,12 +40,14 @@ public class Water extends Liquid {
 		for (int i = 0; i < shuffledElements.size(); i++) {
 			nextElement = shuffledElements.get(i);
 			if (nextElement instanceof Sand) {
-				parentMatrix.setNewElement(nextElement, ElementTypes.WET_SAND);
+				Element newElement = parentMatrix.setNewElement(nextElement, ElementTypes.WET_SAND);
+				((Movable) newElement).setVerticalVelocity(((Movable) nextElement).getVerticalVelocity());
 				parentMatrix.clearElement(this);
 				return true;
 			}
 			if (nextElement instanceof Dirt) {
-				parentMatrix.setNewElement(nextElement, ElementTypes.WET_DIRT);
+				Element newElement = parentMatrix.setNewElement(nextElement, ElementTypes.WET_DIRT);
+				((Movable) newElement).setVerticalVelocity(((Movable) nextElement).getVerticalVelocity());
 				parentMatrix.clearElement(this);
 				return true;
 			}

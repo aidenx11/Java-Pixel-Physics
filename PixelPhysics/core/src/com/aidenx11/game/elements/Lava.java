@@ -210,6 +210,13 @@ public class Lava extends Liquid {
 			} else if (shuffledElements.get(i) instanceof Steel) {
 				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
 				continue;
+			} else if (shuffledElements.get(i) instanceof Wood) {
+				if (Math.random() < 0.01) {
+					newElement = parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
+					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 25);
+					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden());
+				}
+				continue;
 			}
 			if (shuffledElements.get(i) instanceof Obsidian) {
 				if (this.numberOfMeltsToHarden <= 300) {

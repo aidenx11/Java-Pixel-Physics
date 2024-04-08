@@ -32,7 +32,8 @@ public abstract class MovableSolid extends Movable {
 					if (parentMatrix.getElement(i, this.getColumn()) instanceof Immovable) {
 						break;
 					}
-					if (parentMatrix.getElement(i, this.getColumn()) instanceof Empty) {
+					if (parentMatrix.getElement(i, this.getColumn()) instanceof Empty
+							|| parentMatrix.getElement(i, this.getColumn()) instanceof Water) {
 						setFallingThroughAir(true);
 						break;
 					}
@@ -42,7 +43,8 @@ public abstract class MovableSolid extends Movable {
 					if (parentMatrix.getElement(i, this.getColumn()) instanceof Immovable) {
 						break;
 					}
-					if (parentMatrix.getElement(i, this.getColumn()) instanceof Empty) {
+					if (parentMatrix.getElement(i, this.getColumn()) instanceof Empty
+							|| parentMatrix.getElement(i, this.getColumn()) instanceof Water) {
 						setFallingThroughAir(true);
 						break;
 					}
