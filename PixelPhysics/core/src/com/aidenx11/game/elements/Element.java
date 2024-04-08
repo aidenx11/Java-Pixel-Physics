@@ -37,7 +37,7 @@ public abstract class Element {
 
 	/** Number of frames the element can stay alive if it has limited life */
 	private int lifetime;
-	
+
 	private int meltingPoint;
 
 	private boolean isFlammable;
@@ -62,8 +62,8 @@ public abstract class Element {
 	public abstract void update();
 
 	public Element(ElementTypes type, int row, int column, CustomColor color, boolean canDie, int lifetime,
-			boolean flammable, boolean extinguishesThings, float chanceToCatch, boolean burnsThings,
-			boolean movesDown, int temperature) {
+			boolean flammable, boolean extinguishesThings, float chanceToCatch, boolean burnsThings, boolean movesDown,
+			int temperature) {
 		setRow(row);
 		setColumn(column);
 		setColor(color);
@@ -81,15 +81,17 @@ public abstract class Element {
 	public void updateElementLife() {
 		if (this.limitedLife() && this.getLifetime() < 1) {
 			switch (this.getType()) {
+			case STEAM:
 			case SMOKE:
-				parentMatrix.setNewElement(this, ElementTypes.EMPTY);
+				parentMatrix.clearElement(this);
 				break;
 			case FIRE:
 			case WOOD:
 				parentMatrix.setNewElement(this, ElementTypes.SMOKE);
 				break;
+
 			default:
-				parentMatrix.setNewElement(this, ElementTypes.SMOKE);
+				parentMatrix.clearElement(this);
 				break;
 			}
 		}
@@ -116,7 +118,7 @@ public abstract class Element {
 					parentMatrix.setNewElement(this, ElementTypes.STEAM);
 					parentMatrix.setNewElement(elements[i], ElementTypes.DIRT);
 					extinguished = true;
-				} 
+				}
 			}
 		}
 		return extinguished;
@@ -133,7 +135,7 @@ public abstract class Element {
 	}
 
 	public void updateBurningLogic() {
-		
+
 		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
 		boolean extinguished = updateDryingLogic(adjacentElements);
 		int numberOfFire = updateNumberOfAdjacentFire(adjacentElements);

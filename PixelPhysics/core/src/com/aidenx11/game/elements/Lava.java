@@ -1,5 +1,9 @@
 package com.aidenx11.game.elements;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.color.CustomColor.ColorValues;
@@ -36,9 +40,9 @@ public class Lava extends Liquid {
 
 	@Override
 	public void update() {
+		this.updateColor();
 		this.actOnOther();
 		this.distributeHeat();
-		this.updateColor();
 		this.updateMovementLogic();
 	}
 
@@ -82,9 +86,8 @@ public class Lava extends Liquid {
 			}
 
 			if (nextVertical != null && nextVertical.getDensity() < this.getDensity()) {
-				if (!(nextVertical instanceof Empty) && !(nextVertical instanceof Lava)
-						&& !(nextVertical instanceof Gas)) {
-					this.setVerticalVelocity(0.01f);
+				if (nextVertical instanceof Liquid && !(nextVertical instanceof Lava)) {
+					this.setVerticalVelocity(0.7f);
 				}
 				parentMatrix.swap(this, nextVertical);
 			} else if (nextVertical1 != null && nextVertical1.getDensity() < this.getDensity() && nextVertical != null
@@ -94,11 +97,16 @@ public class Lava extends Liquid {
 					&& nextVertical.getDensity() > this.getDensity()) {
 				parentMatrix.swap(this, nextVertical2);
 			} else {
-				this.setVerticalVelocity(2f);
+				this.setVerticalVelocity(2.5f);
 			}
 
 			Element sideways1 = parentMatrix.getElement(this.getRow(), this.getColumn() - randDirection);
 			Element sideways2 = parentMatrix.getElement(this.getRow(), this.getColumn() + randDirection);
+			nextVertical = parentMatrix.getElement(this.getRow() - delta, this.getColumn());
+
+			if (nextVertical == null) {
+				return;
+			}
 
 			if (sideways1 instanceof MovableSolid) {
 				setElementFreeFalling((MovableSolid) sideways1);
@@ -121,7 +129,7 @@ public class Lava extends Liquid {
 	}
 
 	public void updateColor() {
-		int newIdx = 0;
+		int newIdx = lavaColorsRGB.length - 1;
 		for (int i = 0; i < lavaColorsRGB.length; i++) {
 			if (idxDifference * i <= numberOfMeltsToHarden) {
 				newIdx = lavaColorsRGB.length - i - 1;
@@ -151,61 +159,80 @@ public class Lava extends Liquid {
 	public void actOnOther() {
 
 		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
+		List<Element> shuffledElements = Arrays.asList(adjacentElements);
+		Collections.shuffle(shuffledElements);
 		Element newElement;
 
-		for (int i = 0; i < adjacentElements.length; i++) {
+		for (int i = 0; i < shuffledElements.size(); i++) {
 
 			if (getNumberOfMeltsToHarden() < 1) {
 				parentMatrix.setNewElement(this, ElementTypes.OBSIDIAN);
 				return;
 			}
-			if (adjacentElements[i] instanceof Empty) {
-				if (Math.random() < 0.0003) {
-					parentMatrix.setNewElement(adjacentElements[i], ElementTypes.SMOKE);
 
+			if (shuffledElements.get(i) == null) {
+				continue;
+			}
+
+			if (shuffledElements.get(i) instanceof Empty) {
+				if (Math.random() < 0.0003) {
+					parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.SMOKE);
 				}
 				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
 				return;
-			}
-			if (adjacentElements[i] instanceof Obsidian) {
-				if (this.numberOfMeltsToHarden <= 300) {
-					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
-				} else if (Math.random() < chanceToMeltObsidian) {
-					newElement = parentMatrix.setNewElement(adjacentElements[i], ElementTypes.LAVA);
-					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 250);
-					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden());
-
+			} else if (shuffledElements.get(i) instanceof WetSand) {
+				parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.SAND);
+				parentMatrix.setNewElement(this, ElementTypes.OBSIDIAN);
+				return;
+			} else if (shuffledElements.get(i) instanceof WetDirt) {
+				parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.DIRT);
+				parentMatrix.setNewElement(this, ElementTypes.OBSIDIAN);
+				return;
+			} else if (shuffledElements.get(i) instanceof Water) {
+				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 50);
+				if (Math.random() < 0.007) {
+					parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.STEAM);
 				}
 				return;
 			}
-			if (adjacentElements[i] instanceof WetSand) {
-				parentMatrix.setNewElement(adjacentElements[i], ElementTypes.SAND);
-				parentMatrix.setNewElement(this, ElementTypes.OBSIDIAN);
+			if (shuffledElements.get(i) instanceof Obsidian) {
+				if (this.numberOfMeltsToHarden <= 300) {
+					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
+				} else if (Math.random() < chanceToMeltObsidian) {
+					newElement = parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
+					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 250);
+					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden());
+				}
 				return;
 			}
-			if (adjacentElements[i] instanceof WetDirt) {
-				parentMatrix.setNewElement(adjacentElements[i], ElementTypes.DIRT);
-				parentMatrix.setNewElement(this, ElementTypes.OBSIDIAN);
+			if (shuffledElements.get(i) instanceof Stone) {
+				if (this.numberOfMeltsToHarden <= 150) {
+					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
+				} else if (Math.random() < chanceToMeltStone) {
+					newElement = parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
+					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 150);
+					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden());
+				}
 				return;
 			}
-			if (adjacentElements[i] instanceof Water) {
-				parentMatrix.setNewElement(adjacentElements[i], ElementTypes.STEAM);
-				parentMatrix.setNewElement(this, ElementTypes.OBSIDIAN);
+			if (shuffledElements.get(i) instanceof Sand) {
+				if (this.numberOfMeltsToHarden <= 100) {
+					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
+				} else if (Math.random() < chanceToMeltSand) {
+					newElement = parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
+					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 75);
+					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden());
+				}
 				return;
-			} else if (adjacentElements[i] instanceof Stone && Math.random() < chanceToMeltStone) {
-				newElement = parentMatrix.setNewElement(adjacentElements[i], ElementTypes.LAVA);
-				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 150);
-				((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden());
-				return;
-			} else if (adjacentElements[i] instanceof Sand && Math.random() < chanceToMeltSand) {
-				newElement = parentMatrix.setNewElement(adjacentElements[i], ElementTypes.LAVA);
-				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 120);
-				((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden());
-				return;
-			} else if (adjacentElements[i] instanceof Dirt && Math.random() < chanceToMeltDirt) {
-				newElement = parentMatrix.setNewElement(adjacentElements[i], ElementTypes.LAVA);
-				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 100);
-				((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden());
+			}
+			if (shuffledElements.get(i) instanceof Dirt) {
+				if (this.numberOfMeltsToHarden <= 100) {
+					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
+				} else if (Math.random() < chanceToMeltDirt) {
+					newElement = parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
+					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 80);
+					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden());
+				}
 				return;
 			} else if (Math.random() < 0.03) {
 				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);

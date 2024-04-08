@@ -20,6 +20,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -180,7 +181,8 @@ public class MouseInput {
 			mousePos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			camera.unproject(mousePos);
 
-			ArrayList<int[]> points = CellularMatrix.traverseMatrix(mousePos.x, mousePos.y, lastMousePos.x, lastMousePos.y);
+			ArrayList<int[]> points = CellularMatrix.traverseMatrix(mousePos.x, mousePos.y, lastMousePos.x,
+					lastMousePos.y);
 			if (points.isEmpty()) {
 				points.add(
 						new int[] { (int) (mousePos.y / pixelSizeModifier), (int) (mousePos.x / pixelSizeModifier) });

@@ -53,9 +53,11 @@ public class Liquid extends Movable {
 
 			if (nextVertical != null && nextVertical.getDensity() < this.getDensity()) {
 				parentMatrix.swap(this, nextVertical);
-			} else if (nextVertical1 != null && nextVertical1.getDensity() < this.getDensity()) {
+			} else if (nextVertical1 != null && !(nextVertical1 instanceof Gas)
+					&& nextVertical1.getDensity() < this.getDensity()) {
 				parentMatrix.swap(this, nextVertical1);
-			} else if (nextVertical2 != null && nextVertical2.getDensity() < this.getDensity()) {
+			} else if (nextVertical2 != null && !(nextVertical2 instanceof Gas)
+					&& nextVertical2.getDensity() < this.getDensity()) {
 				parentMatrix.swap(this, nextVertical2);
 			} else {
 				this.setVerticalVelocity(0f);
@@ -71,7 +73,7 @@ public class Liquid extends Movable {
 			if (sideways2 instanceof MovableSolid) {
 				setElementFreeFalling((MovableSolid) sideways2);
 			}
-			
+
 			if (sideways1 != null && sideways1.getDensity() < this.getDensity()) {
 				parentMatrix.swap(this, sideways1);
 			} else if (sideways2 != null && sideways2.getDensity() < this.getDensity()) {
