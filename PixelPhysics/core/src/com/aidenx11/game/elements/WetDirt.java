@@ -8,7 +8,7 @@ public class WetDirt extends MovableSolid {
 
 	public static ElementTypes type = ElementTypes.DIRT;
 	private static float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION - 0.05f;
-	private static float maxSpeed = 5f;
+	private static float maxSpeed = 3f;
 	private static float density = 8f;
 	private static float inertialResistance = 0.7f;
 	private static float friction = 0.9f;

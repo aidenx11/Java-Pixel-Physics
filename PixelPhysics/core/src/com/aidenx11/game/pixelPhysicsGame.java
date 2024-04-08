@@ -49,6 +49,13 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	/** Stage to handle buttons/ui elements */
 	private UIStage buttonStage;
 
+	public static float[][] skyColors = new float[][] { { 135, 206, 235 }, { 130, 204, 234 }, { 125, 201, 232 },
+			{ 121, 201, 233 }, { 114, 197, 231 }, { 114, 194, 231 }, { 114, 192, 231 }, { 119, 192, 228 },
+			{ 123, 196, 232 }, { 123, 191, 232 }, { 121, 191, 233 }, { 121, 195, 239 }, { 116, 188, 237 },
+			{ 112, 187, 237 }, { 117, 190, 240 }, { 122, 194, 243 } };
+	public static int skyColorIdx;
+	public static boolean skyColorIncreasing;
+
 //	private Label frameLabel;
 
 	@Override
@@ -75,6 +82,8 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		mouse.setBrushSize(1);
 		mouse.setCursorSize(1);
 
+		skyColorIdx = 5;
+
 		lightsOn = true;
 		buttonStage = new UIStage(viewport, mouse, matrix);
 
@@ -87,7 +96,8 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 
 		// Set blue background
 		if (lightsOn) {
-			ScreenUtils.clear(135 / 255f, 206 / 255f, 235 / 255f, 1);
+			ScreenUtils.clear(skyColors[skyColorIdx][0] / 255f, skyColors[skyColorIdx][1] / 255f,
+					skyColors[skyColorIdx][2] / 255f, 1);
 		} else {
 			ScreenUtils.clear(9 / 255f, 30 / 255f, 54 / 255f, 1);
 		}
