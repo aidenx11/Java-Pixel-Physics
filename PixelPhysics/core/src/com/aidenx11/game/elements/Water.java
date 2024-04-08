@@ -26,7 +26,7 @@ public class Water extends Liquid {
 	@Override
 	public void update() {
 		this.actOnOther();
-		this.causeRust();
+		causeRust();
 		super.update();
 	}
 

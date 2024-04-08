@@ -11,7 +11,7 @@ public class Lava extends Liquid {
 
 	public static ElementTypes type = ElementTypes.LAVA;
 	private static float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
-	private static float maxSpeed = 3f;
+	private static float maxSpeed = 4f;
 	private float currentMaxSpeed;
 	private static float density = 7f;
 	private static int dispersionRate = 5;

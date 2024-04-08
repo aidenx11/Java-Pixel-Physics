@@ -7,6 +7,7 @@ import java.util.List;
 import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
+import com.aidenx11.game.elements.Element.ElementTypes;
 import com.badlogic.gdx.graphics.Color;
 
 /**
@@ -149,6 +150,27 @@ public abstract class Element {
 			}
 		}
 		return numberOfFire;
+	}
+	
+	public void causeWetness() {
+
+		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
+		List<Element> shuffledElements = Arrays.asList(adjacentElements);
+		Collections.shuffle(shuffledElements);
+		Element nextElement;
+
+		for (int i = 0; i < shuffledElements.size(); i++) {
+			nextElement = shuffledElements.get(i);
+			if (nextElement instanceof Sand) {
+				parentMatrix.setNewElement(nextElement, ElementTypes.WET_SAND);
+				parentMatrix.clearElement(this);
+			}
+			if (nextElement instanceof Dirt) {
+				parentMatrix.setNewElement(nextElement, ElementTypes.WET_DIRT);
+				parentMatrix.clearElement(this);
+			}
+
+		}
 	}
 
 	public void updateBurningLogic() {

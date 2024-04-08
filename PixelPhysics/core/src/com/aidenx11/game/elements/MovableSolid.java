@@ -37,6 +37,16 @@ public abstract class MovableSolid extends Movable {
 						setFallingThroughAir(true);
 						break;
 					}
+					if (this instanceof WetSand && (parentMatrix.getElement(i, this.getColumn()) instanceof Sand
+							|| parentMatrix.getElement(i, this.getColumn()) instanceof Dirt)) {
+						setFallingThroughAir(true);
+						break;
+					}
+					if (this instanceof WetDirt && (parentMatrix.getElement(i, this.getColumn()) instanceof Sand
+							|| parentMatrix.getElement(i, this.getColumn()) instanceof Dirt)) {
+						setFallingThroughAir(true);
+						break;
+					}
 				}
 			} else if (delta < 0) {
 				for (int i = this.getRow() - delta; i <= CellularMatrix.rows; i++) {
