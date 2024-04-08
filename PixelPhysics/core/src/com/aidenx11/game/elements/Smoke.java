@@ -14,7 +14,7 @@ public class Smoke extends Gas {
 			new CustomColor(199, 14, 14), new CustomColor(240, 127, 19) };
 
 	public Smoke(int row, int column) {
-		super(type, row, column, new CustomColor(ColorValues.SMOKE, true), true, (int) (50 + (Math.random() * 50)), false, false, 0, false, 0,
+		super(type, row, column, new CustomColor(ColorValues.SMOKE, true), true, (int) (150 + (Math.random() * 50)), false, false, 0, false, 0,
 				acceleration, maxSpeed, density, true);
 		super.setOnFire(Math.random() < 0.1);
 	}

@@ -80,20 +80,16 @@ public abstract class Element {
 
 	public void updateElementLife() {
 		if (this.limitedLife() && this.getLifetime() < 1) {
-			switch (this.getType()) {
-			case STEAM:
-			case SMOKE:
+			if (this instanceof Smoke || this instanceof Steam) {
 				parentMatrix.clearElement(this);
-				break;
-			case FIRE:
-			case WOOD:
-				parentMatrix.setNewElement(this, ElementTypes.SMOKE);
-				break;
-
-			default:
-				parentMatrix.clearElement(this);
-				break;
+			} else if (this instanceof Fire || this.isOnFire()) {
+				if (Math.random() < 0.3) {
+					parentMatrix.setElement(new Smoke(this.getRow(), this.getColumn()));
+				} else {
+					parentMatrix.clearElement(this);
+				}
 			}
+
 		}
 
 		if (this.isOnFire() && Math.random() < 0.1) {
