@@ -23,6 +23,7 @@ public abstract class Movable extends Element {
 	private float friction;
 	private int direction;
 	private boolean isFreeFalling;
+	private boolean movedLastFrame = true;
 
 	public Movable(ElementTypes type, int row, int column, CustomColor color, boolean canDie, int lifetime,
 			boolean flammable, boolean extinguishesThings, float chanceToCatch, boolean burnsThings, float velocity,
@@ -237,6 +238,14 @@ public abstract class Movable extends Element {
 
 	public void setDirection(int direction) {
 		this.direction = direction;
+	}
+
+	public boolean MovedLastFrame() {
+		return movedLastFrame;
+	}
+
+	public void setMovedLastFrame(boolean movedLastFrame) {
+		this.movedLastFrame = movedLastFrame;
 	}
 
 }

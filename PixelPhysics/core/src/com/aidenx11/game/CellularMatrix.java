@@ -1,7 +1,5 @@
 package com.aidenx11.game;
 
-import java.util.ArrayList;
-
 import com.aidenx11.game.elements.Element;
 import com.aidenx11.game.elements.Empty;
 import com.aidenx11.game.elements.Element.ElementTypes;
@@ -22,7 +20,6 @@ import com.aidenx11.game.elements.movable.movable_solid.WetDirt;
 import com.aidenx11.game.elements.movable.movable_solid.WetSand;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.utils.Array;
 
 /**
  * Manages the matrix that contains all elements to be drawn to the screen.
@@ -44,7 +41,7 @@ public class CellularMatrix {
 	public static int pixelSizeModifier;
 
 	/** The matrix itself. Stores elements */
-	private Array<Array<Element>> matrix;
+	private Element[][] matrix;
 
 	/** Keeps track of the direction to update each row in updateFrame() */
 	private boolean direction = true;
@@ -70,17 +67,15 @@ public class CellularMatrix {
 	 * 
 	 * @return the empty matrix
 	 */
-	private Array<Array<Element>> generateMatrix() {
+	private Element[][] generateMatrix() {
 
-		Array<Array<Element>> outerArray = new Array<>(true, rows);
+		Element[][] array = new Element[rows][columns];
 		for (int y = 0; y < rows; y++) {
-			Array<Element> innerArr = new Array<>(true, columns);
 			for (int x = 0; x < columns; x++) {
-				innerArr.add(new Empty(y, x));
+				array[y][x] = new Empty(y, x);
 			}
-			outerArray.add(innerArr);
 		}
-		return outerArray;
+		return array;
 	}
 
 	/**
@@ -89,8 +84,8 @@ public class CellularMatrix {
 	 * @param row row to return
 	 * @return returns the given row
 	 */
-	public Array<Element> getRow(int row) {
-		return matrix.get(row);
+	public Element[] getRow(int row) {
+		return matrix[row];
 	}
 
 	/**
@@ -98,7 +93,7 @@ public class CellularMatrix {
 	 * 
 	 * @return the current matrix
 	 */
-	public Array<Array<Element>> getMatrix() {
+	public Element[][] getMatrix() {
 		return matrix;
 	}
 
@@ -149,7 +144,7 @@ public class CellularMatrix {
 			return null;
 		}
 
-		return getRow(row).get(column);
+		return matrix[row][column];
 	}
 
 	/**
@@ -162,9 +157,7 @@ public class CellularMatrix {
 		int column = element.getColumn();
 
 		if (isWithinBounds(row, column)) {
-			Array<Element> rowArray = matrix.get(row);
-			rowArray.set(column, element);
-			matrix.set(row, rowArray);
+			matrix[row][column] = element;
 		}
 	}
 
@@ -308,7 +301,7 @@ public class CellularMatrix {
 		return row >= 0 && row < rows && col >= 0 && col < columns;
 	}
 
-	public static ArrayList<int[]> traverseMatrix(float x1, float y1, float x2, float y2) {
+	public static int[][] traverseMatrix(float x1, float y1, float x2, float y2) {
 		int col1 = (int) Math.floor(x1 / pixelSizeModifier);
 		int row1 = (int) Math.floor(y1 / pixelSizeModifier);
 		int col2 = (int) Math.floor(x2 / pixelSizeModifier);
@@ -325,7 +318,7 @@ public class CellularMatrix {
 		int min = Math.min(Math.abs(xDifference), Math.abs(yDifference));
 		float slope = (min == 0 || upperBound == 0) ? 0 : ((float) (min + 1) / (upperBound + 1));
 
-		ArrayList<int[]> points = new ArrayList<int[]>();
+		int[][] points = new int[upperBound][2];
 
 		int smallerCount;
 		for (int i = 1; i <= upperBound; i++) {
@@ -341,8 +334,14 @@ public class CellularMatrix {
 			int currentY = row1 + (yIncrease * yModifier);
 			int currentX = col1 + (xIncrease * xModifier);
 			if (isWithinBounds(currentY, currentX)) {
-				points.add(new int[] { currentY, currentX });
+				points[i - 1][0] = currentY;
+				points[i - 1][1] = currentX;
+				
 			}
+		}
+		
+		if (points.length == 0) {
+			points = new int[1][2];
 		}
 
 		return points;

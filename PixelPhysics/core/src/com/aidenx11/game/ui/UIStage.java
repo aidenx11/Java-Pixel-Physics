@@ -191,7 +191,7 @@ public class UIStage extends Stage {
 			}
 		});
 
-		canvasColorButton = new TextButton("Lights off", skinButton, "default");
+		canvasColorButton = new TextButton("Lights on", skinButton, "default");
 		canvasColorButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {

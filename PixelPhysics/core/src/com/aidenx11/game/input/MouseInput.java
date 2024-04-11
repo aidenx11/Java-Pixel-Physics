@@ -1,7 +1,5 @@
 package com.aidenx11.game.input;
 
-import java.util.ArrayList;
-
 import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.elements.Element.ElementTypes;
@@ -183,14 +181,13 @@ public class MouseInput {
 			mousePos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			getCamera().unproject(mousePos);
 
-			ArrayList<int[]> points = CellularMatrix.traverseMatrix(mousePos.x, mousePos.y, lastMousePos.x,
-					lastMousePos.y);
-			if (points.isEmpty()) {
-				points.add(
-						new int[] { (int) (mousePos.y / pixelSizeModifier), (int) (mousePos.x / pixelSizeModifier) });
+			int[][] points = CellularMatrix.traverseMatrix(mousePos.x, mousePos.y, lastMousePos.x, lastMousePos.y);
+			if (points.length == 1) {
+				points[0][0] = (int) (mousePos.y / pixelSizeModifier);
+				points[0][1] = (int) (mousePos.x / pixelSizeModifier);
 			}
-			for (int[] point : points) {
-				if (CellularMatrix.isWithinBounds(point[0], point[1])) {
+			for (int i = 0; i < points.length; i++) {
+				if (CellularMatrix.isWithinBounds(points[i][0], points[i][1])) {
 					float probability;
 					switch (elementType) {
 					case SAND:
@@ -216,9 +213,9 @@ public class MouseInput {
 					}
 
 					if (getBrushType() == BrushTypes.CIRCLE) {
-						drawCircle(point[0], point[1], getBrushSize() / 2, elementType, probability);
+						drawCircle(points[i][0], points[i][1], getBrushSize() / 2, elementType, probability);
 					} else if (getBrushType() == BrushTypes.SQUARE) {
-						drawSquare(point[0], point[1], getBrushSize(), probability);
+						drawSquare(points[i][0], points[i][1], getBrushSize(), probability);
 					}
 
 				}
