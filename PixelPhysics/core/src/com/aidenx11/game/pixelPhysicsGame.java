@@ -29,10 +29,10 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	public static final int uiOffset = 170;
 
 	/** Acceleration due to gravity. Used in movable elements */
-	public static final float GRAVITY_ACCELERATION = 0.1f;
+	public static final float GRAVITY_ACCELERATION = 0.07f;
 
 	/** Pixel size modifier of the game */
-	public static int pixelSizeModifier = 4;
+	public static int pixelSizeModifier = 3;
 
 	/** Matrix for use in the game */
 	public static CellularMatrix matrix;
@@ -106,6 +106,15 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		// modifier
 		rows = (int) Math.ceil(SCREEN_HEIGHT / pixelSizeModifier);
 		columns = (int) Math.ceil((SCREEN_WIDTH - uiOffset) / pixelSizeModifier);
+
+		// Make sure rows and columns are at least zero to avoid negative sized arrays
+		if (rows < 0) {
+			rows = 0;
+		}
+
+		if (columns < 0) {
+			columns = 0;
+		}
 
 		// Initialize the matrix
 		matrix = new CellularMatrix(rows, columns, pixelSizeModifier);
@@ -187,13 +196,14 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		SCREEN_HEIGHT = height;
 
 		// Store the old matrix
-		CellularMatrix oldMatrix = new CellularMatrix(rows, columns, pixelSizeModifier);
+		CellularMatrix oldMatrix = new CellularMatrix(rows >= 0 ? rows : 0, columns >= 0 ? columns : 0,
+				pixelSizeModifier);
 		int oldRows = rows;
 		int oldCols = columns;
 
 		// fill the old matrix
-		for (int row = 0; row < CellularMatrix.rows - 1; row++) {
-			for (int col = 0; col < CellularMatrix.columns - 1; col++) {
+		for (int row = 0; row < CellularMatrix.rows; row++) {
+			for (int col = 0; col < CellularMatrix.columns; col++) {
 				oldMatrix.setElement(matrix.getElement(row, col));
 			}
 		}
