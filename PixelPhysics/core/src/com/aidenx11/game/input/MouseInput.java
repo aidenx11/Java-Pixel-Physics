@@ -23,7 +23,7 @@ import com.badlogic.gdx.math.Vector3;
 
 /**
  * Class to handle detection of mouse input and drawing of elements in the
- * matrix
+ * matrix.
  * 
  * @author Aiden Schroeder
  */

@@ -7,8 +7,8 @@ public class Immovable extends Element {
 
 	public Immovable(ElementTypes type, int row, int column, CustomColor color, boolean canDie, int lifetime,
 			boolean flammable, boolean extinguishesThings, float chanceToCatch, boolean burnsThings, int temperature) {
-		super(type, row, column, color, canDie, lifetime, flammable, extinguishesThings, chanceToCatch, burnsThings,
-				false, temperature);
+		super(type, row, column, color, canDie, lifetime, flammable, extinguishesThings, chanceToCatch, false,
+				temperature);
 		super.setDensity(999f);
 	}
 

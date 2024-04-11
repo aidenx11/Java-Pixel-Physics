@@ -297,10 +297,32 @@ public class CellularMatrix {
 		}
 	}
 
+	/**
+	 * Checks if the given row and column location is within bounds for the matrix
+	 * 
+	 * @param row row to check
+	 * @param col column to check
+	 * @return whether or not the given row and column is within bounds
+	 */
 	public static boolean isWithinBounds(int row, int col) {
 		return row >= 0 && row < rows && col >= 0 && col < columns;
 	}
 
+	/**
+	 * Traverses the matrix between the two given points. The points are given as x
+	 * and y coordinates in pixel dimensions, where x == 0 and y == 0 at the bottom
+	 * left of the window. Calculates the distance and slope between the points, and
+	 * then iterates through the matrix between the two points. As it iterates, it
+	 * stores the cells it passes in a 2D integer array, where each row is a point
+	 * in the form [y, x] or [row, column].
+	 * 
+	 * @param x1 x location of the first point
+	 * @param y1 y location of the first point
+	 * @param x2 x location of the second point
+	 * @param y2 y location of the second point
+	 * @return a 2D integer array containing the row and column of a line of cells
+	 *         between the given points
+	 */
 	public static int[][] traverseMatrix(float x1, float y1, float x2, float y2) {
 		int col1 = (int) Math.floor(x1 / pixelSizeModifier);
 		int row1 = (int) Math.floor(y1 / pixelSizeModifier);
@@ -336,10 +358,10 @@ public class CellularMatrix {
 			if (isWithinBounds(currentY, currentX)) {
 				points[i - 1][0] = currentY;
 				points[i - 1][1] = currentX;
-				
+
 			}
 		}
-		
+
 		if (points.length == 0) {
 			points = new int[1][2];
 		}

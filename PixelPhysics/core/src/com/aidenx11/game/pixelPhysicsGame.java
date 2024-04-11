@@ -17,6 +17,14 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+/**
+ * Main class of the simulation. Handles all fields related to window size, UI,
+ * gravity, matrix fields, and input. Constructs all necessary objects and
+ * handles updating of the simulation every frame, as well as updating of the
+ * simulation when the window is resized.
+ * 
+ * @author Aiden Schroeder
+ */
 public class pixelPhysicsGame extends ApplicationAdapter {
 
 	/** Width of the screen */

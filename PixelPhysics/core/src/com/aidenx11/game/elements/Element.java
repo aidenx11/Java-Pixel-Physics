@@ -19,12 +19,14 @@ import com.aidenx11.game.elements.movable.movable_solid.WetSand;
 import com.badlogic.gdx.graphics.Color;
 
 /**
- * Super class of all elements.
+ * Super class of all elements. Contains fields for parent matrix, element type,
+ * location, color, density, lifetime, and more.
  * 
  * @author Aiden Schroeder
  */
 public abstract class Element {
 
+	/** Parent matrix of this element */
 	public CellularMatrix parentMatrix = pixelPhysicsGame.matrix;
 
 	/** Type of this element */
@@ -39,9 +41,6 @@ public abstract class Element {
 	/** Color of this element */
 	private CustomColor color;
 
-	/** Whether or not element was modified this frame */
-	private boolean modified;
-
 	/** Density of this element */
 	private float density;
 
@@ -51,26 +50,27 @@ public abstract class Element {
 	/** Number of frames the element can stay alive if it has limited life */
 	private int lifetime;
 
+	/** Melting point of this element */
 	private int meltingPoint;
 
+	/** Whether or not this element is flammable */
 	private boolean isFlammable;
 
+	/** Whether or not this element extinguishes other elements */
 	private boolean extinguishesThings;
 
+	/** Chance for this element to catch on fire */
 	private float chanceToCatch;
-
-	private boolean burnsThings;
 
 	private boolean movesDown;
 
 	private boolean onFire;
-	
+
 	private boolean fallingThroughAir = false;
-	
-	private boolean fallingThroughWater = false;
 
 	public enum ElementTypes {
-		SAND, EMPTY, WOOD, SMOKE, FIRE, WATER, STEAM, WET_SAND, LEAF, DIRT, WET_DIRT, STONE, LAVA, OBSIDIAN, STEEL, RUST;
+		SAND, EMPTY, WOOD, SMOKE, FIRE, WATER, STEAM, WET_SAND, LEAF, DIRT, WET_DIRT, STONE, LAVA, OBSIDIAN, STEEL,
+		RUST;
 	}
 
 	public static CustomColor[] fireColors = new CustomColor[] { new CustomColor(253, 207, 88),
@@ -79,8 +79,8 @@ public abstract class Element {
 	public abstract void update();
 
 	public Element(ElementTypes type, int row, int column, CustomColor color, boolean canDie, int lifetime,
-			boolean flammable, boolean extinguishesThings, float chanceToCatch, boolean burnsThings, boolean movesDown,
-			int temperature) {
+			boolean flammable, boolean extinguishesThings, float chanceToCatch, boolean movesDown, int temperature) {
+		setType(type);
 		setRow(row);
 		setColumn(column);
 		setColor(color);
@@ -89,7 +89,6 @@ public abstract class Element {
 		setFlammable(flammable);
 		setExtinguishesThings(extinguishesThings);
 		setChanceToCatch(chanceToCatch);
-		setBurnsThings(burnsThings);
 		setLimitedLife(canDie);
 		setMovesDown(movesDown);
 		setTemperature(temperature);
@@ -116,7 +115,7 @@ public abstract class Element {
 
 		this.setLifetime(this.getLifetime() - 1);
 	}
-	
+
 	public void causeRust() {
 		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
 		List<Element> shuffledElements = Arrays.asList(adjacentElements);
@@ -161,7 +160,7 @@ public abstract class Element {
 		}
 		return numberOfFire;
 	}
-	
+
 	public void causeWetness() {
 
 		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
@@ -246,18 +245,6 @@ public abstract class Element {
 		return new Color(color.getR() / 255f, color.getG() / 255f, color.getB() / 255f, 1f);
 	}
 
-	public CustomColor getCustomColor() {
-		return color;
-	}
-
-	public boolean isModified() {
-		return modified;
-	}
-
-	public void setModified(boolean modified) {
-		this.modified = modified;
-	}
-
 	public boolean limitedLife() {
 		return limitedLife;
 	}
@@ -289,20 +276,12 @@ public abstract class Element {
 		this.setColor(fireColors[idx]);
 	}
 
-	public boolean burnsThings() {
-		return burnsThings;
-	}
-
 	public boolean extinguishesThings() {
 		return extinguishesThings;
 	}
 
 	public float getChanceToCatch() {
 		return chanceToCatch;
-	}
-
-	private void setBurnsThings(boolean burnsThings) {
-		this.burnsThings = burnsThings;
 	}
 
 	private void setChanceToCatch(float chanceToCatch) {
@@ -344,14 +323,6 @@ public abstract class Element {
 
 	public void setFallingThroughAir(boolean fallingThroughAir) {
 		this.fallingThroughAir = fallingThroughAir;
-	}
-
-	public boolean isFallingThroughWater() {
-		return fallingThroughWater;
-	}
-
-	public void setFallingThroughWater(boolean fallingThroughWater) {
-		this.fallingThroughWater = fallingThroughWater;
 	}
 
 }

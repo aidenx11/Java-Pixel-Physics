@@ -31,6 +31,11 @@ public abstract class MovableSolid extends Movable {
 			Element nextVertical = parentMatrix.getElement(this.getRow() - delta, this.getColumn());
 			int randDirection = Math.random() > 0.5 ? 1 : -1;
 
+			if (this.getHorizontalVelocity() > 0
+					&& (nextVertical == null || nextVertical.getDensity() >= this.getDensity())) {
+				this.setVerticalVelocity(this.getVerticalVelocity() + this.getHorizontalVelocity());
+			}
+
 			if (!this.MovedLastFrame() && (nextVertical == null || nextVertical.getDensity() >= this.getDensity())) {
 				return;
 			}

@@ -29,8 +29,8 @@ public abstract class Movable extends Element {
 			boolean flammable, boolean extinguishesThings, float chanceToCatch, boolean burnsThings, float velocity,
 			float acceleration, float maxSpeed, float density, boolean movesSideways, boolean movesDown, float friction,
 			int temperature) {
-		super(type, row, column, color, canDie, lifetime, flammable, extinguishesThings, chanceToCatch, burnsThings,
-				movesDown, temperature);
+		super(type, row, column, color, canDie, lifetime, flammable, extinguishesThings, chanceToCatch, movesDown,
+				temperature);
 		setVerticalVelocity(velocity);
 		setAcceleration(acceleration);
 		setMaxSpeed(maxSpeed);
