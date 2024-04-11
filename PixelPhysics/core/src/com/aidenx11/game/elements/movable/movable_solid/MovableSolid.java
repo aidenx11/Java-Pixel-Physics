@@ -3,10 +3,10 @@ package com.aidenx11.game.elements.movable.movable_solid;
 import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.elements.Element;
-import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.elements.Empty;
 import com.aidenx11.game.elements.immovable.Immovable;
 import com.aidenx11.game.elements.movable.Movable;
+import com.aidenx11.game.elements.movable.liquid.Lava;
 import com.aidenx11.game.elements.movable.liquid.Water;
 
 public abstract class MovableSolid extends Movable {
@@ -35,7 +35,8 @@ public abstract class MovableSolid extends Movable {
 			int delta = (int) Math.signum(this.getVerticalVelocity());
 			if (delta > 0) {
 				for (int i = this.getRow() - delta; i >= 0; i--) {
-					if (parentMatrix.getElement(i, this.getColumn()) instanceof Immovable) {
+					if (parentMatrix.getElement(i, this.getColumn()) instanceof Immovable
+							|| parentMatrix.getElement(i, this.getColumn()) instanceof Lava) {
 						break;
 					}
 					if (parentMatrix.getElement(i, this.getColumn()) instanceof Empty
@@ -56,7 +57,8 @@ public abstract class MovableSolid extends Movable {
 				}
 			} else if (delta < 0) {
 				for (int i = this.getRow() - delta; i <= CellularMatrix.rows; i++) {
-					if (parentMatrix.getElement(i, this.getColumn()) instanceof Immovable) {
+					if (parentMatrix.getElement(i, this.getColumn()) instanceof Immovable
+							|| parentMatrix.getElement(i, this.getColumn()) instanceof Lava) {
 						break;
 					}
 					if (parentMatrix.getElement(i, this.getColumn()) instanceof Empty

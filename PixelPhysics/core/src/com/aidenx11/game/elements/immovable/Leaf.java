@@ -2,8 +2,6 @@ package com.aidenx11.game.elements.immovable;
 
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.color.CustomColor.ColorValues;
-import com.aidenx11.game.elements.Element;
-import com.aidenx11.game.elements.Element.ElementTypes;
 
 public class Leaf extends Immovable {
 

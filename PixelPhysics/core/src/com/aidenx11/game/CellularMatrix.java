@@ -24,6 +24,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
 
+/**
+ * Manages the matrix that contains all elements to be drawn to the screen.
+ * Keeps track of its number of rows and columns, the pixelSizeModifier, and the
+ * matrix itself which is a 2D array of elements with size corresponding to the
+ * number of rows and columns.
+ * 
+ * @author Aiden Schroeder
+ */
 public class CellularMatrix {
 
 	/** Number of rows in the matrix */
@@ -38,9 +46,7 @@ public class CellularMatrix {
 	/** The matrix itself. Stores elements */
 	private Array<Array<Element>> matrix;
 
-	/** Keeps track of number of frames since elements were modified */
-	private int framesSinceLastModifiedElement;
-
+	/** Keeps track of the direction to update each row in updateFrame() */
 	private boolean direction = true;
 
 	/**
@@ -110,25 +116,6 @@ public class CellularMatrix {
 	 */
 	public void clearElement(Element element) {
 		this.setElement(new Empty(element.getRow(), element.getColumn()));
-	}
-
-	/**
-	 * Returns the number of frames since an element was modified
-	 * 
-	 * @return the number of frames since an element was modified
-	 */
-	public int getFramesSinceLastModifiedElement() {
-		return framesSinceLastModifiedElement;
-	}
-
-	/**
-	 * Sets the number of frames since an element was modified
-	 * 
-	 * @param framesSinceLastModifiedElement the number of frames since an element
-	 *                                       was modified
-	 */
-	public void setFramesSinceLastModifiedElement(int framesSinceLastModifiedElement) {
-		this.framesSinceLastModifiedElement = framesSinceLastModifiedElement;
 	}
 
 	/**
@@ -204,6 +191,14 @@ public class CellularMatrix {
 		shapeRenderer.end();
 	}
 
+	/**
+	 * Sets the given element to a new ElementType, based on the given type. Returns
+	 * the newly created element.
+	 * 
+	 * @param element    element to change type of
+	 * @param newElement element type to change the element to
+	 * @return the newly changed element
+	 */
 	public Element setNewElement(Element element, ElementTypes newElement) {
 		switch (newElement) {
 		case EMPTY:
@@ -262,7 +257,9 @@ public class CellularMatrix {
 
 	/**
 	 * Updates the frame. Updates all positions of all elements in the matrix based
-	 * on their type. If the element is movable, moves it.
+	 * on their type using the element's update() method, and chooses the vertical
+	 * direction to update based on which way the element moves. The horizontal
+	 * update direction is chosen randomly to create a more realistic simulation.
 	 * 
 	 * @param sr shape renderer that draws to the viewport
 	 */
@@ -307,8 +304,6 @@ public class CellularMatrix {
 		}
 	}
 
-	
-
 	public static boolean isWithinBounds(int row, int col) {
 		return row >= 0 && row < rows && col >= 0 && col < columns;
 	}
@@ -352,15 +347,19 @@ public class CellularMatrix {
 
 		return points;
 	}
-	
+
 	/**
-	 * top left, top, top right, left, right, bottom left, bottom, bottom right
-	 * @param element
-	 * @return
+	 * Gets the elements adjacent to the element and returns them in an array in the
+	 * order [top left, top, top right, left, right, bottom left, bottom, bottom
+	 * right]
+	 * 
+	 * @param element element to get the elements adjacent to
+	 * @return the elements adjacent to the given element in an array of format [top
+	 *         left, top, top right, left, right, bottom left, bottom, bottom right]
 	 */
 	public Element[] getAdjacentElements(Element element) {
 		Element[] adjacentElements = new Element[8];
-		
+
 		adjacentElements[0] = this.getElement(element.getRow() + 1, element.getColumn() - 1);
 		adjacentElements[1] = this.getElement(element.getRow() + 1, element.getColumn());
 		adjacentElements[2] = this.getElement(element.getRow() + 1, element.getColumn() + 1);
@@ -369,7 +368,7 @@ public class CellularMatrix {
 		adjacentElements[5] = this.getElement(element.getRow() - 1, element.getColumn() - 1);
 		adjacentElements[6] = this.getElement(element.getRow() - 1, element.getColumn());
 		adjacentElements[7] = this.getElement(element.getRow() - 1, element.getColumn() + 1);
-		
+
 		return adjacentElements;
 	}
 

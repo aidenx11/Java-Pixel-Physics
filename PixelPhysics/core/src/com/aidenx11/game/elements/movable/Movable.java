@@ -2,7 +2,7 @@ package com.aidenx11.game.elements.movable;
 
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.elements.Element;
-import com.aidenx11.game.elements.Element.ElementTypes;
+import com.aidenx11.game.elements.movable.liquid.Water;
 import com.aidenx11.game.elements.movable.movable_solid.MovableSolid;
 
 public abstract class Movable extends Element {
@@ -26,8 +26,8 @@ public abstract class Movable extends Element {
 
 	public Movable(ElementTypes type, int row, int column, CustomColor color, boolean canDie, int lifetime,
 			boolean flammable, boolean extinguishesThings, float chanceToCatch, boolean burnsThings, float velocity,
-			float acceleration, float maxSpeed, float density, boolean movesSideways, boolean movesDown,
-			float friction, int temperature) {
+			float acceleration, float maxSpeed, float density, boolean movesSideways, boolean movesDown, float friction,
+			int temperature) {
 		super(type, row, column, color, canDie, lifetime, flammable, extinguishesThings, chanceToCatch, burnsThings,
 				movesDown, temperature);
 		setVerticalVelocity(velocity);
@@ -71,6 +71,11 @@ public abstract class Movable extends Element {
 
 		this.setVerticalVelocity(newVelocity);
 
+		if (parentMatrix.getElement(this.getRow() - 1, this.getColumn()) instanceof Water
+				&& this.getVerticalVelocity() > 0.7f) {
+			this.setVerticalVelocity(0.7f);
+		}
+
 	}
 
 	public void updateHorizontalVelocity() {
@@ -94,7 +99,7 @@ public abstract class Movable extends Element {
 			int delta = (int) Math.signum(this.getVerticalVelocity());
 			Element nextVertical = parentMatrix.getElement(this.getRow() - delta, this.getColumn());
 			int randDirection = Math.random() > 0.5 ? 1 : -1;
-			
+
 			nextVertical1 = parentMatrix.getElement(this.getRow() - delta, this.getColumn() - randDirection);
 			nextVertical2 = parentMatrix.getElement(this.getRow() - delta, this.getColumn() + randDirection);
 

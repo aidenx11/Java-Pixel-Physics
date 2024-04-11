@@ -67,7 +67,7 @@ public class MouseInput {
 	 * @param camera camera input should be in
 	 */
 	public MouseInput(CellularMatrix matrix, OrthographicCamera camera) {
-		this.camera = camera;
+		this.setCamera(camera);
 		this.matrix = matrix;
 	}
 
@@ -78,6 +78,7 @@ public class MouseInput {
 	 */
 	public void setElementType(ElementTypes type) {
 		this.elementType = type;
+		pixelPhysicsGame.mouseElementType = type;
 	}
 
 	/**
@@ -105,6 +106,7 @@ public class MouseInput {
 	 */
 	public void setBrushSize(int brushSize) {
 		this.brushSize = brushSize;
+		pixelPhysicsGame.mouseBrushSize = brushSize;
 	}
 
 	/**
@@ -179,7 +181,7 @@ public class MouseInput {
 			}
 
 			mousePos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-			camera.unproject(mousePos);
+			getCamera().unproject(mousePos);
 
 			ArrayList<int[]> points = CellularMatrix.traverseMatrix(mousePos.x, mousePos.y, lastMousePos.x,
 					lastMousePos.y);
@@ -429,10 +431,19 @@ public class MouseInput {
 
 	public void setBrushType(BrushTypes brushType) {
 		this.brushType = brushType;
+		pixelPhysicsGame.mouseBrushType = brushType;
 	}
 
 	public ElementTypes getElementType() {
 		return elementType;
+	}
+
+	public OrthographicCamera getCamera() {
+		return camera;
+	}
+
+	public void setCamera(OrthographicCamera camera) {
+		this.camera = camera;
 	}
 
 }

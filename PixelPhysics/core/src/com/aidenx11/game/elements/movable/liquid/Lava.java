@@ -7,11 +7,11 @@ import java.util.List;
 import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.elements.Element;
-import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.elements.Empty;
 import com.aidenx11.game.elements.immovable.Steel;
 import com.aidenx11.game.elements.immovable.Stone;
 import com.aidenx11.game.elements.immovable.Wood;
+import com.aidenx11.game.elements.movable.Movable;
 import com.aidenx11.game.elements.movable.movable_solid.Dirt;
 import com.aidenx11.game.elements.movable.movable_solid.MovableSolid;
 import com.aidenx11.game.elements.movable.movable_solid.Obsidian;
@@ -39,8 +39,8 @@ public class Lava extends Liquid {
 
 	public static float[] speeds = new float[] { (maxSpeed), (maxSpeed - maxSpeed / 11), (maxSpeed - maxSpeed / 10),
 			(maxSpeed - maxSpeed / 9), (maxSpeed - maxSpeed / 8), (maxSpeed - maxSpeed / 7), (maxSpeed - maxSpeed / 6),
-			(maxSpeed - maxSpeed / 5), (maxSpeed - maxSpeed / 4), (maxSpeed - maxSpeed / 3), (maxSpeed - maxSpeed / 2),
-			(maxSpeed - maxSpeed) };
+			(maxSpeed - maxSpeed / 5), (maxSpeed - maxSpeed / 5), (maxSpeed - maxSpeed / 5), (maxSpeed - maxSpeed / 5),
+			(maxSpeed - maxSpeed / 5) };
 
 	public static int[][] lavaColorsRGB = new int[][] { { 236, 168, 61 }, { 236, 156, 61 }, { 236, 145, 61 },
 			{ 236, 127, 61 }, { 236, 117, 61 }, { 236, 102, 61 }, { 236, 86, 61 }, { 226, 59, 45 }, { 209, 46, 34 },
@@ -191,7 +191,10 @@ public class Lava extends Liquid {
 		for (int i = 0; i < shuffledElements.size(); i++) {
 
 			if (getNumberOfMeltsToHarden() < 1) {
-				parentMatrix.setNewElement(this, ElementTypes.OBSIDIAN);
+				newElement = parentMatrix.setNewElement(this, ElementTypes.OBSIDIAN);
+				((Movable) newElement)
+						.setVerticalVelocity(this.getVerticalVelocity() < 0.7f ? 0.7f : this.getVerticalVelocity());
+				((Movable) newElement).setFreeFalling(true);
 				return;
 			}
 
@@ -215,7 +218,7 @@ public class Lava extends Liquid {
 				continue;
 			} else if (shuffledElements.get(i) instanceof Water) {
 				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 10);
-				if (Math.random() < 0.007) {
+				if (Math.random() < 0.001) {
 					parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.STEAM);
 				}
 				continue;

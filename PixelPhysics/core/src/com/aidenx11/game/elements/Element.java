@@ -7,7 +7,6 @@ import java.util.List;
 import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
-import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.elements.immovable.Fire;
 import com.aidenx11.game.elements.immovable.Steel;
 import com.aidenx11.game.elements.movable.gas.Smoke;
@@ -67,6 +66,8 @@ public abstract class Element {
 	private boolean onFire;
 	
 	private boolean fallingThroughAir = false;
+	
+	private boolean fallingThroughWater = false;
 
 	public enum ElementTypes {
 		SAND, EMPTY, WOOD, SMOKE, FIRE, WATER, STEAM, WET_SAND, LEAF, DIRT, WET_DIRT, STONE, LAVA, OBSIDIAN, STEEL, RUST;
@@ -343,6 +344,14 @@ public abstract class Element {
 
 	public void setFallingThroughAir(boolean fallingThroughAir) {
 		this.fallingThroughAir = fallingThroughAir;
+	}
+
+	public boolean isFallingThroughWater() {
+		return fallingThroughWater;
+	}
+
+	public void setFallingThroughWater(boolean fallingThroughWater) {
+		this.fallingThroughWater = fallingThroughWater;
 	}
 
 }

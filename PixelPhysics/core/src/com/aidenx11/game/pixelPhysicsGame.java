@@ -1,6 +1,8 @@
 package com.aidenx11.game;
 
+import com.aidenx11.game.elements.Element;
 import com.aidenx11.game.elements.Element.ElementTypes;
+import com.aidenx11.game.elements.Empty;
 import com.aidenx11.game.input.MouseInput;
 import com.aidenx11.game.input.MouseInput.BrushTypes;
 import com.aidenx11.game.ui.UIStage;
@@ -18,90 +20,127 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class pixelPhysicsGame extends ApplicationAdapter {
 
 	/** Width of the screen */
-	public static final int SCREEN_WIDTH = 1447;
+	public static int SCREEN_WIDTH = 1440;
+
 	/** Height of the screen */
-	public static final int SCREEN_HEIGHT = 900;
+	public static int SCREEN_HEIGHT = 900;
+
 	/** Offset of the ui */
 	public static final int uiOffset = 170;
-	/** */
+
+	/** Acceleration due to gravity. Used in movable elements */
 	public static final float GRAVITY_ACCELERATION = 0.1f;
+
 	/** Pixel size modifier of the game */
 	public static int pixelSizeModifier = 4;
+
 	/** Matrix for use in the game */
 	public static CellularMatrix matrix;
-	public static boolean lightsOn;
 
 	/** Number of rows of the matrix */
 	public static int rows;
+
 	/** Number of columns of the matrix */
 	public static int columns;
 
+	/** Controls whether the game is in light or dark mode */
+	public static boolean lightsOn = false;
+
 	/** Shape renderer to be used for this game */
 	public ShapeRenderer shapeRenderer;
+
 	/** Camera to be used for this game */
 	private OrthographicCamera camera;
+
 	/** Viewport of this game */
 	private Viewport viewport;
+
 	/** Mouse input controller */
 	private MouseInput mouse;
 
+	/** Brush type of the mouse */
+	public static BrushTypes mouseBrushType = BrushTypes.CIRCLE;
+
+	/** Element type of the mouse */
+	public static ElementTypes mouseElementType = ElementTypes.SAND;
+
+	/** Size of the mouse brush */
+	public static int mouseBrushSize = 1;
+
+	/**
+	 * Keeps track of the position of the mouse in the previous frame. Used to draw
+	 * continuous lines.
+	 */
 	public static Vector3 mousePosLastFrame = new Vector3();
+
 	/** Stage to handle buttons/ui elements */
 	private UIStage buttonStage;
 
-	public static float[][] skyColors = new float[][] { { 135, 206, 235 }, { 130, 204, 234 }, { 125, 201, 232 },
-			{ 121, 201, 233 }, { 114, 197, 231 }, { 114, 194, 231 }, { 114, 192, 231 }, { 119, 192, 228 },
-			{ 123, 196, 232 }, { 123, 191, 232 }, { 121, 191, 233 }, { 121, 195, 239 }, { 116, 188, 237 },
-			{ 112, 187, 237 }, { 117, 190, 240 }, { 122, 194, 243 } };
-	public static int skyColorIdx;
-	public static boolean skyColorIncreasing;
+	/** Color of the light mode background */
+	public static float[] skyColorLight = new float[] { 114 / 255f, 194 / 255f, 231 / 255f };
 
-//	private Label frameLabel;
+	/** Color of the dark mode background */
+	public static float[] skyColorDark = new float[] { 9 / 255f, 30 / 255f, 54 / 255f };
 
+	/**
+	 * Initializes all fields needed for running the game, including camera,
+	 * viewport, shape renderer, matrix, mouse input, and UI.
+	 */
 	@Override
 	public void create() {
 
+		// Initializes the camera to screen width and height
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
 		camera.update();
 
+		// Initializes viewport to screen width and height
 		viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT, camera);
 
+		// Initializes the shape renderer to project onto the camera
 		shapeRenderer = new ShapeRenderer();
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		shapeRenderer.setAutoShapeType(true);
 
+		// Determines number of rows and columns for the matrix based on pixel size
+		// modifier
 		rows = (int) Math.ceil(SCREEN_HEIGHT / pixelSizeModifier);
 		columns = (int) Math.ceil((SCREEN_WIDTH - uiOffset) / pixelSizeModifier);
 
+		// Initialize the matrix
 		matrix = new CellularMatrix(rows, columns, pixelSizeModifier);
 
+		// Initialize mouse input and set brush and cursor size to 1, and brush set to
+		// circle with sand selected
 		mouse = new MouseInput(matrix, camera);
-		mouse.setElementType(ElementTypes.SAND);
-		mouse.setBrushType(BrushTypes.CIRCLE);
-		mouse.setBrushSize(1);
-		mouse.setCursorSize(1);
+		mouse.setElementType(mouseElementType);
+		mouse.setBrushType(mouseBrushType);
+		mouse.setBrushSize(mouseBrushSize);
+		mouse.setCursorSize(mouseBrushSize);
 
-		skyColorIdx = 5;
-
-		lightsOn = true;
+		// initializes the UI
 		buttonStage = new UIStage(viewport, mouse, matrix);
 
+		// Set input processor to UI so UI can detect input
 		Gdx.input.setInputProcessor(buttonStage);
 
 	}
 
+	/**
+	 * Updates the viewport each frame. Performs all game logic and drawing of
+	 * background and UI every frame.
+	 */
 	@Override
 	public void render() {
 
-		// Set blue background
+		// Set background color based on light mode
 		if (lightsOn) {
-			ScreenUtils.clear(skyColors[skyColorIdx][0] / 255f, skyColors[skyColorIdx][1] / 255f,
-					skyColors[skyColorIdx][2] / 255f, 1);
+			ScreenUtils.clear(skyColorLight[0], skyColorLight[1], skyColorLight[2], 1);
 		} else {
-			ScreenUtils.clear(9 / 255f, 30 / 255f, 54 / 255f, 1);
+			ScreenUtils.clear(skyColorDark[0], skyColorDark[1], skyColorDark[2], 1);
 		}
 
+		// Draw the UI background on the right side of the screen
 		shapeRenderer.begin(ShapeType.Filled);
 		if (lightsOn) {
 			shapeRenderer.setColor(Color.GRAY);
@@ -113,26 +152,74 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		shapeRenderer.rect(SCREEN_WIDTH - uiOffset - 2, 0, 2f, SCREEN_HEIGHT);
 		shapeRenderer.end();
 
-		// Draw the buttons to the screen
+		// Draw the UI to the screen
 		buttonStage.draw();
 
+		// Update the mouse position last frame for use in MouseInput
 		mousePosLastFrame.set(Gdx.input.getX(), SCREEN_HEIGHT - Gdx.input.getY(), 0);
 
-		// Detects mouse input and sets pixel if it is in bounds
+		// Detects mouse input and performs manipulation on matrix depending on brush
+		// type/size/element etc.
 		mouse.detectInput();
 
-		// Perform sand settling logic
+		// Perform matrix update logic for all elements and draw it to the screen
 		matrix.updateFrame(shapeRenderer);
 		matrix.draw(shapeRenderer);
 
+		// Draw the mouse cursor to the screen (left at end of render so it appears on
+		// top)
 		mouse.drawCursor(shapeRenderer);
 
 	}
 
+	/**
+	 * Activates on resizing of window. Updates screen width and height and
+	 * recreates the scene, deleting all elements in matrix.
+	 * 
+	 * @param width  new width of screen
+	 * @param height new height of screen
+	 */
 	@Override
 	public void resize(int width, int height) {
-		viewport.update(width, height);
-		camera.setToOrtho(false, width, height);
+
+		// Establish new screen width and height
+		SCREEN_WIDTH = width;
+		SCREEN_HEIGHT = height;
+
+		// Store the old matrix
+		CellularMatrix oldMatrix = new CellularMatrix(rows, columns, pixelSizeModifier);
+		int oldRows = rows;
+		int oldCols = columns;
+
+		// fill the old matrix
+		for (int row = 0; row < CellularMatrix.rows - 1; row++) {
+			for (int col = 0; col < CellularMatrix.columns - 1; col++) {
+				oldMatrix.setElement(matrix.getElement(row, col));
+			}
+		}
+
+		// update the screen to set it to new size
+		this.create();
+
+		// Re populate the new size matrix with as much of the old matrix as possible
+		for (int row = 0; row < CellularMatrix.rows; row++) {
+			for (int col = 0; col < CellularMatrix.columns; col++) {
+				Element elementToSet;
+				if (row >= 0 && row < oldRows && col >= 0 && col < oldCols) {
+					elementToSet = oldMatrix.getElement(row, col);
+				} else {
+					elementToSet = new Empty(row, col);
+				}
+				elementToSet.setRow(row);
+				elementToSet.setColumn(col);
+				elementToSet.parentMatrix = matrix;
+				matrix.setElement(elementToSet);
+			}
+		}
+
+		// Get rid of the old matrix
+		oldMatrix.clear();
+
 	}
 
 	@Override

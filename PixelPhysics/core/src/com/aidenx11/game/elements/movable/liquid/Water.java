@@ -8,7 +8,6 @@ import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.color.CustomColor.ColorValues;
 import com.aidenx11.game.elements.Element;
-import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.elements.movable.Movable;
 import com.aidenx11.game.elements.movable.movable_solid.Dirt;
 import com.aidenx11.game.elements.movable.movable_solid.Sand;
@@ -18,7 +17,7 @@ public class Water extends Liquid {
 	public static ElementTypes type = ElementTypes.WATER;
 	private static float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION + 0.2f;
 	private static float maxSpeed = 15f;
-	private static float density = 7f;
+	private static float density = 6f;
 	private static int dispersionRate = 8;
 
 	int[] darkerWater = new int[] { 15, 94, 156 };

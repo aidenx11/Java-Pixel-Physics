@@ -182,7 +182,7 @@ public class UIStage extends Stage {
 		final Slider brushSizeSlider = new Slider(1f, 75f, 1f, true, skinButton);
 		brushSizeSlider.setWidth(10f);
 		brushSizeSlider.setHeight(200f);
-		brushSizeSlider.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 15, 640f);
+		brushSizeSlider.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 15, Gdx.graphics.getHeight() - brushSizeSlider.getHeight() - 15);
 		brushSizeSlider.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
