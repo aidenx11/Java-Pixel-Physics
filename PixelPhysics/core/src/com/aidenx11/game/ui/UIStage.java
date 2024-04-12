@@ -17,12 +17,17 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
+ * Class to handle all elements of the UI. Contains fields for all buttons and
+ * sliders in the UI, and methods for detecting input and controlling colors.
  * 
+ * @author Aiden Schroeder
  */
 public class UIStage extends Stage {
 
+	/** Handles the skin for the UI */
 	private Skin skinButton;
 
+	/** Declaration for all buttons in the UI */
 	final TextButton clearCanvasButton;
 	final TextButton emptyToolButton;
 	final TextButton sandToolButton;
@@ -39,10 +44,19 @@ public class UIStage extends Stage {
 	final TextButton obsidianToolButton;
 	final TextButton steelToolButton;
 
+	/** Input that the buttons should detect */
 	MouseInput mouse;
 
+	/** Keeps track of whether the simulation is in light or dark mode */
 	boolean lightsOn = pixelPhysicsGame.lightsOn;
 
+	/**
+	 * Constructs the UI by initializing and placing all buttons and sliders.
+	 * 
+	 * @param viewport   viewport the UI is in
+	 * @param mouseInput input the UI should detect
+	 * @param matrix     matrix the UI is being drawn on
+	 */
 	public UIStage(Viewport viewport, MouseInput mouseInput, CellularMatrix matrix) {
 
 		mouse = mouseInput;
@@ -151,7 +165,7 @@ public class UIStage extends Stage {
 				resetButtonColors();
 			}
 		});
-		
+
 		lavaToolButton = new TextButton("Lava", skinButton, "default");
 		lavaToolButton.addListener(new ClickListener() {
 			@Override
@@ -160,7 +174,7 @@ public class UIStage extends Stage {
 				resetButtonColors();
 			}
 		});
-		
+
 		obsidianToolButton = new TextButton("Obsidian", skinButton, "default");
 		obsidianToolButton.addListener(new ClickListener() {
 			@Override
@@ -169,7 +183,7 @@ public class UIStage extends Stage {
 				resetButtonColors();
 			}
 		});
-		
+
 		steelToolButton = new TextButton("Steel", skinButton, "default");
 		steelToolButton.addListener(new ClickListener() {
 			@Override
@@ -182,7 +196,8 @@ public class UIStage extends Stage {
 		final Slider brushSizeSlider = new Slider(1f, 75f, 1f, true, skinButton);
 		brushSizeSlider.setWidth(10f);
 		brushSizeSlider.setHeight(Gdx.graphics.getHeight() > 200f + 15f ? 200f : Gdx.graphics.getHeight() - 30f);
-		brushSizeSlider.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 15, Gdx.graphics.getHeight() - brushSizeSlider.getHeight() - 15);
+		brushSizeSlider.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 15,
+				Gdx.graphics.getHeight() - brushSizeSlider.getHeight() - 15);
 		brushSizeSlider.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -234,7 +249,6 @@ public class UIStage extends Stage {
 		elementTable.add(obsidianToolButton).minWidth(120f).pad(5f);
 		elementTable.row();
 		elementTable.add(steelToolButton).minWidth(120f).pad(5f);
-		
 
 		brushTypeTable.add(circleBrushButton).minWidth(60f).pad(5f);
 		brushTypeTable.row();
@@ -253,6 +267,10 @@ public class UIStage extends Stage {
 		this.addActor(brushSizeSlider);
 	}
 
+	/**
+	 * Resets the color of all buttons in the UI to their defaults, and to red if
+	 * the button is selected.
+	 */
 	public void resetButtonColors() {
 		if (lightsOn) {
 			canvasColorButton.setColor(Color.TEAL);

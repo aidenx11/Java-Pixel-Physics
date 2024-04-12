@@ -62,22 +62,55 @@ public abstract class Element {
 	/** Chance for this element to catch on fire */
 	private float chanceToCatch;
 
+	/** Whether or not this element moves down */
 	private boolean movesDown;
 
+	/** Whether or not this element is on fire */
 	private boolean onFire;
 
+	/** Whether or not this element is falling through air */
 	private boolean fallingThroughAir = false;
 
+	/**
+	 * Public enumeration that contains all the types of elements in the simulation
+	 */
 	public enum ElementTypes {
 		SAND, EMPTY, WOOD, SMOKE, FIRE, WATER, STEAM, WET_SAND, LEAF, DIRT, WET_DIRT, STONE, LAVA, OBSIDIAN, STEEL,
 		RUST;
 	}
 
+	/**
+	 * CustomColor array to keep track of the colors an element alternates through
+	 * when it is burning
+	 */
 	public static CustomColor[] fireColors = new CustomColor[] { new CustomColor(253, 207, 88),
 			new CustomColor(242, 125, 12), new CustomColor(199, 14, 14), new CustomColor(240, 127, 19) };
 
+	/**
+	 * Abstract update method that varies based on the element inheriting it
+	 */
 	public abstract void update();
 
+	/**
+	 * Default constructor for Element. Every subclass of Element calls up to this
+	 * constructor.
+	 * 
+	 * @param type               Type of this element, from ElementTypes enumeration
+	 * @param row                row location of this element
+	 * @param column             column location of this element
+	 * @param color              color of this element
+	 * @param canDie             whether or not this element can die/has limited
+	 *                           life
+	 * @param lifetime           lifetime of this element
+	 * @param flammable          whether or not this element is flammable
+	 * @param extinguishesThings whether or not this element extinguishes other
+	 *                           elements
+	 * @param chanceToCatch      chance for this element to catch on fire when in
+	 *                           contact with another element that is on fire,
+	 *                           ranging from 0-1
+	 * @param movesDown          whether or not this element moves downward
+	 * @param temperature        temperature of this element
+	 */
 	public Element(ElementTypes type, int row, int column, CustomColor color, boolean canDie, int lifetime,
 			boolean flammable, boolean extinguishesThings, float chanceToCatch, boolean movesDown, int temperature) {
 		setType(type);
@@ -94,6 +127,10 @@ public abstract class Element {
 		setTemperature(temperature);
 	}
 
+	/**
+	 * Updates the lifetime of this element. Also causes the element to flicker if
+	 * it is on fire.
+	 */
 	public void updateElementLife() {
 		if (this.limitedLife() && this.getLifetime() < 1) {
 			if (this instanceof Smoke || this instanceof Steam) {
@@ -116,6 +153,10 @@ public abstract class Element {
 		this.setLifetime(this.getLifetime() - 1);
 	}
 
+	/**
+	 * When called by an element, causes elements that can rust to turn into rust
+	 * around the element.
+	 */
 	public void causeRust() {
 		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
 		List<Element> shuffledElements = Arrays.asList(adjacentElements);
@@ -130,11 +171,18 @@ public abstract class Element {
 		}
 	}
 
+	/**
+	 * Updates the logic concerning fire turning water into steam and drying wet
+	 * elements
+	 * 
+	 * @param elements array of elements to check
+	 * @return whether or not this element was extinguished
+	 */
 	private boolean updateDryingLogic(Element[] elements) {
 		boolean extinguished = false;
 		for (int i = 0; i < elements.length; i++) {
 			if (elements[i] != null && elements[i].extinguishesThings() && this.isOnFire()) {
-				if (elements[i] instanceof Water) {
+				if (elements[i] instanceof Water && Math.random() < 0.4) {
 					parentMatrix.setNewElement(elements[i], ElementTypes.STEAM);
 					extinguished = true;
 				} else if (elements[i] instanceof WetSand) {
@@ -151,6 +199,12 @@ public abstract class Element {
 		return extinguished;
 	}
 
+	/**
+	 * Returns the number of elements in the given element array that are on fire
+	 * 
+	 * @param elements elements to check
+	 * @return number of elements in the given element array that are on fire
+	 */
 	private int updateNumberOfAdjacentFire(Element[] elements) {
 		int numberOfFire = 0;
 		for (int i = 0; i < elements.length; i++) {
@@ -161,6 +215,10 @@ public abstract class Element {
 		return numberOfFire;
 	}
 
+	/**
+	 * Causes elements that can get wet to get wet if they are adjacent to this
+	 * element, and this element causes wetness.
+	 */
 	public void causeWetness() {
 
 		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
@@ -182,6 +240,10 @@ public abstract class Element {
 		}
 	}
 
+	/**
+	 * Updates logic concerning elements being burned. If the element was on fire
+	 * and gets extinguished, turns into smoke.
+	 */
 	public void updateBurningLogic() {
 
 		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
@@ -201,42 +263,93 @@ public abstract class Element {
 
 	}
 
+	/**
+	 * Causes this element's color to flicker between the colors in the fireColors
+	 * array
+	 */
+	public void flicker() {
+		int idx = (int) (Math.round(Math.random() * 3));
+		this.setColor(fireColors[idx]);
+	}
+
+	/**
+	 * @return the type of this element
+	 */
 	public ElementTypes getType() {
 		return type;
 	}
 
+	/**
+	 * Sets the type of this element
+	 * 
+	 * @param type type to set
+	 */
 	public void setType(ElementTypes type) {
 		Element.type = type;
 	}
 
+	/**
+	 * @return the density of this element
+	 */
 	public float getDensity() {
 		return density;
 	}
 
+	/**
+	 * Sets the density of this element
+	 * 
+	 * @param density density to set
+	 */
 	public void setDensity(float density) {
 		this.density = density;
 	}
 
+	/**
+	 * Sets the color of this element to the given CustomColor
+	 * 
+	 * @param color color to set
+	 */
 	public void setColor(CustomColor color) {
 		this.color = color;
 	}
 
+	/**
+	 * Sets the color of this element to the given rgb values
+	 * 
+	 * @param rgb integer array of rgb values
+	 */
 	public void setColor(int[] rgb) {
 		this.color = new CustomColor(rgb);
 	}
 
+	/**
+	 * Sets the row location of this element
+	 * 
+	 * @param row row to set
+	 */
 	public void setRow(int row) {
 		this.row = row;
 	}
 
+	/**
+	 * Sets the column location of this element
+	 * 
+	 * @param column column to set
+	 */
 	public void setColumn(int column) {
 		this.column = column;
 	}
 
+	/**
+	 * @return the row location of this element
+	 */
 	public int getRow() {
 		return row;
 	}
 
+	/**
+	 * @return the column location of this element
+	 */
 	public int getColumn() {
 		return column;
 	}
@@ -269,11 +382,6 @@ public abstract class Element {
 
 	public boolean isFlammable() {
 		return isFlammable;
-	}
-
-	public void flicker() {
-		int idx = (int) (Math.round(Math.random() * 3));
-		this.setColor(fireColors[idx]);
 	}
 
 	public boolean extinguishesThings() {

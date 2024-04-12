@@ -3,7 +3,7 @@ package com.aidenx11.game.color;
 import com.badlogic.gdx.graphics.Color;
 
 /**
- * Class to handle custom colors for the game. Primarily created to use the
+ * Class to handle custom colors for the simulation. Primarily created to use the
  * colorValue enumeration. May be better to just use the color class.
  * 
  * @author Aiden Schroeder

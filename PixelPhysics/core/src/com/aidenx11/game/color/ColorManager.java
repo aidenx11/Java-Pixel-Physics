@@ -6,14 +6,11 @@ import com.badlogic.gdx.graphics.Color;
 
 /**
  * Class to handle management of colors. Can convert from RGB to HSL and vary
- * colors
+ * colors.
  * 
  * @author Aiden Schroeder
  */
 public class ColorManager extends Color {
-
-	/** Keeps track of the place in the rainbow for generateRainbowColor method */
-	private static int placeInRainbow = 0;
 
 	/**
 	 * Varies the saturation and lightness of a color and returns it as a hex string
@@ -167,40 +164,5 @@ public class ColorManager extends Color {
 		int[] rgb = new int[] { (int) r, (int) g, (int) b };
 
 		return rgb;
-	}
-
-	/**
-	 * Generates a color value in the rainbow
-	 * 
-	 * @return a color value in the rainbow
-	 */
-	public static ColorValues generateRainbowColor() {
-		
-		if (placeInRainbow == 6) {
-			placeInRainbow = 0;
-		}
-
-		switch (placeInRainbow) {
-		case 0:
-			placeInRainbow++;
-			return ColorValues.RED;
-		case 1:
-			placeInRainbow++;
-			return ColorValues.ORANGE;
-		case 2:
-			placeInRainbow++;
-			return ColorValues.YELLOW;
-		case 3:
-			placeInRainbow++;
-			return ColorValues.GREEN;
-		case 4:
-			placeInRainbow++;
-			return ColorValues.BLUE;
-		case 5:
-			placeInRainbow++;
-			return ColorValues.PURPLE;
-		}
-
-		return ColorValues.RED;
 	}
 }

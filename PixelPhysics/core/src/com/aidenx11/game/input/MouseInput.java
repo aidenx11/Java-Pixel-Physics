@@ -31,29 +31,32 @@ public class MouseInput {
 
 	/** Camera to base the mouse on */
 	private OrthographicCamera camera;
+
 	/** Matrix to be modified by the mouse */
 	private CellularMatrix matrix;
-	/** Pixel size modifier of this game */
+
+	/** Pixel size modifier of this simulation */
 	private static int pixelSizeModifier = pixelPhysicsGame.pixelSizeModifier;
 
 	/** Position of the mouse in 3D space. Z is always zero */
 	public Vector3 mousePos = new Vector3();
 
+	/** Position of the mouse last frame */
 	public Vector3 lastMousePos = new Vector3(1, 1, 0);
 
 	/** Size of brush (radius of circle) */
 	private int brushSize;
+
 	/** Size of cursor */
 	private int cursorSize;
 
 	/** Element type being drawn by the mouse */
 	private ElementTypes elementType;
 
-	/** Whether or not the color of the sand should be random */
-	private boolean randomizeColor = false;
-
+	/** Type of brush, from the enumeration BrushTypes */
 	private BrushTypes brushType;
 
+	/** Public enumeration to handle the different types of brush type */
 	public enum BrushTypes {
 		CIRCLE, SQUARE
 	}
@@ -126,21 +129,50 @@ public class MouseInput {
 	}
 
 	/**
-	 * Returns whether or not the color should be randomized for sand particles
+	 * Returns the current brush type of this input
 	 * 
-	 * @return whether or not the color should be randomized for sand particles
+	 * @return the current brush type of this input
 	 */
-	public boolean isRandomizeColor() {
-		return randomizeColor;
+	public BrushTypes getBrushType() {
+		return brushType;
 	}
 
 	/**
-	 * Sets whether or not the color should be randomized
+	 * Sets the brush type of this input, and sets the brush type field in the
+	 * simulation file to the given brushType
 	 * 
-	 * @param randomizeColor whether or not to randomize
+	 * @param brushType Brush type to set
 	 */
-	public void setRandomizeColor(boolean randomizeColor) {
-		this.randomizeColor = randomizeColor;
+	public void setBrushType(BrushTypes brushType) {
+		this.brushType = brushType;
+		pixelPhysicsGame.mouseBrushType = brushType;
+	}
+
+	/**
+	 * Returns the current input's element type
+	 * 
+	 * @return the current input's element type
+	 */
+	public ElementTypes getElementType() {
+		return elementType;
+	}
+
+	/**
+	 * Returns the camera being used by this input
+	 * 
+	 * @return the camera being used by this input
+	 */
+	public OrthographicCamera getCamera() {
+		return camera;
+	}
+
+	/**
+	 * Sets the camera for this input
+	 * 
+	 * @param camera camera to set
+	 */
+	public void setCamera(OrthographicCamera camera) {
+		this.camera = camera;
 	}
 
 	/**
@@ -225,7 +257,8 @@ public class MouseInput {
 	}
 
 	/**
-	 * Draws a circle to the matrix of the given element, p% of the time
+	 * Draws a circle to the matrix of the brush's element type, at brush size, p%
+	 * of the time
 	 * 
 	 * @param row    row of the center of the circle
 	 * @param column column of the center of the circle
@@ -328,7 +361,7 @@ public class MouseInput {
 	}
 
 	/**
-	 * Draws a square of the given element type to the matrix.
+	 * Draws a square of the brush's element type and size to the matrix.
 	 * 
 	 * @param row    row of the center of the square
 	 * @param column column of the center of the square
@@ -420,27 +453,6 @@ public class MouseInput {
 				}
 			}
 		}
-	}
-
-	public BrushTypes getBrushType() {
-		return brushType;
-	}
-
-	public void setBrushType(BrushTypes brushType) {
-		this.brushType = brushType;
-		pixelPhysicsGame.mouseBrushType = brushType;
-	}
-
-	public ElementTypes getElementType() {
-		return elementType;
-	}
-
-	public OrthographicCamera getCamera() {
-		return camera;
-	}
-
-	public void setCamera(OrthographicCamera camera) {
-		this.camera = camera;
 	}
 
 }
