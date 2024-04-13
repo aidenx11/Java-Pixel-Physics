@@ -11,6 +11,16 @@ import com.aidenx11.game.elements.Empty;
 import com.aidenx11.game.elements.movable.liquid.Water;
 import com.aidenx11.game.elements.movable.movable_solid.Rust;
 
+/**
+ * Class to manage Steel elements. Extends the Immovable class.
+ * 
+ * Steel has a specific sequence of colors it alternates through in the
+ * steelColors enumeration. The color alternates in an algorithmic pattern so
+ * give large sections of steel a geometric look.
+ * 
+ * Steel can turn into rust if it is in contact with water for an extended
+ * period of time. Lava cannot melt Steel.
+ */
 public class Steel extends Immovable {
 
 	public static ElementTypes type = ElementTypes.STEEL;
@@ -18,8 +28,8 @@ public class Steel extends Immovable {
 	private static int colorIdx;
 	private boolean colorSet = false;
 
-	private static int[][] steelColors = new int[][] { { 206, 211, 212 }, { 192, 198, 199 },
-			{ 168, 176, 178 }, { 153, 163, 163 } };
+	private static int[][] steelColors = new int[][] { { 206, 211, 212 }, { 192, 198, 199 }, { 168, 176, 178 },
+			{ 153, 163, 163 } };
 
 	public Steel(int row, int column) {
 		super(type, row, column, new CustomColor(ColorValues.STEEL, true), false, 5, false, false, 0, false, 0);

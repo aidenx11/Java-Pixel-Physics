@@ -8,7 +8,7 @@ public class Smoke extends Gas {
 	public static ElementTypes type = ElementTypes.SMOKE;
 	private static float acceleration = -0.1f;
 	private static float maxSpeed = 0.35f;
-	private static float density = 1f;
+	private static int density = 1;
 	
 	static CustomColor[] fireColors = new CustomColor[] { new CustomColor(253, 207, 88), new CustomColor(242, 125, 12),
 			new CustomColor(199, 14, 14), new CustomColor(240, 127, 19) };

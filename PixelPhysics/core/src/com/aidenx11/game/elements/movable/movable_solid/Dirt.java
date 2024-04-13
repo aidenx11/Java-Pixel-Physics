@@ -9,7 +9,7 @@ public class Dirt extends MovableSolid {
 	public static ElementTypes type = ElementTypes.DIRT;
 	private static float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
 	private static float maxSpeed = 10f;
-	private static float density = 7f;
+	private static int density = 7;
 	private static float inertialResistance = 0.5f;
 	private static float friction = 0.4f;
 	private static int meltingPoint = -1;

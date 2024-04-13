@@ -25,7 +25,7 @@ public class Lava extends Liquid {
 	private static float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
 	private static float maxSpeed = 4f;
 	private float currentMaxSpeed;
-	private static float density = 7f;
+	private static int density = 7;
 	private static int dispersionRate = 5;
 	private static float chanceToMeltStone = 0.02f;
 	private static float chanceToMeltObsidian = 0.01f;

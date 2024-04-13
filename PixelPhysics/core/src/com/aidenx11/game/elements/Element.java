@@ -42,7 +42,7 @@ public abstract class Element {
 	private CustomColor color;
 
 	/** Density of this element */
-	private float density;
+	private int density;
 
 	/** Whether or not this element has a limited life (can die) */
 	private boolean limitedLife;
@@ -300,7 +300,7 @@ public abstract class Element {
 	 * 
 	 * @param density density to set
 	 */
-	public void setDensity(float density) {
+	public void setDensity(int density) {
 		this.density = density;
 	}
 
@@ -354,81 +354,164 @@ public abstract class Element {
 		return column;
 	}
 
+	/**
+	 * @return the color of this element as a LibGDX color object
+	 */
 	public Color getColor() {
 		return new Color(color.getR() / 255f, color.getG() / 255f, color.getB() / 255f, 1f);
 	}
 
+	/**
+	 * @return whether or not this element has a limited lifetime
+	 */
 	public boolean limitedLife() {
 		return limitedLife;
 	}
 
+	/**
+	 * Sets whether or not this element has limited lifetime
+	 * 
+	 * @param limitedLife whether or not this element has limited lifetime
+	 */
 	public void setLimitedLife(boolean limitedLife) {
 		this.limitedLife = limitedLife;
 	}
 
+	/**
+	 * @return the lifetime of this element
+	 */
 	public int getLifetime() {
 		return lifetime;
 	}
 
+	/**
+	 * Sets the lifetime of this element
+	 * 
+	 * @param lifetime lifetime to set
+	 */
 	public void setLifetime(int lifetime) {
 		this.lifetime = lifetime;
 	}
 
+	/**
+	 * Sets whether or not this element is flammable. If set to true, also sets this
+	 * element to have limited lifetime
+	 * 
+	 * @param flammable whether or not this element is flammable
+	 */
 	public void setFlammable(boolean flammable) {
 		if (flammable) {
 			this.setLimitedLife(true);
 		}
 	}
 
+	/**
+	 * @return whether or not this element is flammable
+	 */
 	public boolean isFlammable() {
 		return isFlammable;
 	}
 
+	/**
+	 * @return whether or not this element extinguishes other elements
+	 */
 	public boolean extinguishesThings() {
 		return extinguishesThings;
 	}
 
+	/**
+	 * @return the odds of this element catching on fire when adjacent to burning
+	 *         elements
+	 */
 	public float getChanceToCatch() {
 		return chanceToCatch;
 	}
 
+	/**
+	 * Sets the chance for this element to catch fire when it is adjacent to other
+	 * burning elements
+	 * 
+	 * @param chanceToCatch chance for this element to catch fire when it is
+	 *                      adjacent to other burning elements
+	 */
 	private void setChanceToCatch(float chanceToCatch) {
 		this.chanceToCatch = chanceToCatch;
 	}
 
+	/**
+	 * Sets whether or not this element extinguishes other elements
+	 * 
+	 * @param extinguishesThings whether or not this element extinguishes other
+	 *                           elements
+	 */
 	private void setExtinguishesThings(boolean extinguishesThings) {
 		this.extinguishesThings = extinguishesThings;
 	}
 
+	/**
+	 * @return whether or not this element moves down
+	 */
 	public boolean movesDown() {
 		return movesDown;
 	}
 
+	/**
+	 * Sets whether or not this element moves down
+	 * 
+	 * @param movesDown whether or not this element moves down
+	 */
 	public void setMovesDown(boolean movesDown) {
 		this.movesDown = movesDown;
 	}
 
+	/**
+	 * @return true if this element is on fire, false if it is not
+	 */
 	public boolean isOnFire() {
 		return onFire;
 	}
 
+	/**
+	 * Set whether or not this element is lit on fire. If it is, set limited life to
+	 * true
+	 * 
+	 * @param onFire whether or not this element is lit on fire
+	 */
 	public void setOnFire(boolean onFire) {
 		this.onFire = onFire;
-		this.setLimitedLife(true);
+		if (onFire) {
+			this.setLimitedLife(true);
+		}
 	}
 
+	/**
+	 * @return the current temperature of this element
+	 */
 	public int getTemperature() {
 		return meltingPoint;
 	}
 
+	/**
+	 * Sets the current temperature of this element
+	 * 
+	 * @param temperature temperature to set
+	 */
 	public void setTemperature(int temperature) {
 		this.meltingPoint = temperature;
 	}
 
+	/**
+	 * @return whether or not this element is falling through air
+	 */
 	public boolean isFallingThroughAir() {
 		return fallingThroughAir;
 	}
 
+	/**
+	 * Set whether or not this element is falling through air
+	 * 
+	 * @param fallingThroughAir whether or not this element is falling through air
+	 */
 	public void setFallingThroughAir(boolean fallingThroughAir) {
 		this.fallingThroughAir = fallingThroughAir;
 	}

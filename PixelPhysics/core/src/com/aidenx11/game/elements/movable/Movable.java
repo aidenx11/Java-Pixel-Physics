@@ -5,29 +5,72 @@ import com.aidenx11.game.elements.Element;
 import com.aidenx11.game.elements.movable.liquid.Water;
 import com.aidenx11.game.elements.movable.movable_solid.MovableSolid;
 
+/**
+ * Superclass of all Movable elements in the simulation.
+ * 
+ * Includes fields to manage density, vertical and horizontal velocity,
+ * acceleration, max speed, inertial resistance, friction, and direction, as
+ * well as flags for whether or not the element is free falling and whether or
+ * not the element moved last frame.
+ */
 public abstract class Movable extends Element {
 
-	private float density;
+	/** Density of this element */
+	private int density;
 
+	/** Vertical velocity of this element */
 	private float verticalVelocity;
 
+	/** Horizontal velocity of this element */
 	private float horizontalVelocity;
 
+	/** Acceleration of this element */
 	private float acceleration;
 
+	/** Maximum speed of this element */
 	private float maxSpeed;
 
+	/**
+	 * Inertial resistance of this element in the range 0-1 with 0 being the least
+	 * resistance, and 1 being the most. High inertial resistance will cause an
+	 * element to resist being set into a free falling state by other elements more.
+	 */
+	private float inertialResistance;
+
+	/**
+	 * Friction of this element in the range 0-1 with 0 being no friction, and 1
+	 * being maximum.
+	 */
+	private float friction;
+
+	/**
+	 * Direction this element is moving. -1 is left, 1 is right. 0 means it moves
+	 * neither direction
+	 */
+	private int direction;
+
+	/**
+	 * Whether or not this element moves sideways. For example, Water moves sideways
+	 * because even if it is 'settled', it can move left and right. Sand, for
+	 * example, does not move sideways.
+	 */
 	private boolean movesSideways;
 
-	private float inertialResistance;
-	private float friction;
-	private int direction;
+	/**
+	 * Whether or not this element is free falling. Used mainly along with inertial
+	 * resistance to imitate a basic concept of inertia in movable elements
+	 */
 	private boolean isFreeFalling;
+
+	/**
+	 * Whether or not this element moved last frame. Used to skip calculations if
+	 * the element has not moved.
+	 */
 	private boolean movedLastFrame = true;
 
 	public Movable(ElementTypes type, int row, int column, CustomColor color, boolean canDie, int lifetime,
 			boolean flammable, boolean extinguishesThings, float chanceToCatch, boolean burnsThings, float velocity,
-			float acceleration, float maxSpeed, float density, boolean movesSideways, boolean movesDown, float friction,
+			float acceleration, float maxSpeed, int density, boolean movesSideways, boolean movesDown, float friction,
 			int temperature) {
 		super(type, row, column, color, canDie, lifetime, flammable, extinguishesThings, chanceToCatch, movesDown,
 				temperature);
@@ -204,7 +247,7 @@ public abstract class Movable extends Element {
 		return density;
 	}
 
-	public void setDensity(float density) {
+	public void setDensity(int density) {
 		this.density = density;
 	}
 

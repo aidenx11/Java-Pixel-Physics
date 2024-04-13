@@ -9,7 +9,7 @@ public class Obsidian extends MovableSolid {
 	public static ElementTypes type = ElementTypes.OBSIDIAN;
 	private static float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
 	private static float maxSpeed = 5f;
-	private static float density = 7f;
+	private static int density = 7;
 	private static float inertialResistance = 0.95f;
 	private static float friction = 0.5f;
 	

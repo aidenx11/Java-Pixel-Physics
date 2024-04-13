@@ -2,6 +2,13 @@ package com.aidenx11.game.elements.immovable;
 
 import com.aidenx11.game.elements.Element;
 
+/**
+ * Class to manage Fire elements. Extends the Immovable class.
+ * 
+ * Fire elements have a random color from the Element.fireColors enumeration.
+ * Fire has a random short life span after which it will turn into smoke. All
+ * fire elements are automatically set on fire.
+ */
 public class Fire extends Immovable {
 
 	public static ElementTypes type = ElementTypes.FIRE;

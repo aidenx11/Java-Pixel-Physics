@@ -9,7 +9,7 @@ public class Rust extends MovableSolid {
 	public static ElementTypes type = ElementTypes.RUST;
 	private static float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION - 0.05f;
 	private static float maxSpeed = 2f;
-	private static float density = 8f;
+	private static int density = 8;
 	private static float inertialResistance = 0.8f;
 	private static float friction = 1f;
 

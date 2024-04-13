@@ -13,7 +13,7 @@ public abstract class MovableSolid extends Movable {
 
 	public MovableSolid(ElementTypes type, int row, int column, CustomColor color, boolean canDie, int lifetime,
 			boolean flammable, boolean extinguishesThings, float chanceToCatch, boolean burnsThings, float velocity,
-			float acceleration, float maxSpeed, float density, boolean movesSideways, float inertialResistance,
+			float acceleration, float maxSpeed, int density, boolean movesSideways, float inertialResistance,
 			float friction, int temperature) {
 		super(type, row, column, color, canDie, lifetime, flammable, extinguishesThings, chanceToCatch, burnsThings,
 				velocity, acceleration, maxSpeed, density, movesSideways, true, friction, temperature);

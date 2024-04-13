@@ -9,7 +9,7 @@ public class WetSand extends MovableSolid {
 	public static ElementTypes type = ElementTypes.WET_SAND;
 	private static float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION - 0.05f;
 	private static float maxSpeed = 3f;
-	private static float density = 8f;
+	private static int density = 8;
 	private static float inertialResistance = 0.01f;
 	private static float friction = 1f;
 
