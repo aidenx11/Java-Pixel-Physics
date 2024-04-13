@@ -36,9 +36,9 @@ public abstract class MovableSolid extends Movable {
 				this.setVerticalVelocity(this.getVerticalVelocity() + this.getHorizontalVelocity());
 			}
 
-			if (!this.MovedLastFrame() && (nextVertical == null || nextVertical.getDensity() >= this.getDensity())) {
-				return;
-			}
+//			if (!this.MovedLastFrame() && (nextVertical == null || nextVertical.getDensity() >= this.getDensity())) {
+//				return;
+//			}
 
 			Element nextVertical1;
 			Element nextVertical2;
