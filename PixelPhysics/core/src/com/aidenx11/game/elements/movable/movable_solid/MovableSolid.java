@@ -31,8 +31,7 @@ public abstract class MovableSolid extends Movable {
 			Element nextVertical = parentMatrix.getElement(this.getRow() - delta, this.getColumn());
 			int randDirection = Math.random() > 0.5 ? 1 : -1;
 
-			if (this.getHorizontalVelocity() > 0
-					&& (nextVertical == null || nextVertical.getDensity() >= this.getDensity())) {
+			if (this.getHorizontalVelocity() > 0 && this.isFreeFalling()) {
 				this.setVerticalVelocity(this.getVerticalVelocity() + this.getHorizontalVelocity());
 			}
 
@@ -42,6 +41,7 @@ public abstract class MovableSolid extends Movable {
 
 			Element nextVertical1;
 			Element nextVertical2;
+
 			if (this.isFallingThroughAir()) {
 				this.setFallingThroughAir(false);
 			}
@@ -94,33 +94,87 @@ public abstract class MovableSolid extends Movable {
 			nextVertical1 = parentMatrix.getElement(this.getRow() - delta, this.getColumn() - randDirection);
 			nextVertical2 = parentMatrix.getElement(this.getRow() - delta, this.getColumn() + randDirection);
 
-			if (nextVertical != null && (nextVertical.getDensity() < this.getDensity() || this.isFallingThroughAir())) {
+			if (nextVertical != null && (nextVertical.getDensity() < this.getDensity()
+					|| (this.isFallingThroughAir() && nextVertical.getDensity() == this.getDensity()))) {
+
 				setFreeFalling(true);
 				parentMatrix.swap(this, nextVertical);
 				setDirection(randDirection);
 				setHorizontalVelocity(0f);
 				updateVerticalVelocity();
 				setMovedLastFrame(true);
+
 			} else if (nextVertical1 != null
-					&& (nextVertical1.getDensity() < this.getDensity() || nextVertical1.isFallingThroughAir())
+					&& (nextVertical1.getDensity() < this.getDensity()
+							|| (nextVertical1.isFallingThroughAir() && nextVertical1.getDensity() == this.getDensity()))
 					&& this.isFreeFalling() && !inContainer) {
+
 				parentMatrix.swap(this, nextVertical1);
-				setDirection(randDirection);
+				setDirection(randDirection * -1);
 				setMovedLastFrame(true);
+
 			} else if (nextVertical2 != null
-					&& (nextVertical2.getDensity() < this.getDensity() || nextVertical2.isFallingThroughAir())
+					&& (nextVertical2.getDensity() < this.getDensity()
+							|| (nextVertical2.isFallingThroughAir()) && nextVertical2.getDensity() == this.getDensity())
 					&& this.isFreeFalling() && !inContainer) {
+
 				parentMatrix.swap(this, nextVertical2);
 				setDirection(randDirection);
 				setMovedLastFrame(true);
+
 			} else {
-				if (this.getHorizontalVelocity() == 0) {
-					this.setHorizontalVelocity(getVerticalVelocity());
+
+				if (this.getHorizontalVelocity() == 0 && this.isFreeFalling()) {
+					this.setHorizontalVelocity(getVerticalVelocity() / 2);
+				} else {
+					for (int i = 0; i < getHorizontalUpdateCount(); i++) {
+
+						this.setMovedLastFrame(false);
+
+						if (getDirection() != 0) {
+
+							Element elementInDirection = parentMatrix.getElement(getRow(),
+									getColumn() + getDirection());
+							Element elementBelowDirection = parentMatrix.getElement(getRow() - 1,
+									getColumn() + getDirection());
+
+							if (elementInDirection != null && elementInDirection.getDensity() < this.getDensity()) {
+
+								if (elementBelowDirection != null
+										&& elementBelowDirection.getDensity() < this.getDensity()) {
+
+									parentMatrix.swap(this, elementBelowDirection);
+									setMovedLastFrame(true);
+
+								} else {
+
+									parentMatrix.swap(this, elementInDirection);
+									setMovedLastFrame(true);
+
+								}
+
+							} else {
+
+								setHorizontalVelocity(0);
+								setDirection(0);
+								break;
+							}
+
+						} else {
+
+							setHorizontalVelocity(0);
+							setDirection(0);
+							break;
+						}
+						updateHorizontalVelocity();
+					}
+
 				}
 				if (!(nextVertical instanceof MovableSolid) || !((Movable) nextVertical).isFreeFalling()) {
 					setFreeFalling(false);
 				}
-				setVerticalVelocity(0f);
+				this.setVerticalVelocity(0);
+
 			}
 
 			if (this.isFreeFalling()) {
@@ -136,44 +190,5 @@ public abstract class MovableSolid extends Movable {
 
 		}
 
-		int h = getHorizontalUpdateCount();
-		for (int i = 0; i < h; i++) {
-			updateHorizontalVelocity();
-			this.setMovedLastFrame(false);
-			if (getDirection() > 0) {
-				Element elementInDirection = parentMatrix.getElement(getRow(), getColumn() + 1);
-				Element elementBelowDirection = parentMatrix.getElement(getRow() - 1, getColumn() + 1);
-				if (elementInDirection != null && elementInDirection.getDensity() < this.getDensity()) {
-					if (elementBelowDirection != null && elementBelowDirection.getDensity() < this.getDensity()) {
-						parentMatrix.swap(this, elementBelowDirection);
-						setMovedLastFrame(true);
-					} else {
-						parentMatrix.swap(this, elementInDirection);
-						setMovedLastFrame(true);
-					}
-					this.updateHorizontalVelocity();
-				} else {
-					setHorizontalVelocity(0);
-					setDirection(0);
-				}
-			} else if (getDirection() < 0) {
-				Element elementInDirection = parentMatrix.getElement(getRow(), getColumn() - 1);
-				Element elementBelowDirection = parentMatrix.getElement(getRow() - 1, getColumn() - 1);
-				if (elementInDirection != null && elementInDirection.getDensity() < this.getDensity()) {
-					if (elementBelowDirection != null && elementBelowDirection.getDensity() < this.getDensity()) {
-						parentMatrix.swap(this, elementBelowDirection);
-						setMovedLastFrame(true);
-					} else {
-						parentMatrix.swap(this, elementInDirection);
-						setMovedLastFrame(true);
-					}
-					this.updateHorizontalVelocity();
-				} else {
-					setHorizontalVelocity(0);
-					setDirection(0);
-				}
-			}
-		}
 	}
-
 }

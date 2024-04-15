@@ -11,7 +11,7 @@ public class Sand extends MovableSolid {
 	private static float maxSpeed = 5f;
 	private static int density = 7;
 	private static float inertialResistance = 0.01f;
-	private static float friction = 0.09f;
+	private static float friction = 0.02f;
 
 	public Sand(int row, int column) {
 		super(type, row, column, new CustomColor(ColorValues.SAND_COLOR, true), false, -1, false, true, 0, false, 0,

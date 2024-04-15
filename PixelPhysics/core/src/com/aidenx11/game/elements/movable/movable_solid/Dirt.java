@@ -20,25 +20,4 @@ public class Dirt extends MovableSolid {
 		super.setFreeFalling(true);
 	}
 
-//	@Override
-//	public void update() {
-//		if (!actOnOther()) {
-//			super.update();
-//		}
-//	}
-//
-//	public boolean actOnOther() {
-//
-//		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
-//
-//		for (int i = 0; i < adjacentElements.length; i++) {
-//			if (adjacentElements[i] instanceof Water) {
-//				parentMatrix.setNewElement(adjacentElements[i], ElementTypes.WET_DIRT);
-//				parentMatrix.clearElement(this);
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-
 }
