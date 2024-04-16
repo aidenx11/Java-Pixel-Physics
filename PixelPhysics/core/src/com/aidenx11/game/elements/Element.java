@@ -76,7 +76,7 @@ public abstract class Element {
 	 */
 	public enum ElementTypes {
 		SAND, EMPTY, WOOD, SMOKE, FIRE, WATER, STEAM, WET_SAND, LEAF, DIRT, WET_DIRT, STONE, LAVA, OBSIDIAN, STEEL,
-		RUST;
+		RUST, VOID;
 	}
 
 	/**

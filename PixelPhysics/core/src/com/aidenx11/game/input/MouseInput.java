@@ -15,6 +15,7 @@ import com.aidenx11.game.elements.movable.movable_solid.Dirt;
 import com.aidenx11.game.elements.movable.movable_solid.Obsidian;
 import com.aidenx11.game.elements.movable.movable_solid.Sand;
 import com.aidenx11.game.elements.Empty;
+import com.aidenx11.game.elements.Void;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -230,6 +231,7 @@ public class MouseInput {
 					case STONE:
 					case OBSIDIAN:
 					case STEEL:
+					case VOID:
 						probability = 1;
 						break;
 					case LEAF:
@@ -344,6 +346,11 @@ public class MouseInput {
 							matrix.setElement(new Steel(rowCount, colCount));
 						}
 						break;
+					case VOID:
+						if (!(matrix.getElement(rowCount, colCount) instanceof Void)) {
+							matrix.setElement(new Void(rowCount, colCount));
+						}
+						break;
 					default:
 						break;
 					}
@@ -442,6 +449,11 @@ public class MouseInput {
 				case STEEL:
 					if (!(matrix.getElement(rowCount, colCount) instanceof Steel)) {
 						matrix.setElement(new Steel(rowCount, colCount));
+					}
+					break;
+				case VOID:
+					if (!(matrix.getElement(rowCount, colCount) instanceof Void)) {
+						matrix.setElement(new Void(rowCount, colCount));
 					}
 					break;
 				case SMOKE:

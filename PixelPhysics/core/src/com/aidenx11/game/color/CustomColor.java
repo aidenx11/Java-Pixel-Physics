@@ -3,8 +3,8 @@ package com.aidenx11.game.color;
 import com.badlogic.gdx.graphics.Color;
 
 /**
- * Class to handle custom colors for the simulation. Primarily created to use the
- * colorValue enumeration. May be better to just use the color class.
+ * Class to handle custom colors for the simulation. Primarily created to use
+ * the colorValue enumeration. May be better to just use the color class.
  * 
  * @author Aiden Schroeder
  */
@@ -31,7 +31,7 @@ public class CustomColor extends ColorManager {
 		FIRE(242, 125, 12), WATER(15, 94, 156), WET_SAND(202, 164, 88), STEAM(199, 213, 224), LEAF(109, 179, 63),
 		DIRT(89, 58, 14), WET_DIRT(153, 117, 65), STONE(152, 160, 167), LAVA_RED(207, 51, 30),
 		LAVA_ORANGE(242, 157, 44), OBSIDIAN(51, 35, 64), LAVA_YELLOW(219, 173, 36), STEEL(113, 121, 126),
-		RUST(151, 77, 45);
+		RUST(151, 77, 45), VOID(34, 2, 49);
 
 		/** Hex Code of the color */
 		private int r;

@@ -37,7 +37,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	public static final int uiOffset = 170;
 
 	/** Acceleration due to gravity. Used in movable elements */
-	public static final float GRAVITY_ACCELERATION = 0.07f;
+	public static final float GRAVITY_ACCELERATION = 0.1f;
 
 	/** Pixel size modifier of the game */
 	public static int pixelSizeModifier = 3;

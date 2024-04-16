@@ -2,6 +2,7 @@ package com.aidenx11.game;
 
 import com.aidenx11.game.elements.Element;
 import com.aidenx11.game.elements.Empty;
+import com.aidenx11.game.elements.Void;
 import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.elements.immovable.Fire;
 import com.aidenx11.game.elements.immovable.Leaf;
@@ -241,6 +242,9 @@ public class CellularMatrix {
 			break;
 		case RUST:
 			this.setElement(new Rust(element.getRow(), element.getColumn()));
+			break;
+		case VOID:
+			this.setElement(new Void(element.getRow(), element.getColumn()));
 			break;
 		default:
 			break;

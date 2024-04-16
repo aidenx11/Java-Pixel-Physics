@@ -43,6 +43,7 @@ public class UIStage extends Stage {
 	final TextButton lavaToolButton;
 	final TextButton obsidianToolButton;
 	final TextButton steelToolButton;
+	final TextButton voidToolButton;
 
 	/** Input that the buttons should detect */
 	MouseInput mouse;
@@ -192,6 +193,15 @@ public class UIStage extends Stage {
 				resetButtonColors();
 			}
 		});
+		
+		voidToolButton = new TextButton("Void", skinButton, "default");
+		voidToolButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				mouseInput.setElementType(ElementTypes.VOID);
+				resetButtonColors();
+			}
+		});
 
 		final Slider brushSizeSlider = new Slider(1f, 75f, 1f, true, skinButton);
 		brushSizeSlider.setWidth(10f);
@@ -249,6 +259,8 @@ public class UIStage extends Stage {
 		elementTable.add(obsidianToolButton).minWidth(120f).pad(5f);
 		elementTable.row();
 		elementTable.add(steelToolButton).minWidth(120f).pad(5f);
+		elementTable.row();
+		elementTable.add(voidToolButton).minWidth(120f).pad(5f);
 
 		brushTypeTable.add(circleBrushButton).minWidth(60f).pad(5f);
 		brushTypeTable.row();
@@ -259,9 +271,9 @@ public class UIStage extends Stage {
 		resetButtonColors();
 
 		brushTypeTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 40,
-				Gdx.graphics.getHeight() - 510f);
+				Gdx.graphics.getHeight() - 535f);
 		elementTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset / 2 + 15,
-				Gdx.graphics.getHeight() - 235f);
+				Gdx.graphics.getHeight() - 245f);
 		this.addActor(brushTypeTable);
 		this.addActor(elementTable);
 		this.addActor(brushSizeSlider);
@@ -328,6 +340,11 @@ public class UIStage extends Stage {
 				steelToolButton.setColor(Color.LIGHT_GRAY);
 			} else {
 				steelToolButton.setColor(Color.RED);
+			}
+			if (mouse.getElementType() != ElementTypes.VOID) {
+				voidToolButton.setColor(Color.LIGHT_GRAY);
+			} else {
+				voidToolButton.setColor(Color.RED);
 			}
 			clearCanvasButton.setColor(Color.LIGHT_GRAY);
 			if (mouse.getBrushType() == BrushTypes.CIRCLE) {
@@ -396,6 +413,11 @@ public class UIStage extends Stage {
 				steelToolButton.setColor(Color.GRAY);
 			} else {
 				steelToolButton.setColor(Color.RED);
+			}
+			if (mouse.getElementType() != ElementTypes.VOID) {
+				voidToolButton.setColor(Color.GRAY);
+			} else {
+				voidToolButton.setColor(Color.RED);
 			}
 			clearCanvasButton.setColor(Color.GRAY);
 			if (mouse.getBrushType() == BrushTypes.CIRCLE) {

@@ -8,7 +8,7 @@ public class Sand extends MovableSolid {
 
 	public static ElementTypes type = ElementTypes.SAND;
 	private static float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
-	private static float maxSpeed = 5f;
+	private static float maxSpeed = 8f;
 	private static int density = 7;
 	private static float inertialResistance = 0.01f;
 	private static float friction = 0.02f;
