@@ -142,26 +142,18 @@ public abstract class MovableSolid extends Movable {
 							Element elementBelowDirection = parentMatrix.getElement(getRow() - 1,
 									getColumn() + getDirection());
 
-							if (elementInDirection != null && elementInDirection.getDensity() <= this.getDensity()) {
+							if (elementInDirection != null && (elementInDirection.getDensity() < this.getDensity())) {
 
 								if (elementBelowDirection != null
-										&& elementBelowDirection.getDensity() <= this.getDensity()) {
+										&& (elementBelowDirection.getDensity() < this.getDensity())) {
 
 									parentMatrix.swap(this, elementBelowDirection);
 									setMovedLastFrame(true);
-
-									if (elementBelowDirection.getDensity() == this.getDensity()) {
-										updateHorizontalVelocity();
-									}
 
 								} else {
 
 									parentMatrix.swap(this, elementInDirection);
 									setMovedLastFrame(true);
-
-									if (elementInDirection.getDensity() == this.getDensity()) {
-										updateHorizontalVelocity();
-									}
 								}
 
 							} else {
