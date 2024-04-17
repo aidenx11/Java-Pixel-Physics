@@ -22,6 +22,7 @@ public class Void extends Element {
 	}
 
 	private void actOnOther() {
+		
 		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
 		List<Element> shuffledElements = Arrays.asList(adjacentElements);
 		Collections.shuffle(shuffledElements);

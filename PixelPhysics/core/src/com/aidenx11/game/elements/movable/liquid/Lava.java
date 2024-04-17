@@ -23,9 +23,9 @@ public class Lava extends Liquid {
 
 	public static ElementTypes type = ElementTypes.LAVA;
 	private static float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
-	private static float maxSpeed = 4f;
+	private static float maxSpeed = 5f;
 	private float currentMaxSpeed;
-	private static int density = 7;
+	private static int density = 8;
 	private static int dispersionRate = 5;
 	private static float chanceToMeltStone = 0.02f;
 	private static float chanceToMeltObsidian = 0.01f;
@@ -110,15 +110,15 @@ public class Lava extends Liquid {
 				this.setVerticalVelocity(0.01f);
 			}
 
-			if (nextVertical != null && nextVertical.getDensity() < this.getDensity()) {
+			if (nextVertical != null && nextVertical.getDensity() < this.getDensity() - 1) {
 				if (nextVertical instanceof Liquid && !(nextVertical instanceof Lava)) {
 					this.setVerticalVelocity(0.7f);
 				}
 				parentMatrix.swap(this, nextVertical);
-			} else if (nextVertical1 != null && nextVertical1.getDensity() < this.getDensity() && nextVertical != null
+			} else if (nextVertical1 != null && nextVertical1.getDensity() < this.getDensity() - 1 && nextVertical != null
 					&& nextVertical.getDensity() > this.getDensity()) {
 				parentMatrix.swap(this, nextVertical1);
-			} else if (nextVertical2 != null && nextVertical2.getDensity() < this.getDensity() && nextVertical != null
+			} else if (nextVertical2 != null && nextVertical2.getDensity() < this.getDensity() - 1 && nextVertical != null
 					&& nextVertical.getDensity() > this.getDensity()) {
 				parentMatrix.swap(this, nextVertical2);
 			} else {
@@ -141,11 +141,11 @@ public class Lava extends Liquid {
 				setElementFreeFalling((MovableSolid) sideways2);
 			}
 
-			if (sideways1 != null && sideways1.getDensity() < this.getDensity()
+			if (sideways1 != null && sideways1.getDensity() < this.getDensity() - 1
 					&& ((nextVertical != null && nextVertical.getDensity() == this.getDensity())
 							|| nextVertical == null)) {
 				parentMatrix.swap(this, sideways1);
-			} else if (sideways2 != null && sideways2.getDensity() < this.getDensity()
+			} else if (sideways2 != null && sideways2.getDensity() < this.getDensity() - 1
 					&& ((nextVertical != null && nextVertical.getDensity() == this.getDensity())
 							|| nextVertical == null)) {
 				parentMatrix.swap(this, sideways2);

@@ -243,6 +243,8 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	@Override
 	public void dispose() {
 		shapeRenderer.dispose();
+		buttonStage.dispose();
+		matrix = null;
 	}
 
 }
