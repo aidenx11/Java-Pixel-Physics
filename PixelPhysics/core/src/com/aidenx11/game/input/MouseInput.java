@@ -17,6 +17,7 @@ import com.aidenx11.game.elements.movable.movable_solid.Sand;
 import com.aidenx11.game.elements.Empty;
 import com.aidenx11.game.elements.Void;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -28,7 +29,7 @@ import com.badlogic.gdx.math.Vector3;
  * 
  * @author Aiden Schroeder
  */
-public class MouseInput {
+public class MouseInput implements InputProcessor {
 
 	/** Camera to base the mouse on */
 	private OrthographicCamera camera;
@@ -51,6 +52,10 @@ public class MouseInput {
 	/** Size of cursor */
 	private int cursorSize;
 
+	private float rectOriginX = 150;
+
+	private float rectOriginY = 150;
+
 	/** Element type being drawn by the mouse */
 	private ElementTypes elementType;
 
@@ -59,7 +64,7 @@ public class MouseInput {
 
 	/** Public enumeration to handle the different types of brush type */
 	public enum BrushTypes {
-		CIRCLE, SQUARE
+		CIRCLE, SQUARE, RECTANGLE
 	}
 
 	/**
@@ -193,6 +198,8 @@ public class MouseInput {
 					pixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY() - getBrushSize() * pixelSizeModifier / 2
 							- pixelSizeModifier,
 					getCursorSize() * pixelSizeModifier, getCursorSize() * pixelSizeModifier);
+		} else if (getBrushType() == BrushTypes.RECTANGLE && Gdx.input.isTouched()) {
+			this.detectAndDrawRectangle(sr, rectOriginX, rectOriginY);
 		}
 		sr.end();
 	}
@@ -201,11 +208,15 @@ public class MouseInput {
 	 * Detects the input of the mouse and sets the matrix values corresponding to
 	 * the mouse location and elementType.
 	 */
-	public void detectInput() {
+	public void detectInput(ShapeRenderer sr) {
 
 		if (Gdx.input.isTouched()) {
 
 			if (Gdx.input.justTouched()) {
+				if (this.getBrushType() == BrushTypes.RECTANGLE) {
+					this.rectOriginX = Gdx.input.getX();
+					this.rectOriginY = pixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY();
+				}
 				lastMousePos.set(pixelPhysicsGame.mousePosLastFrame);
 			} else {
 				lastMousePos.set(mousePos.x, mousePos.y, 0);
@@ -249,7 +260,9 @@ public class MouseInput {
 					if (getBrushType() == BrushTypes.CIRCLE) {
 						drawCircle(points[i][0], points[i][1], getBrushSize() / 2, elementType, probability);
 					} else if (getBrushType() == BrushTypes.SQUARE) {
-						drawSquare(points[i][0], points[i][1], getBrushSize(), probability);
+						drawRectangle(points[i][0], points[i][1], getBrushSize(), getBrushSize(), probability);
+					} else if (getBrushType() == BrushTypes.RECTANGLE) {
+						
 					}
 
 				}
@@ -271,7 +284,7 @@ public class MouseInput {
 	public void drawCircle(int row, int column, int radius, ElementTypes type, double p) {
 
 		if (radius == 1) {
-			drawSquare(row, column, 1, p);
+			drawRectangle(row, column, 1, 1, p);
 			return;
 		}
 
@@ -367,6 +380,10 @@ public class MouseInput {
 		return distanceSquared <= radius * radius;
 	}
 
+	private void detectAndDrawRectangle(ShapeRenderer sr, float x, float y) {
+		sr.rect(x, y, Gdx.input.getX() - x, pixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY() - y);
+	}
+
 	/**
 	 * Draws a square of the brush's element type and size to the matrix.
 	 * 
@@ -376,20 +393,23 @@ public class MouseInput {
 	 * @param p      probability of each pixel in the square being drawn
 	 * @param type   element type to be drawn
 	 */
-	public void drawSquare(int row, int column, int width, double p) {
+	public void drawRectangle(int row, int column, int width, int length, double p) {
 
-		int difference;
+		int rowDifference;
+		int colDifference;
 		int mod;
 		if (width == 1) {
-			difference = 0;
+			rowDifference = 0;
+			colDifference = 0;
 			mod = 0;
 		} else {
-			difference = width / 2;
+			rowDifference = width / 2;
+			colDifference = length / 2;
 			mod = 2;
 		}
 
-		for (int rowCount = row - difference; rowCount <= row + difference - mod; rowCount++) {
-			for (int colCount = column - difference; colCount <= column + difference; colCount++) {
+		for (int rowCount = row - rowDifference; rowCount <= row + rowDifference - mod; rowCount++) {
+			for (int colCount = column - colDifference; colCount <= column + colDifference; colCount++) {
 
 				if (!CellularMatrix.isWithinBounds(rowCount, colCount) || (Math.random() > p)) {
 					continue;
@@ -465,6 +485,81 @@ public class MouseInput {
 				}
 			}
 		}
+	}
+
+	@Override
+	public boolean keyDown(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		if (brushType == BrushTypes.RECTANGLE) {
+			int row = 0;
+			int col = 0;
+			int width = (int) Math.abs((mousePos.x - rectOriginX) / pixelPhysicsGame.pixelSizeModifier);
+			int height = (int) Math.abs((mousePos.y - rectOriginY) / pixelPhysicsGame.pixelSizeModifier);
+			boolean drawnUp = mousePos.y - rectOriginY > 0;
+			boolean drawnRight = mousePos.x - rectOriginX > 0;
+			
+			if (drawnUp) {
+				row = (int) (rectOriginY / pixelPhysicsGame.pixelSizeModifier) + height / 2;
+			} else {
+				row = (int) (rectOriginY / pixelPhysicsGame.pixelSizeModifier) - height / 2;
+			}
+			
+			if (drawnRight) {
+				col = (int) (rectOriginX / pixelPhysicsGame.pixelSizeModifier) + width / 2;
+			} else {
+				col = (int) (rectOriginX / pixelPhysicsGame.pixelSizeModifier) - width / 2;
+			}
+			
+			this.drawRectangle(row, col, height, width, 1);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean touchCancelled(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(float amountX, float amountY) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

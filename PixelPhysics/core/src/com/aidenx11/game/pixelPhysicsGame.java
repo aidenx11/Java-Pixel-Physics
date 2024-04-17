@@ -8,6 +8,7 @@ import com.aidenx11.game.input.MouseInput.BrushTypes;
 import com.aidenx11.game.ui.UIStage;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -52,10 +53,10 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	public static int columns;
 
 	/** Controls whether the game is in light or dark mode */
-	public static boolean lightsOn = false;
+	public static boolean lightsOn = true;
 
 	/** Shape renderer to be used for this game */
-	public ShapeRenderer shapeRenderer;
+	public static ShapeRenderer shapeRenderer;
 
 	/** Camera to be used for this game */
 	private OrthographicCamera camera;
@@ -67,7 +68,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	private MouseInput mouse;
 
 	/** Brush type of the mouse */
-	public static BrushTypes mouseBrushType = BrushTypes.CIRCLE;
+	public static BrushTypes mouseBrushType = BrushTypes.RECTANGLE;
 
 	/** Element type of the mouse */
 	public static ElementTypes mouseElementType = ElementTypes.SAND;
@@ -83,6 +84,8 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 
 	/** Stage to handle buttons/ui elements */
 	private UIStage buttonStage;
+	
+	private InputMultiplexer im;
 
 	/** Color of the light mode background */
 	public static float[] skyColorLight = new float[] { 114 / 255f, 194 / 255f, 231 / 255f };
@@ -139,7 +142,12 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		buttonStage = new UIStage(viewport, mouse, matrix);
 
 		// Set input processor to UI so UI can detect input
-		Gdx.input.setInputProcessor(buttonStage);
+		im = new InputMultiplexer();
+		
+		im.addProcessor(buttonStage);
+		im.addProcessor(mouse);
+		
+		Gdx.input.setInputProcessor(im);
 
 	}
 
@@ -177,7 +185,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 
 		// Detects mouse input and performs manipulation on matrix depending on brush
 		// type/size/element etc.
-		mouse.detectInput();
+		mouse.detectInput(shapeRenderer);
 
 		// Perform matrix update logic for all elements and draw it to the screen
 		matrix.updateFrame(shapeRenderer);

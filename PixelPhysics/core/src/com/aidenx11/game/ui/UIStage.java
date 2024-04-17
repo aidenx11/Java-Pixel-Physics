@@ -37,6 +37,7 @@ public class UIStage extends Stage {
 	final TextButton leafToolButton;
 	final TextButton squareBrushButton;
 	final TextButton circleBrushButton;
+	final TextButton rectBrushButton;
 	final TextButton dirtToolButton;
 	final TextButton stoneToolButton;
 	final TextButton canvasColorButton;
@@ -83,6 +84,15 @@ public class UIStage extends Stage {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				mouseInput.setBrushType(BrushTypes.SQUARE);
+				resetButtonColors();
+			}
+		});
+
+		rectBrushButton = new TextButton("Rectangle", skinButton, "default");
+		rectBrushButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				mouseInput.setBrushType(BrushTypes.RECTANGLE);
 				resetButtonColors();
 			}
 		});
@@ -193,7 +203,7 @@ public class UIStage extends Stage {
 				resetButtonColors();
 			}
 		});
-		
+
 		voidToolButton = new TextButton("Void", skinButton, "default");
 		voidToolButton.addListener(new ClickListener() {
 			@Override
@@ -205,7 +215,7 @@ public class UIStage extends Stage {
 
 		final Slider brushSizeSlider = new Slider(1f, 75f, 1f, true, skinButton);
 		brushSizeSlider.setWidth(10f);
-		brushSizeSlider.setHeight(Gdx.graphics.getHeight() > 200f + 15f ? 200f : Gdx.graphics.getHeight() - 30f);
+		brushSizeSlider.setHeight(Gdx.graphics.getHeight() > 400f + 15f ? 400f : Gdx.graphics.getHeight() - 30f);
 		brushSizeSlider.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 15,
 				Gdx.graphics.getHeight() - brushSizeSlider.getHeight() - 15);
 		brushSizeSlider.addListener(new ClickListener() {
@@ -216,7 +226,7 @@ public class UIStage extends Stage {
 			}
 		});
 
-		canvasColorButton = new TextButton("Lights on", skinButton, "default");
+		canvasColorButton = new TextButton(lightsOn ? "Lights off" : "Lights on", skinButton, "default");
 		canvasColorButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -266,12 +276,14 @@ public class UIStage extends Stage {
 		brushTypeTable.row();
 		brushTypeTable.add(squareBrushButton).minWidth(60f).pad(5f);
 		brushTypeTable.row();
+		brushTypeTable.add(rectBrushButton).minWidth(75f).pad(5f);
+		brushTypeTable.row();
 		brushTypeTable.add(canvasColorButton).minWidth(70f).pad(5f);
 
 		resetButtonColors();
 
-		brushTypeTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 40,
-				Gdx.graphics.getHeight() - 535f);
+		brushTypeTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 45,
+				Gdx.graphics.getHeight() - 560f);
 		elementTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset / 2 + 15,
 				Gdx.graphics.getHeight() - 245f);
 		this.addActor(brushTypeTable);
@@ -357,6 +369,11 @@ public class UIStage extends Stage {
 			} else {
 				squareBrushButton.setColor(Color.LIGHT_GRAY);
 			}
+			if (mouse.getBrushType() == BrushTypes.RECTANGLE) {
+				rectBrushButton.setColor(Color.RED);
+			} else {
+				rectBrushButton.setColor(Color.LIGHT_GRAY);
+			}
 		} else {
 			canvasColorButton.setColor(Color.NAVY);
 			if (mouse.getElementType() != ElementTypes.DIRT) {
@@ -429,6 +446,11 @@ public class UIStage extends Stage {
 				squareBrushButton.setColor(Color.RED);
 			} else {
 				squareBrushButton.setColor(Color.GRAY);
+			}
+			if (mouse.getBrushType() == BrushTypes.RECTANGLE) {
+				rectBrushButton.setColor(Color.RED);
+			} else {
+				rectBrushButton.setColor(Color.GRAY);
 			}
 		}
 	}
