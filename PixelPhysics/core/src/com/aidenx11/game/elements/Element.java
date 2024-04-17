@@ -12,8 +12,6 @@ import com.aidenx11.game.elements.immovable.Steel;
 import com.aidenx11.game.elements.movable.gas.Smoke;
 import com.aidenx11.game.elements.movable.gas.Steam;
 import com.aidenx11.game.elements.movable.liquid.Water;
-import com.aidenx11.game.elements.movable.movable_solid.Dirt;
-import com.aidenx11.game.elements.movable.movable_solid.Sand;
 import com.aidenx11.game.elements.movable.movable_solid.WetDirt;
 import com.aidenx11.game.elements.movable.movable_solid.WetSand;
 import com.badlogic.gdx.graphics.Color;
@@ -215,30 +213,30 @@ public abstract class Element {
 		return numberOfFire;
 	}
 
-	/**
-	 * Causes elements that can get wet to get wet if they are adjacent to this
-	 * element, and this element causes wetness.
-	 */
-	public void causeWetness() {
-
-		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
-		List<Element> shuffledElements = Arrays.asList(adjacentElements);
-		Collections.shuffle(shuffledElements);
-		Element nextElement;
-
-		for (int i = 0; i < shuffledElements.size(); i++) {
-			nextElement = shuffledElements.get(i);
-			if (nextElement instanceof Sand) {
-				parentMatrix.setNewElement(nextElement, ElementTypes.WET_SAND);
-				parentMatrix.clearElement(this);
-			}
-			if (nextElement instanceof Dirt) {
-				parentMatrix.setNewElement(nextElement, ElementTypes.WET_DIRT);
-				parentMatrix.clearElement(this);
-			}
-
-		}
-	}
+//	/**
+//	 * Causes elements that can get wet to get wet if they are adjacent to this
+//	 * element, and this element causes wetness.
+//	 */
+//	public void causeWetness() {
+//
+//		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
+//		List<Element> shuffledElements = Arrays.asList(adjacentElements);
+//		Collections.shuffle(shuffledElements);
+//		Element nextElement;
+//
+//		for (int i = 0; i < shuffledElements.size(); i++) {
+//			nextElement = shuffledElements.get(i);
+//			if (nextElement instanceof Sand) {
+//				parentMatrix.setNewElement(nextElement, ElementTypes.WET_SAND);
+//				parentMatrix.clearElement(this);
+//			}
+//			if (nextElement instanceof Dirt) {
+//				parentMatrix.setNewElement(nextElement, ElementTypes.WET_DIRT);
+//				parentMatrix.clearElement(this);
+//			}
+//
+//		}
+//	}
 
 	/**
 	 * Updates logic concerning elements being burned. If the element was on fire

@@ -1,6 +1,5 @@
 package com.aidenx11.game.elements.movable.movable_solid;
 
-import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.elements.Element;
 import com.aidenx11.game.elements.Empty;
@@ -42,10 +41,6 @@ public abstract class MovableSolid extends Movable {
 				this.setFallingThroughAir(false);
 			}
 
-			if (this.MovedLastFrame()) {
-				this.setMovedLastFrame(false);
-			}
-
 			if (delta > 0) {
 				for (int i = this.getRow() - delta; i >= 0; i--) {
 					if (parentMatrix.getElement(i, this.getColumn()) instanceof Immovable
@@ -68,19 +63,7 @@ public abstract class MovableSolid extends Movable {
 						break;
 					}
 				}
-			} else if (delta < 0) {
-				for (int i = this.getRow() - delta; i <= CellularMatrix.rows; i++) {
-					if (parentMatrix.getElement(i, this.getColumn()) instanceof Immovable
-							|| parentMatrix.getElement(i, this.getColumn()) instanceof Lava) {
-						break;
-					}
-					if (parentMatrix.getElement(i, this.getColumn()) instanceof Empty
-							|| parentMatrix.getElement(i, this.getColumn()) instanceof Water) {
-						setFallingThroughAir(true);
-						break;
-					}
-				}
-			}
+			} 
 
 			Element sideways1 = parentMatrix.getElement(this.getRow(), this.getColumn() - randDirection);
 			Element sideways2 = parentMatrix.getElement(this.getRow(), this.getColumn() + randDirection);
@@ -98,7 +81,7 @@ public abstract class MovableSolid extends Movable {
 				setHorizontalVelocity(0f);
 				updateVerticalVelocity();
 				setVerticalVelocity(this.getVerticalVelocity() + this.getHorizontalVelocity());
-				setMovedLastFrame(true);
+
 
 			} else if (nextVertical1 != null
 					&& (nextVertical1.getDensity() < this.getDensity()
@@ -107,7 +90,7 @@ public abstract class MovableSolid extends Movable {
 
 				parentMatrix.swap(this, nextVertical1);
 				setDirection(randDirection * -1);
-				setMovedLastFrame(true);
+
 				if (this.getHorizontalVelocity() > 0) {
 					this.setElementFreeFalling(this);
 				}
@@ -119,7 +102,7 @@ public abstract class MovableSolid extends Movable {
 
 				parentMatrix.swap(this, nextVertical2);
 				setDirection(randDirection);
-				setMovedLastFrame(true);
+
 				if (this.getHorizontalVelocity() > 0) {
 					this.setElementFreeFalling(this);
 				}
@@ -133,7 +116,7 @@ public abstract class MovableSolid extends Movable {
 				} else {
 					for (int i = 0; i < getHorizontalUpdateCount(); i++) {
 
-						this.setMovedLastFrame(false);
+
 
 						if (getDirection() != 0) {
 
@@ -148,12 +131,12 @@ public abstract class MovableSolid extends Movable {
 										&& (elementBelowDirection.getDensity() < this.getDensity())) {
 
 									parentMatrix.swap(this, elementBelowDirection);
-									setMovedLastFrame(true);
+
 
 								} else {
 
 									parentMatrix.swap(this, elementInDirection);
-									setMovedLastFrame(true);
+
 								}
 
 							} else {
@@ -163,12 +146,7 @@ public abstract class MovableSolid extends Movable {
 								break;
 							}
 
-						} else {
-
-							setHorizontalVelocity(0);
-							setDirection(0);
-							break;
-						}
+						} 
 						updateHorizontalVelocity();
 					}
 
@@ -176,18 +154,18 @@ public abstract class MovableSolid extends Movable {
 				if (!(nextVertical instanceof MovableSolid) || !((Movable) nextVertical).isFreeFalling()) {
 					setFreeFalling(false);
 				}
-				this.setVerticalVelocity(0);
+				this.resetVelocity();
 
 			}
 
 			if (this.isFreeFalling()) {
 				if (sideways1 instanceof MovableSolid) {
 					setElementFreeFalling((MovableSolid) sideways1);
-					((MovableSolid) sideways1).setMovedLastFrame(true);
+
 				}
 				if (sideways2 instanceof MovableSolid) {
 					setElementFreeFalling((MovableSolid) sideways2);
-					((MovableSolid) sideways2).setMovedLastFrame(true);
+
 				}
 			}
 

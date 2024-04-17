@@ -65,7 +65,7 @@ public class Liquid extends Movable {
 					&& nextVertical2.getDensity() < this.getDensity()) {
 				parentMatrix.swap(this, nextVertical2);
 			} else {
-				this.setVerticalVelocity(0f);
+				this.resetVelocity();
 			}
 
 			Element sideways1 = parentMatrix.getElement(this.getRow(), this.getColumn() - randDirection);

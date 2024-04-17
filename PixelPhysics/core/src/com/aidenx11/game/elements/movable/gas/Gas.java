@@ -42,7 +42,7 @@ public class Gas extends Movable {
 					&& this.isFreeFalling()) {
 				parentMatrix.swap(this, nextVertical2);
 			} else {
-				this.setVerticalVelocity(0f);
+				this.resetVelocity();
 			}
 
 			if (sideways1 instanceof MovableSolid) {

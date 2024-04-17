@@ -1,7 +1,5 @@
 package com.aidenx11.game.color;
 
-import com.aidenx11.game.color.CustomColor.ColorValues;
-import com.aidenx11.game.elements.Element;
 import com.badlogic.gdx.graphics.Color;
 
 /**
@@ -41,15 +39,6 @@ public class ColorManager extends Color {
 		hslValues[2] = (int) Math.round(lightness);
 
 		return convertToRGBFromHSL(hslValues);
-	}
-
-	/**
-	 * Darken the color of the given element
-	 * 
-	 * @param element element to darken color of
-	 */
-	public static void darkenColor(Element element) {
-		element.setColor(new CustomColor(ColorValues.WET_SAND, true));
 	}
 
 	/**

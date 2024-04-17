@@ -62,12 +62,6 @@ public abstract class Movable extends Element {
 	 */
 	private boolean isFreeFalling;
 
-	/**
-	 * Whether or not this element moved last frame. Used to skip calculations if
-	 * the element has not moved.
-	 */
-	private boolean movedLastFrame = true;
-
 	public Movable(ElementTypes type, int row, int column, CustomColor color, boolean canDie, int lifetime,
 			boolean flammable, boolean extinguishesThings, float chanceToCatch, boolean burnsThings, float velocity,
 			float acceleration, float maxSpeed, int density, boolean movesSideways, boolean movesDown, float friction,
@@ -235,14 +229,6 @@ public abstract class Movable extends Element {
 
 	public void setDirection(int direction) {
 		this.direction = direction;
-	}
-
-	public boolean MovedLastFrame() {
-		return movedLastFrame;
-	}
-
-	public void setMovedLastFrame(boolean movedLastFrame) {
-		this.movedLastFrame = movedLastFrame;
 	}
 
 }
