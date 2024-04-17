@@ -262,7 +262,7 @@ public class MouseInput implements InputProcessor {
 					} else if (getBrushType() == BrushTypes.SQUARE) {
 						drawRectangle(points[i][0], points[i][1], getBrushSize(), getBrushSize(), probability);
 					} else if (getBrushType() == BrushTypes.RECTANGLE) {
-						
+
 					}
 
 				}
@@ -518,21 +518,30 @@ public class MouseInput implements InputProcessor {
 			int col = 0;
 			int width = (int) Math.abs((mousePos.x - rectOriginX) / pixelPhysicsGame.pixelSizeModifier);
 			int height = (int) Math.abs((mousePos.y - rectOriginY) / pixelPhysicsGame.pixelSizeModifier);
+
+			if (height < 1) {
+				height = 2;
+			}
+
+			if (width < 1) {
+				width = 1;
+			}
+
 			boolean drawnUp = mousePos.y - rectOriginY > 0;
 			boolean drawnRight = mousePos.x - rectOriginX > 0;
-			
+
 			if (drawnUp) {
 				row = (int) (rectOriginY / pixelPhysicsGame.pixelSizeModifier) + height / 2;
 			} else {
 				row = (int) (rectOriginY / pixelPhysicsGame.pixelSizeModifier) - height / 2;
 			}
-			
+
 			if (drawnRight) {
 				col = (int) (rectOriginX / pixelPhysicsGame.pixelSizeModifier) + width / 2;
 			} else {
 				col = (int) (rectOriginX / pixelPhysicsGame.pixelSizeModifier) - width / 2;
 			}
-			
+
 			this.drawRectangle(row, col, height, width, 1);
 		}
 		return false;
