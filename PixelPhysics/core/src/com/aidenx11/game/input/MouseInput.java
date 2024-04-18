@@ -518,7 +518,7 @@ public class MouseInput implements InputProcessor {
 			int row = 0;
 			int col = 0;
 			int height = (int) Math.ceil(Math.abs((mousePos.x - rectOriginX) / pixelPhysicsGame.pixelSizeModifier));
-			int width = (int) Math.ceil(Math.abs((mousePos.y - rectOriginY) / pixelPhysicsGame.pixelSizeModifier) + 1);
+			int width = (int) Math.ceil(Math.abs((mousePos.y - rectOriginY) / pixelPhysicsGame.pixelSizeModifier));
 
 			if (width < 2) {
 				width = 2;
@@ -541,6 +541,13 @@ public class MouseInput implements InputProcessor {
 				col = (int) (rectOriginX / pixelPhysicsGame.pixelSizeModifier) + height / 2;
 			} else {
 				col = (int) (rectOriginX / pixelPhysicsGame.pixelSizeModifier) - height / 2;
+			}
+			
+			if (drawnUp && drawnRight) {
+				width += 1;
+				row++;
+			} else if (!drawnUp) {
+				width += 2;
 			}
 
 			this.drawRectangle(row, col, width, height, 1);
