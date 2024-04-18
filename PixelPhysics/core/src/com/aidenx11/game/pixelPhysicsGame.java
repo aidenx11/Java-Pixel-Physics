@@ -54,6 +54,9 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 
 	/** Controls whether the game is in light or dark mode */
 	public static boolean lightsOn = true;
+	
+	/** Controls whether the simulation is paused or not */
+	public static boolean isPaused = false;
 
 	/** Shape renderer to be used for this game */
 	public static ShapeRenderer shapeRenderer;
@@ -84,7 +87,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 
 	/** Stage to handle buttons/ui elements */
 	private UIStage buttonStage;
-	
+
 	private InputMultiplexer im;
 
 	/** Color of the light mode background */
@@ -143,10 +146,10 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 
 		// Set input processor to UI so UI can detect input
 		im = new InputMultiplexer();
-		
+
 		im.addProcessor(buttonStage);
 		im.addProcessor(mouse);
-		
+
 		Gdx.input.setInputProcessor(im);
 
 	}
@@ -188,7 +191,10 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		mouse.detectInput(shapeRenderer);
 
 		// Perform matrix update logic for all elements and draw it to the screen
-		matrix.updateFrame(shapeRenderer);
+		if (!isPaused) {
+			matrix.updateFrame(shapeRenderer);
+		}
+		
 		matrix.draw(shapeRenderer);
 
 		// Draw the mouse cursor to the screen (left at end of render so it appears on

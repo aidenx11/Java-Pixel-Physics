@@ -45,6 +45,7 @@ public class UIStage extends Stage {
 	final TextButton obsidianToolButton;
 	final TextButton steelToolButton;
 	final TextButton voidToolButton;
+	final TextButton pauseButton;
 
 	/** Input that the buttons should detect */
 	MouseInput mouse;
@@ -246,6 +247,21 @@ public class UIStage extends Stage {
 			}
 		});
 
+		pauseButton = new TextButton(pixelPhysicsGame.isPaused ? "Resume Simulation" : "Pause Simulation", skinButton,
+				"default");
+		pauseButton.addListener(new ClickListener() {
+			public void clicked(InputEvent event, float x, float y) {
+				if (pixelPhysicsGame.isPaused) {
+					pauseButton.setText("Pause Simulation");
+					pixelPhysicsGame.isPaused = false;
+				} else {
+					pauseButton.setText("Resume Simulation");
+					pixelPhysicsGame.isPaused = true;
+				}
+				resetButtonColors();
+			}
+		});
+
 		elementTable.add(clearCanvasButton).minWidth(120f).pad(5f);
 		elementTable.row();
 		elementTable.add(emptyToolButton).minWidth(120f).pad(5f);
@@ -279,11 +295,12 @@ public class UIStage extends Stage {
 		brushTypeTable.add(rectBrushButton).minWidth(75f).pad(5f);
 		brushTypeTable.row();
 		brushTypeTable.add(canvasColorButton).minWidth(70f).pad(5f);
+		brushTypeTable.row();
+		brushTypeTable.add(pauseButton).minWidth(150f).pad(5f);
 
 		resetButtonColors();
 
-		brushTypeTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 45,
-				Gdx.graphics.getHeight() - 560f);
+		brushTypeTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 85, 100f);
 		elementTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset / 2 + 15,
 				Gdx.graphics.getHeight() - 245f);
 		this.addActor(brushTypeTable);
@@ -374,6 +391,11 @@ public class UIStage extends Stage {
 			} else {
 				rectBrushButton.setColor(Color.LIGHT_GRAY);
 			}
+			if (pixelPhysicsGame.isPaused) {
+				pauseButton.setColor(Color.RED);
+			} else {
+				pauseButton.setColor(Color.LIGHT_GRAY);
+			}
 		} else {
 			canvasColorButton.setColor(Color.NAVY);
 			if (mouse.getElementType() != ElementTypes.DIRT) {
@@ -451,6 +473,11 @@ public class UIStage extends Stage {
 				rectBrushButton.setColor(Color.RED);
 			} else {
 				rectBrushButton.setColor(Color.GRAY);
+			}
+			if (pixelPhysicsGame.isPaused) {
+				pauseButton.setColor(Color.RED);
+			} else {
+				pauseButton.setColor(Color.GRAY);
 			}
 		}
 	}
