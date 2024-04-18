@@ -213,31 +213,6 @@ public abstract class Element {
 		return numberOfFire;
 	}
 
-//	/**
-//	 * Causes elements that can get wet to get wet if they are adjacent to this
-//	 * element, and this element causes wetness.
-//	 */
-//	public void causeWetness() {
-//
-//		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
-//		List<Element> shuffledElements = Arrays.asList(adjacentElements);
-//		Collections.shuffle(shuffledElements);
-//		Element nextElement;
-//
-//		for (int i = 0; i < shuffledElements.size(); i++) {
-//			nextElement = shuffledElements.get(i);
-//			if (nextElement instanceof Sand) {
-//				parentMatrix.setNewElement(nextElement, ElementTypes.WET_SAND);
-//				parentMatrix.clearElement(this);
-//			}
-//			if (nextElement instanceof Dirt) {
-//				parentMatrix.setNewElement(nextElement, ElementTypes.WET_DIRT);
-//				parentMatrix.clearElement(this);
-//			}
-//
-//		}
-//	}
-
 	/**
 	 * Updates logic concerning elements being burned. If the element was on fire
 	 * and gets extinguished, turns into smoke.
