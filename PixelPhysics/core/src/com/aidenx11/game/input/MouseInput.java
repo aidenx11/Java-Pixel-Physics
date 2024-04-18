@@ -199,6 +199,7 @@ public class MouseInput implements InputProcessor {
 							- pixelSizeModifier,
 					getCursorSize() * pixelSizeModifier, getCursorSize() * pixelSizeModifier);
 		} else if (getBrushType() == BrushTypes.RECTANGLE && Gdx.input.isTouched()) {
+			sr.setColor(Color.RED);
 			this.detectAndDrawRectangle(sr, rectOriginX, rectOriginY);
 		}
 		sr.end();
@@ -516,33 +517,33 @@ public class MouseInput implements InputProcessor {
 		if (brushType == BrushTypes.RECTANGLE) {
 			int row = 0;
 			int col = 0;
-			int width = (int) Math.abs((mousePos.x - rectOriginX) / pixelPhysicsGame.pixelSizeModifier);
-			int height = (int) Math.abs((mousePos.y - rectOriginY) / pixelPhysicsGame.pixelSizeModifier);
+			int height = (int) Math.ceil(Math.abs((mousePos.x - rectOriginX) / pixelPhysicsGame.pixelSizeModifier));
+			int width = (int) Math.ceil(Math.abs((mousePos.y - rectOriginY) / pixelPhysicsGame.pixelSizeModifier) + 1);
 
-			if (height < 1) {
-				height = 2;
+			if (width < 2) {
+				width = 2;
 			}
 
-			if (width < 1) {
-				width = 1;
+			if (height < 1) {
+				height = 1;
 			}
 
 			boolean drawnUp = mousePos.y - rectOriginY > 0;
 			boolean drawnRight = mousePos.x - rectOriginX > 0;
 
 			if (drawnUp) {
-				row = (int) (rectOriginY / pixelPhysicsGame.pixelSizeModifier) + height / 2;
+				row = (int) Math.round(rectOriginY / pixelPhysicsGame.pixelSizeModifier) + width / 2;
 			} else {
-				row = (int) (rectOriginY / pixelPhysicsGame.pixelSizeModifier) - height / 2;
+				row = (int) Math.round(rectOriginY / pixelPhysicsGame.pixelSizeModifier) - width / 2;
 			}
 
 			if (drawnRight) {
-				col = (int) (rectOriginX / pixelPhysicsGame.pixelSizeModifier) + width / 2;
+				col = (int) (rectOriginX / pixelPhysicsGame.pixelSizeModifier) + height / 2;
 			} else {
-				col = (int) (rectOriginX / pixelPhysicsGame.pixelSizeModifier) - width / 2;
+				col = (int) (rectOriginX / pixelPhysicsGame.pixelSizeModifier) - height / 2;
 			}
 
-			this.drawRectangle(row, col, height, width, 1);
+			this.drawRectangle(row, col, width, height, 1);
 		}
 		return false;
 	}
