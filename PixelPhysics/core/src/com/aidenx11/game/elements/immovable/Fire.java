@@ -8,6 +8,10 @@ import com.aidenx11.game.elements.Element;
  * Fire elements have a random color from the Element.fireColors enumeration.
  * Fire has a random short life span after which it will turn into smoke. All
  * fire elements are automatically set on fire.
+ * 
+ * Contains a method to check for elements near fire that can extinguish it.
+ * 
+ * @author Aiden Schroeder
  */
 public class Fire extends Immovable {
 
@@ -19,23 +23,32 @@ public class Fire extends Immovable {
 		super.setOnFire(true);
 	}
 
+	/**
+	 * Override of update method to include custom method
+	 */
 	@Override
 	public void update() {
 		this.checkForExtinguishingElements();
 		super.update();
 	}
 
+	/**
+	 * Checks elements above this fire, and to the left and right. If one of the
+	 * elements extinguishes elements, extinguishes the fire.
+	 */
 	public void checkForExtinguishingElements() {
 		Element[] elementsAbove = new Element[] { parentMatrix.getElement(getRow() + 1, getColumn()),
 				parentMatrix.getElement(getRow() + 1, getColumn() - 1),
 				parentMatrix.getElement(getRow() + 1, getColumn() + 1),
 				parentMatrix.getElement(getRow(), getColumn() - 1),
 				parentMatrix.getElement(getRow(), getColumn() + 1) };
+
+		float chanceToExtinguish = 0;
+
 		for (int i = 0; i < elementsAbove.length; i++) {
 			if (elementsAbove[i] != null && elementsAbove[i].extinguishesThings()) {
 
 				ElementTypes type = elementsAbove[i].getType();
-				float chanceToExtinguish;
 
 				switch (type) {
 				case WATER:
@@ -55,8 +68,10 @@ public class Fire extends Immovable {
 				if (Math.random() < chanceToExtinguish) {
 					if (Math.random() < 0.5f) {
 						parentMatrix.setNewElement(this, ElementTypes.SMOKE);
+						return;
 					} else {
 						parentMatrix.clearElement(this);
+						return;
 					}
 				}
 			}

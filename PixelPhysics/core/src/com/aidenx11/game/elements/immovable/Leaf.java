@@ -11,6 +11,8 @@ import com.aidenx11.game.color.CustomColor.ColorValues;
  * up, they turn into smoke.
  * 
  * Leaf elements can be melted by lava.
+ * 
+ * @author Aiden Schroeder
  */
 public class Leaf extends Immovable {
 

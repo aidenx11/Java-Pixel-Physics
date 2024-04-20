@@ -19,23 +19,42 @@ import com.aidenx11.game.elements.movable.movable_solid.Sand;
 import com.aidenx11.game.elements.movable.movable_solid.WetDirt;
 import com.aidenx11.game.elements.movable.movable_solid.WetSand;
 
+/**
+ * Class to manage Lava elements. Lava is a complex Liquid with a relatively low
+ * dispersion rate. The class contains fields for the chance to melt different
+ * objects, along with the basic fields found in other Liquids.
+ * 
+ * Lava's main interaction with elements is melting. As lava melts other
+ * elements, it typically turns them into more lava and lowers it and the newly
+ * created lava's numberOfMelts. The numberOfMelts represents the "temperature"
+ * of the lava. When numberOfMelts hits zero, the Lava turns into Obsidian. If
+ * more hot lava is introduced, the Obsidian can melt back into lava. Lava will
+ * transfer heat throughout itself when it is in pools from the outside in.
+ * 
+ * As the numberOfMelts for the Lava decreases, so does the color and maximum
+ * speed. This is done to simulate cooling magma, and the slow conversion from
+ * magma to metamorphic rock in the real world.
+ * 
+ * @author Aiden Schroeder
+ */
 public class Lava extends Liquid {
 
 	public static ElementTypes type = ElementTypes.LAVA;
 	private static float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
 	private static float maxSpeed = 8f;
-	private float currentMaxSpeed;
 	private static int density = 8;
 	private static int dispersionRate = 5;
+
+	private static int meltingPoint = 150;
+	private int numberOfMelts = 2000;
+	private int heatTransferCoefficient = 1;
+
+	private static float chanceToMeltDirt = 0.035f;
+	private static float chanceToMeltSand = 0.03f;
 	private static float chanceToMeltStone = 0.02f;
 	private static float chanceToMeltObsidian = 0.01f;
-	private float chanceToMeltSand = 0.03f;
-	private static int meltingPoint = 150;
-	private int numberOfMeltsToHarden = 2000;
-	private float chanceToMeltDirt = 0.035f;
-	private int heatTransferCoefficient = 1;
-	private int colorIdx;
-	private float idxDifference;
+
+	private float currentMaxSpeed;
 
 	public static float[] speeds = new float[] { (maxSpeed), (maxSpeed - maxSpeed / 11), (maxSpeed - maxSpeed / 10),
 			(maxSpeed - maxSpeed / 9), (maxSpeed - maxSpeed / 8), (maxSpeed - maxSpeed / 7), (maxSpeed - maxSpeed / 6),
@@ -46,12 +65,15 @@ public class Lava extends Liquid {
 			{ 236, 127, 61 }, { 236, 117, 61 }, { 236, 102, 61 }, { 236, 86, 61 }, { 226, 59, 45 }, { 209, 46, 34 },
 			{ 176, 35, 23 }, { 151, 28, 18 }, { 117, 18, 38 } };
 
+	private int colorIdx;
+	private float idxDifference;
+
 	public Lava(int row, int column) {
 		super(type, row, column, new CustomColor(lavaColorsRGB[0]), false, 1, false, false, 0, true, 0.9f, acceleration,
 				maxSpeed, density, false, dispersionRate, meltingPoint);
 		super.setOnFire(true);
 		colorIdx = -1;
-		idxDifference = (float) numberOfMeltsToHarden / lavaColorsRGB.length;
+		idxDifference = (float) numberOfMelts / lavaColorsRGB.length;
 		this.updateColor();
 	}
 
@@ -64,6 +86,9 @@ public class Lava extends Liquid {
 		this.updateMovementLogic();
 	}
 
+	/**
+	 * Updates the max speed of this Lava as it cools
+	 */
 	public void updateSpeed() {
 		if (this.getCurrentMaxSpeed() != speeds[colorIdx]) {
 			this.setCurrentMaxSpeed(speeds[colorIdx]);
@@ -115,11 +140,11 @@ public class Lava extends Liquid {
 					this.setVerticalVelocity(0.7f);
 				}
 				parentMatrix.swap(this, nextVertical);
-			} else if (nextVertical1 != null && nextVertical1.getDensity() < this.getDensity() - 1 && nextVertical != null
-					&& nextVertical.getDensity() > this.getDensity()) {
+			} else if (nextVertical1 != null && nextVertical1.getDensity() < this.getDensity() - 1
+					&& nextVertical != null && nextVertical.getDensity() > this.getDensity()) {
 				parentMatrix.swap(this, nextVertical1);
-			} else if (nextVertical2 != null && nextVertical2.getDensity() < this.getDensity() - 1 && nextVertical != null
-					&& nextVertical.getDensity() > this.getDensity()) {
+			} else if (nextVertical2 != null && nextVertical2.getDensity() < this.getDensity() - 1
+					&& nextVertical != null && nextVertical.getDensity() > this.getDensity()) {
 				parentMatrix.swap(this, nextVertical2);
 			} else {
 				this.setVerticalVelocity(2.5f);
@@ -156,7 +181,7 @@ public class Lava extends Liquid {
 	public void updateColor() {
 		int newIdx = lavaColorsRGB.length - 1;
 		for (int i = 0; i < lavaColorsRGB.length; i++) {
-			if (idxDifference * i <= numberOfMeltsToHarden) {
+			if (idxDifference * i <= numberOfMelts) {
 				newIdx = lavaColorsRGB.length - i - 1;
 			}
 		}
@@ -181,6 +206,10 @@ public class Lava extends Liquid {
 		}
 	}
 
+	/**
+	 * Method to handle all melting logic. Contains checks for different
+	 * ElementTypes and how the Lava should behave when encountering them.
+	 */
 	public void actOnOther() {
 
 		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
@@ -234,7 +263,7 @@ public class Lava extends Liquid {
 				continue;
 			}
 			if (shuffledElements.get(i) instanceof Obsidian) {
-				if (this.numberOfMeltsToHarden <= 300) {
+				if (this.numberOfMelts <= 300) {
 					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
 				} else if (Math.random() < chanceToMeltObsidian) {
 					newElement = parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
@@ -244,7 +273,7 @@ public class Lava extends Liquid {
 				continue;
 			}
 			if (shuffledElements.get(i) instanceof Stone) {
-				if (this.numberOfMeltsToHarden <= 175) {
+				if (this.numberOfMelts <= 175) {
 					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
 				} else if (Math.random() < chanceToMeltStone) {
 					newElement = parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
@@ -254,7 +283,7 @@ public class Lava extends Liquid {
 				continue;
 			}
 			if (shuffledElements.get(i) instanceof Sand) {
-				if (this.numberOfMeltsToHarden <= 150) {
+				if (this.numberOfMelts <= 150) {
 					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
 				} else if (Math.random() < chanceToMeltSand) {
 					newElement = parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
@@ -264,7 +293,7 @@ public class Lava extends Liquid {
 				continue;
 			}
 			if (shuffledElements.get(i) instanceof Dirt) {
-				if (this.numberOfMeltsToHarden <= 150) {
+				if (this.numberOfMelts <= 150) {
 					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
 				} else if (Math.random() < chanceToMeltDirt) {
 					newElement = parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
@@ -279,11 +308,11 @@ public class Lava extends Liquid {
 	}
 
 	public int getNumberOfMeltsToHarden() {
-		return numberOfMeltsToHarden;
+		return numberOfMelts;
 	}
 
 	public void setNumberOfMeltsToHarden(int numberOfMeltsToHarden) {
-		this.numberOfMeltsToHarden = numberOfMeltsToHarden;
+		this.numberOfMelts = numberOfMeltsToHarden;
 	}
 
 	public float getCurrentMaxSpeed() {

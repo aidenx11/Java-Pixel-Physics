@@ -63,7 +63,7 @@ public abstract class MovableSolid extends Movable {
 						break;
 					}
 				}
-			} 
+			}
 
 			Element sideways1 = parentMatrix.getElement(this.getRow(), this.getColumn() - randDirection);
 			Element sideways2 = parentMatrix.getElement(this.getRow(), this.getColumn() + randDirection);
@@ -81,7 +81,6 @@ public abstract class MovableSolid extends Movable {
 				setHorizontalVelocity(0f);
 				updateVerticalVelocity();
 				setVerticalVelocity(this.getVerticalVelocity() + this.getHorizontalVelocity());
-
 
 			} else if (nextVertical1 != null
 					&& (nextVertical1.getDensity() < this.getDensity()
@@ -116,8 +115,6 @@ public abstract class MovableSolid extends Movable {
 				} else {
 					for (int i = 0; i < getHorizontalUpdateCount(); i++) {
 
-
-
 						if (getDirection() != 0) {
 
 							Element elementInDirection = parentMatrix.getElement(getRow(),
@@ -132,7 +129,6 @@ public abstract class MovableSolid extends Movable {
 
 									parentMatrix.swap(this, elementBelowDirection);
 
-
 								} else {
 
 									parentMatrix.swap(this, elementInDirection);
@@ -146,7 +142,7 @@ public abstract class MovableSolid extends Movable {
 								break;
 							}
 
-						} 
+						}
 						updateHorizontalVelocity();
 					}
 

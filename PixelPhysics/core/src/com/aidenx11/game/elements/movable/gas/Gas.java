@@ -5,6 +5,12 @@ import com.aidenx11.game.elements.Element;
 import com.aidenx11.game.elements.movable.Movable;
 import com.aidenx11.game.elements.movable.movable_solid.MovableSolid;
 
+/**
+ * Class to manage all Gas elements. Gas elements move upwards instead of
+ * downwards, and turn into empty elements over time.
+ * 
+ * @author Aiden Schroeder
+ */
 public class Gas extends Movable {
 
 	public Gas(ElementTypes type, int row, int column, CustomColor color, boolean canDie, int lifetime,
@@ -15,6 +21,11 @@ public class Gas extends Movable {
 		super.setFreeFalling(true);
 	}
 
+	/**
+	 * Overrides the updateMovementLogic method in Movable to make the method
+	 * simpler. Gasses do not have inertia or friction, and thus do not need to
+	 * worry about horizontal velocity or inertia.
+	 */
 	@Override
 	public void updateMovementLogic() {
 		this.updateVerticalVelocity();

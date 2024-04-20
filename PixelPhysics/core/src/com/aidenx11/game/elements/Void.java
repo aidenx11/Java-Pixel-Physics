@@ -7,6 +7,13 @@ import java.util.List;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.color.CustomColor.ColorValues;
 
+/**
+ * Class to manage Void elements. Void elements are unique in the way that they
+ * destroy adjacent non-Void and non-Empty elements, and do not interact with
+ * other Elements in any other way.
+ * 
+ * @author Aiden Schroeder
+ */
 public class Void extends Element {
 
 	public static ElementTypes type = ElementTypes.VOID;
@@ -21,17 +28,21 @@ public class Void extends Element {
 		actOnOther();
 	}
 
+	/**
+	 * Method to handle destruction of adjacent Elements.
+	 */
 	private void actOnOther() {
-		
+
 		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
 		List<Element> shuffledElements = Arrays.asList(adjacentElements);
 		Collections.shuffle(shuffledElements);
-		
+
 		for (int i = 0; i < shuffledElements.size(); i++) {
-			if (adjacentElements[i] != null && !(adjacentElements[i] instanceof Empty) && !(adjacentElements[i] instanceof Void)) {
+			if (adjacentElements[i] != null && !(adjacentElements[i] instanceof Empty)
+					&& !(adjacentElements[i] instanceof Void)) {
 				parentMatrix.clearElement(adjacentElements[i]);
 			}
-			
+
 		}
 	}
 

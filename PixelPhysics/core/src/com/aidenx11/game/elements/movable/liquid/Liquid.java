@@ -7,6 +7,13 @@ import com.aidenx11.game.elements.movable.gas.Gas;
 import com.aidenx11.game.elements.movable.movable_solid.MovableSolid;
 import com.aidenx11.game.elements.Empty;
 
+/**
+ * Class to manage Liquids. Unlike movable solids, liquids have a dispersion
+ * rate and must check elements to the side to make sure they do not teleport
+ * through containers.
+ * 
+ * @author Aiden Schroeder
+ */
 public class Liquid extends Movable {
 
 	private int dispersionRate;

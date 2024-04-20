@@ -19,32 +19,36 @@ import com.aidenx11.game.elements.movable.movable_solid.Rust;
  * give large sections of steel a geometric look.
  * 
  * Steel can turn into rust if it is in contact with water for an extended
- * period of time. Lava cannot melt Steel.
+ * period of time, or if it is in contact with air and other rust. Lava cannot melt Steel.
+ * 
+ * Lava cannot melt steel.
+ * 
+ * @author Aiden Schroeder
  */
 public class Steel extends Immovable {
 
 	public static ElementTypes type = ElementTypes.STEEL;
 	private static float chanceToRust = 0.0001f;
 	private static int colorIdx;
-	private boolean colorSet = false;
 
 	private static int[][] steelColors = new int[][] { { 206, 211, 212 }, { 192, 198, 199 }, { 168, 176, 178 },
 			{ 153, 163, 163 } };
 
 	public Steel(int row, int column) {
 		super(type, row, column, new CustomColor(ColorValues.STEEL, true), false, 5, false, false, 0, false, 0);
-		colorIdx = 0;
+		setColor();
 	}
 
 	@Override
 	public void update() {
-		if (!colorSet) {
-			setColor();
-		}
 		this.actOnOther();
 		super.update();
 	}
 
+	/**
+	 * Sets the color of each steel in a linear pattern to give an interesting
+	 * texture
+	 */
 	public void setColor() {
 		setColor(new CustomColor(steelColors[colorIdx]));
 		if (colorIdx < 3) {
@@ -52,13 +56,22 @@ public class Steel extends Immovable {
 		} else {
 			colorIdx = 0;
 		}
-		colorSet = true;
 	}
 
+	/**
+	 * Returns the chance for steel to rust
+	 * 
+	 * @return the chance for steel to rust
+	 */
 	public float getChanceToRust() {
 		return chanceToRust;
 	}
 
+	/**
+	 * Checks if this steel is exposed to the air or to water. If it is exposed to
+	 * air and there is rust near it, it will rust. If it is exposed to water for an
+	 * amount of time, it will rust.
+	 */
 	public void actOnOther() {
 		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
 		List<Element> shuffledElements = Arrays.asList(adjacentElements);

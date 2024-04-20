@@ -8,6 +8,8 @@ import com.aidenx11.game.color.CustomColor.ColorValues;
  * 
  * Stone elements have a medium melting point, above which they will be melted
  * by lava. 
+ * 
+ * @author Aiden Schroeder
  */
 public class Stone extends Immovable {
 

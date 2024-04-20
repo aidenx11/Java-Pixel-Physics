@@ -54,7 +54,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 
 	/** Controls whether the game is in light or dark mode */
 	public static boolean lightsOn = true;
-	
+
 	/** Controls whether the simulation is paused or not */
 	public static boolean isPaused = false;
 
@@ -194,7 +194,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		if (!isPaused) {
 			matrix.updateFrame(shapeRenderer);
 		}
-		
+
 		matrix.draw(shapeRenderer);
 
 		// Draw the mouse cursor to the screen (left at end of render so it appears on
@@ -254,6 +254,9 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 
 	}
 
+	/**
+	 * Disposes of resources in RAM. Executes when the window is closed.
+	 */
 	@Override
 	public void dispose() {
 		shapeRenderer.dispose();

@@ -6,6 +6,8 @@ import com.aidenx11.game.elements.Element;
 /**
  * Class to manage all Immovable elements. Immovable elements do not move, and
  * have a density of 999 so as to not affect movable elements.
+ * 
+ * @author Aiden Schroeder
  */
 public class Immovable extends Element {
 
@@ -16,6 +18,9 @@ public class Immovable extends Element {
 		super.setDensity(999);
 	}
 
+	/**
+	 * Since Immovable elements do not move, only updates burning and lifetime logic
+	 */
 	@Override
 	public void update() {
 		super.updateBurningLogic();

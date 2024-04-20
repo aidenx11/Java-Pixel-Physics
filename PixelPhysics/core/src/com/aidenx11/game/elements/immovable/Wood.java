@@ -11,6 +11,8 @@ import com.aidenx11.game.color.CustomColor;
  * burning up.
  * 
  * Wood elements can be melted by lava.
+ * 
+ * @author Aiden Schroeder
  */
 public class Wood extends Immovable {
 
