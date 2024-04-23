@@ -565,7 +565,7 @@ public class MouseInput implements InputProcessor {
 
 	@Override
 	public boolean scrolled(float amountX, float amountY) {
-		UIStage.brushSizeSlider.setValue(UIStage.brushSizeSlider.getValue() + amountY);
+		UIStage.brushSizeSlider.setValue(UIStage.brushSizeSlider.getValue() - amountY);
 		this.setBrushSize((int) UIStage.brushSizeSlider.getValue());
 		this.setCursorSize((int) UIStage.brushSizeSlider.getValue());
 		return false;

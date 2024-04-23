@@ -52,7 +52,7 @@ jpackageImage.dependsOn dist
 
 dist.dependsOn classes
 
-eclipse.project.name = appName + "-desktop"
+eclipse.project.name = appName
 
 runtime {
     options = ['--strip-debug',
@@ -69,6 +69,7 @@ runtime {
     jpackage {
         //jpackageHome = '/usr/lib/jvm/open-jdk'
         mainJar = dist.archiveFileName.get()
+        imageName = appName
         if (osName.contains('windows')) {
             imageOptions = ["--icon", file("../icons/icon.ico")]
         } else if (osName.contains('linux')) {
