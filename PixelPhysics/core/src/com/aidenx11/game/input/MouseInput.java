@@ -14,6 +14,7 @@ import com.aidenx11.game.elements.movable.liquid.Water;
 import com.aidenx11.game.elements.movable.movable_solid.Dirt;
 import com.aidenx11.game.elements.movable.movable_solid.Obsidian;
 import com.aidenx11.game.elements.movable.movable_solid.Sand;
+import com.aidenx11.game.ui.UIStage;
 import com.aidenx11.game.elements.Empty;
 import com.aidenx11.game.elements.Void;
 import com.badlogic.gdx.Gdx;
@@ -414,7 +415,7 @@ public class MouseInput implements InputProcessor {
 		} else {
 			rowDifference = width / 2;
 			colDifference = length / 2;
-			mod = 2;
+			mod = 1;
 		}
 
 		for (int rowCount = row - rowDifference; rowCount <= row + rowDifference - mod; rowCount++) {
@@ -564,7 +565,9 @@ public class MouseInput implements InputProcessor {
 
 	@Override
 	public boolean scrolled(float amountX, float amountY) {
-		// TODO Auto-generated method stub
+		UIStage.brushSizeSlider.setValue(UIStage.brushSizeSlider.getValue() + amountY);
+		this.setBrushSize((int) UIStage.brushSizeSlider.getValue());
+		this.setCursorSize((int) UIStage.brushSizeSlider.getValue());
 		return false;
 	}
 

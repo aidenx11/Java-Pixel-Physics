@@ -28,24 +28,26 @@ public class UIStage extends Stage {
 	private Skin skinButton;
 
 	/** Declaration for all buttons in the UI */
-	final TextButton clearCanvasButton;
-	final TextButton emptyToolButton;
-	final TextButton sandToolButton;
-	final TextButton woodToolButton;
-	final TextButton fireToolButton;
-	final TextButton waterToolButton;
-	final TextButton leafToolButton;
-	final TextButton squareBrushButton;
-	final TextButton circleBrushButton;
-	final TextButton rectBrushButton;
-	final TextButton dirtToolButton;
-	final TextButton stoneToolButton;
-	final TextButton canvasColorButton;
-	final TextButton lavaToolButton;
-	final TextButton obsidianToolButton;
-	final TextButton steelToolButton;
-	final TextButton voidToolButton;
-	final TextButton pauseButton;
+	public static TextButton clearCanvasButton;
+	public static TextButton emptyToolButton;
+	public static TextButton sandToolButton;
+	public static TextButton woodToolButton;
+	public static TextButton fireToolButton;
+	public static TextButton waterToolButton;
+	public static TextButton leafToolButton;
+	public static TextButton squareBrushButton;
+	public static TextButton circleBrushButton;
+	public static TextButton rectBrushButton;
+	public static TextButton dirtToolButton;
+	public static TextButton stoneToolButton;
+	public static TextButton canvasColorButton;
+	public static TextButton lavaToolButton;
+	public static TextButton obsidianToolButton;
+	public static TextButton steelToolButton;
+	public static TextButton voidToolButton;
+	public static TextButton pauseButton;
+	
+	public static Slider brushSizeSlider;
 
 	/** Input that the buttons should detect */
 	MouseInput mouse;
@@ -214,7 +216,7 @@ public class UIStage extends Stage {
 			}
 		});
 
-		final Slider brushSizeSlider = new Slider(1f, 75f, 1f, true, skinButton);
+		brushSizeSlider = new Slider(1f, 75f, 1f, true, skinButton);
 		brushSizeSlider.setWidth(10f);
 		brushSizeSlider.setHeight(Gdx.graphics.getHeight() > 400f + 15f ? 400f : Gdx.graphics.getHeight() - 30f);
 		brushSizeSlider.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 15,
