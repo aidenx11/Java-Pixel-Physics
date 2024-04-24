@@ -1,4 +1,4 @@
-# Java-Pixel-Physics
+# Java Pixel Physics
 
 ## Overview
   Inspired by the various falling sand simulators from when I was a kid, such as [The Sandbox](https://apps.apple.com/us/app/the-sandbox-building-craft/id520777858), and more modern games such as [Noita](https://en.wikipedia.org/wiki/Noita_(video_game)), I aimed to create a simulation of my own in Java using the [LibGDX](https://libgdx.com/) framework.
