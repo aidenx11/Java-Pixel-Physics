@@ -35,7 +35,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	public static int SCREEN_HEIGHT = 900;
 
 	/** Offset of the ui */
-	public static final int uiOffset = 170;
+	public static final int uiOffset = 130;
 
 	/** Acceleration due to gravity. Used in movable elements */
 	public static final float GRAVITY_ACCELERATION = 0.1f;
@@ -200,6 +200,8 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		// Draw the mouse cursor to the screen (left at end of render so it appears on
 		// top)
 		mouse.drawCursor(shapeRenderer);
+		
+		buttonStage.act();
 
 	}
 

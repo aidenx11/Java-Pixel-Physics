@@ -2,6 +2,7 @@ package com.aidenx11.game.ui;
 
 import com.aidenx11.game.CellularMatrix;
 import com.aidenx11.game.pixelPhysicsGame;
+import com.aidenx11.game.color.CustomColor.ColorValues;
 import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.input.MouseInput;
 import com.aidenx11.game.input.MouseInput.BrushTypes;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -46,7 +48,9 @@ public class UIStage extends Stage {
 	public static TextButton steelToolButton;
 	public static TextButton voidToolButton;
 	public static TextButton pauseButton;
-	
+
+	public static TextButton moveTablesButton;
+
 	public static Slider brushSizeSlider;
 
 	/** Input that the buttons should detect */
@@ -54,6 +58,10 @@ public class UIStage extends Stage {
 
 	/** Keeps track of whether the simulation is in light or dark mode */
 	boolean lightsOn = pixelPhysicsGame.lightsOn;
+
+	boolean elementTableMoved = false;
+
+	boolean brushTypeTableMoved = false;
 
 	/**
 	 * Constructs the UI by initializing and placing all buttons and sliders.
@@ -100,7 +108,7 @@ public class UIStage extends Stage {
 			}
 		});
 
-		clearCanvasButton = new TextButton("Clear Canvas", skinButton, "default");
+		clearCanvasButton = new TextButton("Clear", skinButton, "default");
 		clearCanvasButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -118,6 +126,8 @@ public class UIStage extends Stage {
 		});
 
 		sandToolButton = new TextButton("Sand", skinButton, "default");
+		sandToolButton.getLabel().setColor(new Color(ColorValues.SAND_COLOR.getRGB()[0] / 255f,
+				ColorValues.SAND_COLOR.getRGB()[1] / 255f, ColorValues.SAND_COLOR.getRGB()[2] / 255f, 1));
 		sandToolButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -127,6 +137,8 @@ public class UIStage extends Stage {
 		});
 
 		woodToolButton = new TextButton("Wood", skinButton, "default");
+		woodToolButton.getLabel().setColor(new Color(ColorValues.WOOD_COLOR.getRGB()[0] / 255f,
+				ColorValues.WOOD_COLOR.getRGB()[1] / 255f, ColorValues.WOOD_COLOR.getRGB()[2] / 255f, 1));
 		woodToolButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -136,6 +148,8 @@ public class UIStage extends Stage {
 		});
 
 		fireToolButton = new TextButton("Fire", skinButton, "default");
+		fireToolButton.getLabel().setColor(new Color(ColorValues.FIRE.getRGB()[0] / 255f,
+				ColorValues.FIRE.getRGB()[1] / 255f, ColorValues.FIRE.getRGB()[2] / 255f, 1));
 		fireToolButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -145,6 +159,8 @@ public class UIStage extends Stage {
 		});
 
 		waterToolButton = new TextButton("Water", skinButton, "default");
+		waterToolButton.getLabel().setColor(new Color(ColorValues.WATER.getRGB()[0] / 255f,
+				ColorValues.WATER.getRGB()[1] / 255f, ColorValues.WATER.getRGB()[2] / 255f, 1));
 		waterToolButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -154,6 +170,8 @@ public class UIStage extends Stage {
 		});
 
 		leafToolButton = new TextButton("Leaves", skinButton, "default");
+		leafToolButton.getLabel().setColor(new Color(ColorValues.LEAF.getRGB()[0] / 255f,
+				ColorValues.LEAF.getRGB()[1] / 255f, ColorValues.LEAF.getRGB()[2] / 255f, 1));
 		leafToolButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -163,6 +181,8 @@ public class UIStage extends Stage {
 		});
 
 		dirtToolButton = new TextButton("Dirt", skinButton, "default");
+		dirtToolButton.getLabel().setColor(new Color(ColorValues.DIRT.getRGB()[0] / 255f,
+				ColorValues.DIRT.getRGB()[1] / 255f, ColorValues.DIRT.getRGB()[2] / 255f, 1));
 		dirtToolButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -172,6 +192,8 @@ public class UIStage extends Stage {
 		});
 
 		stoneToolButton = new TextButton("Stone", skinButton, "default");
+		stoneToolButton.getLabel().setColor(new Color(ColorValues.STONE.getRGB()[0] / 255f,
+				ColorValues.STONE.getRGB()[1] / 255f, ColorValues.STONE.getRGB()[2] / 255f, 1));
 		stoneToolButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -181,6 +203,8 @@ public class UIStage extends Stage {
 		});
 
 		lavaToolButton = new TextButton("Lava", skinButton, "default");
+		lavaToolButton.getLabel().setColor(new Color(ColorValues.LAVA_RED.getRGB()[0] / 255f,
+				ColorValues.LAVA_RED.getRGB()[1] / 255f, ColorValues.LAVA_RED.getRGB()[2] / 255f, 1));
 		lavaToolButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -190,6 +214,8 @@ public class UIStage extends Stage {
 		});
 
 		obsidianToolButton = new TextButton("Obsidian", skinButton, "default");
+		obsidianToolButton.getLabel().setColor(new Color(ColorValues.OBSIDIAN.getRGB()[0] / 255f,
+				ColorValues.OBSIDIAN.getRGB()[1] / 255f, ColorValues.OBSIDIAN.getRGB()[2] / 255f, 1));
 		obsidianToolButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -199,6 +225,8 @@ public class UIStage extends Stage {
 		});
 
 		steelToolButton = new TextButton("Steel", skinButton, "default");
+		steelToolButton.getLabel().setColor(new Color(ColorValues.STEEL.getRGB()[0] / 255f,
+				ColorValues.STEEL.getRGB()[1] / 255f, ColorValues.STEEL.getRGB()[2] / 255f, 1));
 		steelToolButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -208,6 +236,8 @@ public class UIStage extends Stage {
 		});
 
 		voidToolButton = new TextButton("Void", skinButton, "default");
+		voidToolButton.getLabel().setColor(new Color(ColorValues.VOID.getRGB()[0] / 255f,
+				ColorValues.VOID.getRGB()[1] / 255f, ColorValues.VOID.getRGB()[2] / 255f, 1));
 		voidToolButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -249,8 +279,7 @@ public class UIStage extends Stage {
 			}
 		});
 
-		pauseButton = new TextButton(pixelPhysicsGame.isPaused ? "Resume Simulation" : "Pause Simulation", skinButton,
-				"default");
+		pauseButton = new TextButton(pixelPhysicsGame.isPaused ? "Resume" : "Pause", skinButton, "default");
 		pauseButton.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
 				if (pixelPhysicsGame.isPaused) {
@@ -264,50 +293,78 @@ public class UIStage extends Stage {
 			}
 		});
 
-		elementTable.add(clearCanvasButton).minWidth(120f).pad(5f);
-		elementTable.row();
-		elementTable.add(emptyToolButton).minWidth(120f).pad(5f);
-		elementTable.row();
-		elementTable.add(sandToolButton).minWidth(120f).pad(5f);
-		elementTable.row();
-		elementTable.add(woodToolButton).minWidth(120f).pad(5f);
-		elementTable.row();
-		elementTable.add(fireToolButton).minWidth(120f).pad(5f);
-		elementTable.row();
-		elementTable.add(waterToolButton).minWidth(120f).pad(5f);
-		elementTable.row();
-		elementTable.add(leafToolButton).minWidth(120f).pad(5f);
-		elementTable.row();
-		elementTable.add(dirtToolButton).minWidth(120f).pad(5f);
-		elementTable.row();
-		elementTable.add(stoneToolButton).minWidth(120f).pad(5f);
-		elementTable.row();
-		elementTable.add(lavaToolButton).minWidth(120f).pad(5f);
-		elementTable.row();
-		elementTable.add(obsidianToolButton).minWidth(120f).pad(5f);
-		elementTable.row();
-		elementTable.add(steelToolButton).minWidth(120f).pad(5f);
-		elementTable.row();
-		elementTable.add(voidToolButton).minWidth(120f).pad(5f);
+//		moveTablesButton = new TextButton("test", skinButton, "default");
+//		moveTablesButton.setPosition(100f, 100f);
+//		moveTablesButton.addListener(new ClickListener() {
+//			public void clicked(InputEvent event, float x, float y) {
+//				if (!elementTableMoved) {
+//					elementTable
+//							.addAction(Actions.moveTo(Gdx.graphics.getWidth() + 100, elementTable.getY(), 0.2f));
+//					elementTableMoved = true;
+//				} else if (elementTableMoved) {
+//					elementTable.addAction(Actions.moveTo(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset / 2 + 15,
+//							Gdx.graphics.getHeight() - 245f, 0.2f));
+//					elementTableMoved = false;
+//				}
+//
+//				if (!brushTypeTableMoved) {
+//					brushTypeTable
+//							.addAction(Actions.moveTo(Gdx.graphics.getWidth() + 100, brushTypeTable.getY(), 0.2f));
+//					brushTypeTableMoved = true;
+//				} else if (brushTypeTableMoved) {
+//					brushTypeTable
+//							.addAction(Actions.moveTo(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 85, 100f, 0.2f));
+//					brushTypeTableMoved = false;
+//				}
+//			}
+//		});
 
-		brushTypeTable.add(circleBrushButton).minWidth(60f).pad(5f);
+		elementTable.add(clearCanvasButton).minWidth(80f).pad(2f);
+		elementTable.row();
+		elementTable.add(emptyToolButton).minWidth(80f).pad(2f);
+		elementTable.row();
+		elementTable.add(sandToolButton).minWidth(80f).pad(2f);
+		elementTable.row();
+		elementTable.add(woodToolButton).minWidth(80f).pad(2f);
+		elementTable.row();
+		elementTable.add(fireToolButton).minWidth(80f).pad(2f);
+		elementTable.row();
+		elementTable.add(waterToolButton).minWidth(80f).pad(2f);
+		elementTable.row();
+		elementTable.add(leafToolButton).minWidth(80f).pad(2f);
+		elementTable.row();
+		elementTable.add(dirtToolButton).minWidth(80f).pad(2f);
+		elementTable.row();
+		elementTable.add(stoneToolButton).minWidth(80f).pad(2f);
+		elementTable.row();
+		elementTable.add(lavaToolButton).minWidth(80f).pad(2f);
+		elementTable.row();
+		elementTable.add(obsidianToolButton).minWidth(80f).pad(2f);
+		elementTable.row();
+		elementTable.add(steelToolButton).minWidth(80f).pad(2f);
+		elementTable.row();
+		elementTable.add(voidToolButton).minWidth(80f).pad(2f);
+
+		brushTypeTable.add(circleBrushButton).minWidth(65f).pad(2f);
 		brushTypeTable.row();
-		brushTypeTable.add(squareBrushButton).minWidth(60f).pad(5f);
+		brushTypeTable.add(squareBrushButton).minWidth(65f).pad(2f);
 		brushTypeTable.row();
-		brushTypeTable.add(rectBrushButton).minWidth(75f).pad(5f);
+		brushTypeTable.add(rectBrushButton).minWidth(85f).pad(2f);
 		brushTypeTable.row();
-		brushTypeTable.add(canvasColorButton).minWidth(70f).pad(5f);
+		brushTypeTable.add(canvasColorButton).minWidth(75f).pad(2f);
 		brushTypeTable.row();
-		brushTypeTable.add(pauseButton).minWidth(150f).pad(5f);
+		brushTypeTable.add(pauseButton).minWidth(65f).pad(2f);
 
 		resetButtonColors();
 
-		brushTypeTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 85, 100f);
+		brushTypeTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 65, 85f);
 		elementTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset / 2 + 15,
-				Gdx.graphics.getHeight() - 245f);
+				Gdx.graphics.getHeight() - 215f);
 		this.addActor(brushTypeTable);
 		this.addActor(elementTable);
 		this.addActor(brushSizeSlider);
+
+//		this.addActor(moveTablesButton);
 	}
 
 	/**
@@ -318,85 +375,85 @@ public class UIStage extends Stage {
 		if (lightsOn) {
 			canvasColorButton.setColor(Color.TEAL);
 			if (mouse.getElementType() != ElementTypes.DIRT) {
-				dirtToolButton.setColor(Color.LIGHT_GRAY);
+				dirtToolButton.setColor(Color.WHITE);
 			} else {
 				dirtToolButton.setColor(Color.RED);
 			}
 			if (mouse.getElementType() != ElementTypes.WATER) {
-				waterToolButton.setColor(Color.LIGHT_GRAY);
+				waterToolButton.setColor(Color.WHITE);
 			} else {
 				waterToolButton.setColor(Color.RED);
 			}
 			if (mouse.getElementType() != ElementTypes.SAND) {
-				sandToolButton.setColor(Color.LIGHT_GRAY);
+				sandToolButton.setColor(Color.WHITE);
 			} else {
 				sandToolButton.setColor(Color.RED);
 			}
 			if (mouse.getElementType() != ElementTypes.WOOD) {
-				woodToolButton.setColor(Color.LIGHT_GRAY);
+				woodToolButton.setColor(Color.WHITE);
 			} else {
 				woodToolButton.setColor(Color.RED);
 			}
 			if (mouse.getElementType() != ElementTypes.FIRE) {
-				fireToolButton.setColor(Color.LIGHT_GRAY);
+				fireToolButton.setColor(Color.WHITE);
 			} else {
 				fireToolButton.setColor(Color.RED);
 			}
 			if (mouse.getElementType() != ElementTypes.EMPTY) {
-				emptyToolButton.setColor(Color.LIGHT_GRAY);
+				emptyToolButton.setColor(Color.WHITE);
 			} else {
 				emptyToolButton.setColor(Color.RED);
 			}
 			if (mouse.getElementType() != ElementTypes.LEAF) {
-				leafToolButton.setColor(Color.LIGHT_GRAY);
+				leafToolButton.setColor(Color.WHITE);
 			} else {
 				leafToolButton.setColor(Color.RED);
 			}
 			if (mouse.getElementType() != ElementTypes.STONE) {
-				stoneToolButton.setColor(Color.LIGHT_GRAY);
+				stoneToolButton.setColor(Color.WHITE);
 			} else {
 				stoneToolButton.setColor(Color.RED);
 			}
 			if (mouse.getElementType() != ElementTypes.LAVA) {
-				lavaToolButton.setColor(Color.LIGHT_GRAY);
+				lavaToolButton.setColor(Color.WHITE);
 			} else {
 				lavaToolButton.setColor(Color.RED);
 			}
 			if (mouse.getElementType() != ElementTypes.OBSIDIAN) {
-				obsidianToolButton.setColor(Color.LIGHT_GRAY);
+				obsidianToolButton.setColor(Color.WHITE);
 			} else {
 				obsidianToolButton.setColor(Color.RED);
 			}
 			if (mouse.getElementType() != ElementTypes.STEEL) {
-				steelToolButton.setColor(Color.LIGHT_GRAY);
+				steelToolButton.setColor(Color.WHITE);
 			} else {
 				steelToolButton.setColor(Color.RED);
 			}
 			if (mouse.getElementType() != ElementTypes.VOID) {
-				voidToolButton.setColor(Color.LIGHT_GRAY);
+				voidToolButton.setColor(Color.WHITE);
 			} else {
 				voidToolButton.setColor(Color.RED);
 			}
-			clearCanvasButton.setColor(Color.LIGHT_GRAY);
+			clearCanvasButton.setColor(Color.WHITE);
 			if (mouse.getBrushType() == BrushTypes.CIRCLE) {
 				circleBrushButton.setColor(Color.RED);
 			} else {
-				circleBrushButton.setColor(Color.LIGHT_GRAY);
+				circleBrushButton.setColor(Color.WHITE);
 			}
 			if (mouse.getBrushType() == BrushTypes.SQUARE) {
 				squareBrushButton.setColor(Color.RED);
 			} else {
-				squareBrushButton.setColor(Color.LIGHT_GRAY);
+				squareBrushButton.setColor(Color.WHITE);
 			}
 			if (mouse.getBrushType() == BrushTypes.RECTANGLE) {
 				rectBrushButton.setColor(Color.RED);
 			} else {
-				rectBrushButton.setColor(Color.LIGHT_GRAY);
+				rectBrushButton.setColor(Color.WHITE);
 			}
 			if (pixelPhysicsGame.isPaused) {
 				pauseButton.setColor(Color.RED);
 			} else {
-				pauseButton.setColor(Color.LIGHT_GRAY);
+				pauseButton.setColor(Color.WHITE);
 			}
 		} else {
 			canvasColorButton.setColor(Color.NAVY);
