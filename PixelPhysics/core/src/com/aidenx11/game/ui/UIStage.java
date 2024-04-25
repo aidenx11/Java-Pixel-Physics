@@ -283,10 +283,10 @@ public class UIStage extends Stage {
 		pauseButton.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
 				if (pixelPhysicsGame.isPaused) {
-					pauseButton.setText("Pause Simulation");
+					pauseButton.setText("Pause");
 					pixelPhysicsGame.isPaused = false;
 				} else {
-					pauseButton.setText("Resume Simulation");
+					pauseButton.setText("Resume");
 					pixelPhysicsGame.isPaused = true;
 				}
 				resetButtonColors();
