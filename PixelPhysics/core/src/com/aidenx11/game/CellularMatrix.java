@@ -111,7 +111,7 @@ public class CellularMatrix {
 	 * @param element element to set empty
 	 */
 	public void clearElement(Element element) {
-		this.setElement(new Empty(element.getRow(), element.getColumn()));
+		this.setNewElement(element, ElementTypes.EMPTY);
 	}
 
 	/**
@@ -127,6 +127,8 @@ public class CellularMatrix {
 		element1.setColumn(element2.getColumn());
 		element2.setRow(tempLocation[0]);
 		element2.setColumn(tempLocation[1]);
+
+		tempLocation = null;
 
 		this.setElement(element1);
 		this.setElement(element2);
@@ -172,8 +174,8 @@ public class CellularMatrix {
 		shapeRenderer.begin(ShapeType.Filled);
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < columns; x++) {
-				if (!(this.getElement(y, x) instanceof Empty) && isWithinBounds(y, x)) {
-					Element thisElement = this.getElement(y, x);
+				if (!(matrix[y][x] instanceof Empty) && isWithinBounds(y, x)) {
+					Element thisElement = matrix[y][x];
 					if (!(thisElement instanceof Empty)) {
 						shapeRenderer.setColor(thisElement.getColor());
 						shapeRenderer.rect(x * pixelSizeModifier, y * pixelSizeModifier, pixelSizeModifier,
@@ -249,7 +251,11 @@ public class CellularMatrix {
 		default:
 			break;
 		}
-		return this.getElement(element.getRow(), element.getColumn());
+
+		int row = element.getRow();
+		int col = element.getColumn();
+		element = null;
+		return this.getElement(row, col);
 	}
 
 	/**
@@ -268,14 +274,14 @@ public class CellularMatrix {
 		for (int y = rows - 1; y >= 0; y--) {
 			if (direction) {
 				for (int x = 0; x < columns; x++) {
-					element = this.getElement(rows - 1 - y, x);
+					element = matrix[rows - 1 - y][x];
 					if (element.movesDown()) {
 						element.update();
 					}
 				}
 			} else {
 				for (int x = columns - 1; x >= 0; x--) {
-					element = this.getElement(rows - 1 - y, x);
+					element = matrix[rows - 1 - y][x];
 					if (element.movesDown()) {
 						element.update();
 					}
@@ -285,14 +291,14 @@ public class CellularMatrix {
 		for (int y = 0; y < rows; y++) {
 			if (direction) {
 				for (int x = 0; x < columns; x++) {
-					element = this.getElement(rows - 1 - y, x);
+					element = matrix[rows - 1 - y][x];
 					if (!element.movesDown()) {
 						element.update();
 					}
 				}
 			} else {
 				for (int x = columns - 1; x >= 0; x--) {
-					element = this.getElement(rows - 1 - y, x);
+					element = matrix[rows - 1 - y][x];
 					if (!element.movesDown()) {
 						element.update();
 					}

@@ -23,7 +23,9 @@ public class Immovable extends Element {
 	 */
 	@Override
 	public void update() {
-		super.updateBurningLogic();
+		if (this.isFlammable()) {
+			super.updateBurningLogic();
+		}
 		if (this.limitedLife()) {
 			super.updateElementLife();
 		}

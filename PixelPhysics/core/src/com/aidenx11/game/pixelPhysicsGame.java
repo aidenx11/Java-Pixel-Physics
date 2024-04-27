@@ -10,6 +10,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -27,6 +28,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  * @author Aiden Schroeder
  */
 public class pixelPhysicsGame extends ApplicationAdapter {
+	
+	public FPSLogger logger = new FPSLogger();
 
 	/** Width of the screen */
 	public static int SCREEN_WIDTH = 1440;
@@ -163,9 +166,9 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 
 		// Set background color based on light mode
 		if (lightsOn) {
-			ScreenUtils.clear(skyColorLight[0], skyColorLight[1], skyColorLight[2], 1);
+			ScreenUtils.clear(skyColorLight[0], skyColorLight[1], skyColorLight[2], 1, false);
 		} else {
-			ScreenUtils.clear(skyColorDark[0], skyColorDark[1], skyColorDark[2], 1);
+			ScreenUtils.clear(skyColorDark[0], skyColorDark[1], skyColorDark[2], 1, false);
 		}
 
 		// Draw the UI background on the right side of the screen
@@ -202,6 +205,8 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		mouse.drawCursor(shapeRenderer);
 		
 		buttonStage.act();
+		
+		logger.log();
 
 	}
 
@@ -246,7 +251,6 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 				}
 				elementToSet.setRow(row);
 				elementToSet.setColumn(col);
-				elementToSet.parentMatrix = matrix;
 				matrix.setElement(elementToSet);
 			}
 		}

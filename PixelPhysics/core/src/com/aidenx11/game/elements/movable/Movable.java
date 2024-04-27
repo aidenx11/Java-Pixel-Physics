@@ -1,5 +1,6 @@
 package com.aidenx11.game.elements.movable;
 
+import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.elements.Element;
 import com.aidenx11.game.elements.movable.liquid.Water;
@@ -81,8 +82,12 @@ public abstract class Movable extends Element {
 	@Override
 	public void update() {
 		this.updateMovementLogic();
-		super.updateElementLife();
-		super.updateBurningLogic();
+		if (this.limitedLife()) {
+			super.updateElementLife();
+		}
+		if (this.isFlammable()) {
+			super.updateBurningLogic();
+		}
 	}
 
 	public int getVerticalUpdateCount() {
@@ -115,9 +120,11 @@ public abstract class Movable extends Element {
 
 		this.setVerticalVelocity(newVelocity);
 
-		if (parentMatrix.getElement(this.getRow() - 1, this.getColumn()) instanceof Water
-				&& this.getVerticalVelocity() > 0.7f) {
-			this.setVerticalVelocity(this.getVerticalVelocity() - 0.1f);
+		if (this.getRow() > 0) {
+			if (pixelPhysicsGame.matrix.getElement(this.getRow() - 1, this.getColumn()) instanceof Water
+					&& this.getVerticalVelocity() > 0.7f) {
+				this.setVerticalVelocity(this.getVerticalVelocity() - 0.1f);
+			}
 		}
 
 	}

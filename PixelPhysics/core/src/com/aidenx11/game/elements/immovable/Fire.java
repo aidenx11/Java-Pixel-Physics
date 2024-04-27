@@ -1,5 +1,6 @@
 package com.aidenx11.game.elements.immovable;
 
+import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.elements.Element;
 
 /**
@@ -37,11 +38,11 @@ public class Fire extends Immovable {
 	 * elements extinguishes elements, extinguishes the fire.
 	 */
 	public void checkForExtinguishingElements() {
-		Element[] elementsAbove = new Element[] { parentMatrix.getElement(getRow() + 1, getColumn()),
-				parentMatrix.getElement(getRow() + 1, getColumn() - 1),
-				parentMatrix.getElement(getRow() + 1, getColumn() + 1),
-				parentMatrix.getElement(getRow(), getColumn() - 1),
-				parentMatrix.getElement(getRow(), getColumn() + 1) };
+		Element[] elementsAbove = new Element[] { pixelPhysicsGame.matrix.getElement(getRow() + 1, getColumn()),
+				pixelPhysicsGame.matrix.getElement(getRow() + 1, getColumn() - 1),
+				pixelPhysicsGame.matrix.getElement(getRow() + 1, getColumn() + 1),
+				pixelPhysicsGame.matrix.getElement(getRow(), getColumn() - 1),
+				pixelPhysicsGame.matrix.getElement(getRow(), getColumn() + 1) };
 
 		float chanceToExtinguish = 0;
 
@@ -54,7 +55,7 @@ public class Fire extends Immovable {
 				case WATER:
 					chanceToExtinguish = 1;
 					if (Math.random() < 0.3) {
-						parentMatrix.setNewElement(elementsAbove[i], ElementTypes.STEAM);
+						pixelPhysicsGame.matrix.setNewElement(elementsAbove[i], ElementTypes.STEAM);
 					}
 					break;
 				case SAND:
@@ -67,10 +68,10 @@ public class Fire extends Immovable {
 
 				if (Math.random() < chanceToExtinguish) {
 					if (Math.random() < 0.5f) {
-						parentMatrix.setNewElement(this, ElementTypes.SMOKE);
+						pixelPhysicsGame.matrix.setNewElement(this, ElementTypes.SMOKE);
 						return;
 					} else {
-						parentMatrix.clearElement(this);
+						pixelPhysicsGame.matrix.clearElement(this);
 						return;
 					}
 				}

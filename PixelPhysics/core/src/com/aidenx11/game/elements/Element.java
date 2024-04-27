@@ -24,9 +24,6 @@ import com.badlogic.gdx.graphics.Color;
  */
 public abstract class Element {
 
-	/** Parent matrix of this element */
-	public CellularMatrix parentMatrix = pixelPhysicsGame.matrix;
-
 	/** Type of this element */
 	public static ElementTypes type;
 
@@ -132,15 +129,15 @@ public abstract class Element {
 	public void updateElementLife() {
 		if (this.limitedLife() && this.getLifetime() < 1) {
 			if (this instanceof Smoke || this instanceof Steam) {
-				parentMatrix.clearElement(this);
+				pixelPhysicsGame.matrix.clearElement(this);
 			} else if (this instanceof Fire || this.isOnFire()) {
 				if (Math.random() < 0.3) {
-					parentMatrix.setElement(new Smoke(this.getRow(), this.getColumn()));
+					pixelPhysicsGame.matrix.setElement(new Smoke(this.getRow(), this.getColumn()));
 				} else {
-					parentMatrix.clearElement(this);
+					pixelPhysicsGame.matrix.clearElement(this);
 				}
 			} else if (this instanceof Steel) {
-				parentMatrix.setNewElement(this, ElementTypes.RUST);
+				pixelPhysicsGame.matrix.setNewElement(this, ElementTypes.RUST);
 			}
 		}
 
@@ -156,7 +153,7 @@ public abstract class Element {
 	 * around the element.
 	 */
 	public void causeRust() {
-		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
+		Element[] adjacentElements = pixelPhysicsGame.matrix.getAdjacentElements(this);
 		List<Element> shuffledElements = Arrays.asList(adjacentElements);
 		Collections.shuffle(shuffledElements);
 		Element nextElement;
@@ -181,15 +178,15 @@ public abstract class Element {
 		for (int i = 0; i < elements.length; i++) {
 			if (elements[i] != null && elements[i].extinguishesThings() && this.isOnFire()) {
 				if (elements[i] instanceof Water && Math.random() < 0.4) {
-					parentMatrix.setNewElement(elements[i], ElementTypes.STEAM);
+					pixelPhysicsGame.matrix.setNewElement(elements[i], ElementTypes.STEAM);
 					extinguished = true;
 				} else if (elements[i] instanceof WetSand) {
-					parentMatrix.setNewElement(this, ElementTypes.STEAM);
-					parentMatrix.setNewElement(elements[i], ElementTypes.SAND);
+					pixelPhysicsGame.matrix.setNewElement(this, ElementTypes.STEAM);
+					pixelPhysicsGame.matrix.setNewElement(elements[i], ElementTypes.SAND);
 					extinguished = true;
 				} else if (elements[i] instanceof WetDirt) {
-					parentMatrix.setNewElement(this, ElementTypes.STEAM);
-					parentMatrix.setNewElement(elements[i], ElementTypes.DIRT);
+					pixelPhysicsGame.matrix.setNewElement(this, ElementTypes.STEAM);
+					pixelPhysicsGame.matrix.setNewElement(elements[i], ElementTypes.DIRT);
 					extinguished = true;
 				}
 			}
@@ -219,7 +216,7 @@ public abstract class Element {
 	 */
 	public void updateBurningLogic() {
 
-		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
+		Element[] adjacentElements = pixelPhysicsGame.matrix.getAdjacentElements(this);
 		boolean extinguished = updateDryingLogic(adjacentElements);
 		int numberOfFire = updateNumberOfAdjacentFire(adjacentElements);
 
@@ -230,7 +227,7 @@ public abstract class Element {
 
 		if (extinguished) {
 			if (this.isOnFire()) {
-				parentMatrix.setNewElement(this, ElementTypes.SMOKE);
+				pixelPhysicsGame.matrix.setNewElement(this, ElementTypes.SMOKE);
 			}
 		}
 

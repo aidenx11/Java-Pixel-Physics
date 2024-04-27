@@ -18,7 +18,7 @@ public class Obsidian extends MovableSolid {
 	private static int density = 8;
 	private static float inertialResistance = 0.995f;
 	private static float friction = 0.7f;
-	
+
 	public Obsidian(int row, int column) {
 		super(type, row, column, new CustomColor(ColorValues.OBSIDIAN, true), false, -1, false, true, 0, false, 0,
 				acceleration, maxSpeed, density, false, inertialResistance, friction, -1);
@@ -33,7 +33,7 @@ public class Obsidian extends MovableSolid {
 
 			int delta = (int) Math.signum(this.getVerticalVelocity());
 
-			Element nextVertical = parentMatrix.getElement(this.getRow() - delta, this.getColumn());
+			Element nextVertical = pixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn());
 			int randDirection = Math.random() > 0.5 ? 1 : -1;
 
 			if (this.getHorizontalVelocity() > 0 && this.isFreeFalling()) {
@@ -47,46 +47,43 @@ public class Obsidian extends MovableSolid {
 				this.setFallingThroughAir(false);
 			}
 
-
 			if (delta > 0) {
 				for (int i = this.getRow() - delta; i >= 0; i--) {
-					if (parentMatrix.getElement(i, this.getColumn()) instanceof Immovable
-							|| parentMatrix.getElement(i, this.getColumn()) instanceof Lava) {
+					Element elementToCheck = pixelPhysicsGame.matrix.getElement(i, this.getColumn());
+					if (elementToCheck instanceof Immovable || elementToCheck instanceof Lava) {
 						break;
 					}
-					if (parentMatrix.getElement(i, this.getColumn()) instanceof Empty
-							|| parentMatrix.getElement(i, this.getColumn()) instanceof Water) {
+					if (elementToCheck instanceof Empty || elementToCheck instanceof Water) {
 						setFallingThroughAir(true);
 						break;
 					}
-					
-				}
-			} 
 
-			Element sideways1 = parentMatrix.getElement(this.getRow(), this.getColumn() - randDirection);
-			Element sideways2 = parentMatrix.getElement(this.getRow(), this.getColumn() + randDirection);
+				}
+			}
+
+			Element sideways1 = pixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() - randDirection);
+			Element sideways2 = pixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() + randDirection);
 
 			boolean inContainer = sideways1 instanceof Immovable || sideways2 instanceof Immovable;
 
-			nextVertical1 = parentMatrix.getElement(this.getRow() - delta, this.getColumn() - randDirection);
-			nextVertical2 = parentMatrix.getElement(this.getRow() - delta, this.getColumn() + randDirection);
+			nextVertical1 = pixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn() - randDirection);
+			nextVertical2 = pixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn() + randDirection);
 
 			if (nextVertical != null && (nextVertical.getDensity() < this.getDensity() - 1)) {
 
 				setFreeFalling(true);
-				parentMatrix.swap(this, nextVertical);
+				pixelPhysicsGame.matrix.swap(this, nextVertical);
 				setDirection(randDirection);
 				setHorizontalVelocity(0f);
 				updateVerticalVelocity();
 				setVerticalVelocity(this.getVerticalVelocity() + this.getHorizontalVelocity());
-
 
 			} else if (nextVertical1 != null
 					&& (nextVertical1.getDensity() < this.getDensity() - 1
 							|| (nextVertical1.isFallingThroughAir() && nextVertical1.getDensity() == this.getDensity()))
 					&& (this.isFreeFalling() || this.getHorizontalVelocity() > 0) && !inContainer) {
 
-				parentMatrix.swap(this, nextVertical1);
+				pixelPhysicsGame.matrix.swap(this, nextVertical1);
 				setDirection(randDirection * -1);
 
 				if (this.getHorizontalVelocity() > 0) {
@@ -98,7 +95,7 @@ public class Obsidian extends MovableSolid {
 							|| (nextVertical2.isFallingThroughAir()) && nextVertical2.getDensity() == this.getDensity())
 					&& (this.isFreeFalling() || this.getHorizontalVelocity() > 0) && !inContainer) {
 
-				parentMatrix.swap(this, nextVertical2);
+				pixelPhysicsGame.matrix.swap(this, nextVertical2);
 				setDirection(randDirection);
 
 				if (this.getHorizontalVelocity() > 0) {
@@ -114,13 +111,11 @@ public class Obsidian extends MovableSolid {
 				} else {
 					for (int i = 0; i < getHorizontalUpdateCount(); i++) {
 
-
-
 						if (getDirection() != 0) {
 
-							Element elementInDirection = parentMatrix.getElement(getRow(),
+							Element elementInDirection = pixelPhysicsGame.matrix.getElement(getRow(),
 									getColumn() + getDirection());
-							Element elementBelowDirection = parentMatrix.getElement(getRow() - 1,
+							Element elementBelowDirection = pixelPhysicsGame.matrix.getElement(getRow() - 1,
 									getColumn() + getDirection());
 
 							if (elementInDirection != null && elementInDirection.getDensity() <= this.getDensity()) {
@@ -128,13 +123,11 @@ public class Obsidian extends MovableSolid {
 								if (elementBelowDirection != null
 										&& elementBelowDirection.getDensity() <= this.getDensity()) {
 
-									parentMatrix.swap(this, elementBelowDirection);
-
+									pixelPhysicsGame.matrix.swap(this, elementBelowDirection);
 
 								} else {
 
-									parentMatrix.swap(this, elementInDirection);
-
+									pixelPhysicsGame.matrix.swap(this, elementInDirection);
 
 								}
 

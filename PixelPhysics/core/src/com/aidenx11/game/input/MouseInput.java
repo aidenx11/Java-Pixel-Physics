@@ -233,44 +233,43 @@ public class MouseInput implements InputProcessor {
 				points[0][1] = (int) (mousePos.x / pixelSizeModifier);
 			}
 			for (int i = 0; i < points.length; i++) {
-				if (CellularMatrix.isWithinBounds(points[i][0], points[i][1])) {
-					float probability;
-					switch (elementType) {
-					case SAND:
-					case EMPTY:
-					case WOOD:
-					case DIRT:
-					case LAVA:
-					case STONE:
-					case OBSIDIAN:
-					case STEEL:
-					case VOID:
-						probability = 1;
-						break;
-					case LEAF:
-						probability = 0.005f * (76 - this.brushSize);
-						break;
-					case WATER:
-					case FIRE:
-						probability = 0.03f * (76 - this.brushSize);
-						break;
-					default:
-						probability = 1;
-						break;
-					}
+				float probability;
+				switch (elementType) {
+				case SAND:
+				case EMPTY:
+				case WOOD:
+				case DIRT:
+				case LAVA:
+				case STONE:
+				case OBSIDIAN:
+				case STEEL:
+				case VOID:
+					probability = 1;
+					break;
+				case LEAF:
+					probability = 0.005f * (76 - this.brushSize);
+					break;
+				case WATER:
+				case FIRE:
+					probability = 0.03f * (76 - this.brushSize);
+					break;
+				default:
+					probability = 1;
+					break;
+				}
 
-					if (getBrushType() == BrushTypes.CIRCLE) {
-						drawCircle(points[i][0], points[i][1], getBrushSize() / 2, elementType, probability);
-					} else if (getBrushType() == BrushTypes.SQUARE) {
-						drawRectangle(points[i][0], points[i][1], getBrushSize(), getBrushSize(), probability);
-					} else if (getBrushType() == BrushTypes.RECTANGLE) {
-
-					}
+				if (getBrushType() == BrushTypes.CIRCLE) {
+					drawCircle(points[i][0], points[i][1], getBrushSize() / 2, elementType, probability);
+				} else if (getBrushType() == BrushTypes.SQUARE) {
+					drawRectangle(points[i][0], points[i][1], getBrushSize(), getBrushSize(), probability);
+				} else if (getBrushType() == BrushTypes.RECTANGLE) {
 
 				}
 
 			}
+
 		}
+
 	}
 
 	/**
@@ -299,7 +298,7 @@ public class MouseInput implements InputProcessor {
 		for (int rowCount = bottom; rowCount <= top; rowCount++) {
 			for (int colCount = left; colCount <= right; colCount++) {
 				if (insideCircle(row, column, radius, rowCount, colCount)) {
-					if (!CellularMatrix.isWithinBounds(rowCount, colCount) || Math.random() > p) {
+					if (Math.random() > p) {
 						continue;
 					}
 					switch (type) {
@@ -421,7 +420,7 @@ public class MouseInput implements InputProcessor {
 		for (int rowCount = row - rowDifference; rowCount <= row + rowDifference - mod; rowCount++) {
 			for (int colCount = column - colDifference; colCount <= column + colDifference; colCount++) {
 
-				if (!CellularMatrix.isWithinBounds(rowCount, colCount) || (Math.random() > p)) {
+				if (Math.random() > p) {
 					continue;
 				}
 

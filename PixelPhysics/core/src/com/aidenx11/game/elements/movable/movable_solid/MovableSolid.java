@@ -1,5 +1,6 @@
 package com.aidenx11.game.elements.movable.movable_solid;
 
+import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.elements.Element;
 import com.aidenx11.game.elements.Empty;
@@ -33,7 +34,7 @@ public abstract class MovableSolid extends Movable {
 
 			int delta = (int) Math.signum(this.getVerticalVelocity());
 
-			nextVertical = parentMatrix.getElement(this.getRow() - delta, this.getColumn());
+			nextVertical = pixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn());
 			int randDirection = Math.random() > 0.5 ? 1 : -1;
 
 			if (this.getHorizontalVelocity() > 0 && this.isFreeFalling()) {
@@ -45,41 +46,44 @@ public abstract class MovableSolid extends Movable {
 			}
 
 			if (delta > 0) {
-				for (int i = this.getRow() - delta; i >= 0; i--) {
-					if (parentMatrix.getElement(i, this.getColumn()) instanceof Immovable
-							|| parentMatrix.getElement(i, this.getColumn()) instanceof Lava) {
+				int minRow = this.getRow() - 15 < 0 ? 0 : this.getRow() - 15;
+				for (int i = this.getRow() - delta; i >= minRow; i--) {
+					Element elementToCheck = pixelPhysicsGame.matrix.getElement(i, this.getColumn());
+					
+					if (elementToCheck instanceof Immovable
+							|| elementToCheck instanceof Lava) {
 						break;
 					}
-					if (parentMatrix.getElement(i, this.getColumn()) instanceof Empty
-							|| parentMatrix.getElement(i, this.getColumn()) instanceof Water) {
+					if (elementToCheck instanceof Empty
+							|| elementToCheck instanceof Water) {
 						setFallingThroughAir(true);
 						break;
 					}
-					if (this instanceof WetSand && (parentMatrix.getElement(i, this.getColumn()) instanceof Sand
-							|| parentMatrix.getElement(i, this.getColumn()) instanceof Dirt)) {
+					if (this instanceof WetSand && (elementToCheck instanceof Sand
+							|| elementToCheck instanceof Dirt)) {
 						setFallingThroughAir(true);
 						break;
 					}
-					if (this instanceof WetDirt && (parentMatrix.getElement(i, this.getColumn()) instanceof Sand
-							|| parentMatrix.getElement(i, this.getColumn()) instanceof Dirt)) {
+					if (this instanceof WetDirt && (elementToCheck instanceof Sand
+							|| elementToCheck instanceof Dirt)) {
 						setFallingThroughAir(true);
 						break;
 					}
 				}
 			}
 
-			sideways1 = parentMatrix.getElement(this.getRow(), this.getColumn() - randDirection);
-			sideways2 = parentMatrix.getElement(this.getRow(), this.getColumn() + randDirection);
+			sideways1 = pixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() - randDirection);
+			sideways2 = pixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() + randDirection);
 
 			boolean inContainer = sideways1 instanceof Immovable || sideways2 instanceof Immovable;
 
-			nextVertical1 = parentMatrix.getElement(this.getRow() - delta, this.getColumn() - randDirection);
-			nextVertical2 = parentMatrix.getElement(this.getRow() - delta, this.getColumn() + randDirection);
+			nextVertical1 = pixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn() - randDirection);
+			nextVertical2 = pixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn() + randDirection);
 
 			if (nextVertical != null && (nextVertical.getDensity() < this.getDensity())) {
 
 				setFreeFalling(true);
-				parentMatrix.swap(this, nextVertical);
+				pixelPhysicsGame.matrix.swap(this, nextVertical);
 				setDirection(randDirection);
 				setHorizontalVelocity(0f);
 				updateVerticalVelocity();
@@ -90,7 +94,7 @@ public abstract class MovableSolid extends Movable {
 							|| (nextVertical1.isFallingThroughAir() && nextVertical1.getDensity() == this.getDensity()))
 					&& (this.isFreeFalling() || this.getHorizontalVelocity() > 0) && !inContainer) {
 
-				parentMatrix.swap(this, nextVertical1);
+				pixelPhysicsGame.matrix.swap(this, nextVertical1);
 				setDirection(randDirection * -1);
 
 				if (this.getHorizontalVelocity() > 0) {
@@ -102,7 +106,7 @@ public abstract class MovableSolid extends Movable {
 							|| (nextVertical2.isFallingThroughAir()) && nextVertical2.getDensity() == this.getDensity())
 					&& (this.isFreeFalling() || this.getHorizontalVelocity() > 0) && !inContainer) {
 
-				parentMatrix.swap(this, nextVertical2);
+				pixelPhysicsGame.matrix.swap(this, nextVertical2);
 				setDirection(randDirection);
 
 				if (this.getHorizontalVelocity() > 0) {
@@ -120,9 +124,9 @@ public abstract class MovableSolid extends Movable {
 
 						if (getDirection() != 0) {
 
-							Element elementInDirection = parentMatrix.getElement(getRow(),
+							Element elementInDirection = pixelPhysicsGame.matrix.getElement(getRow(),
 									getColumn() + getDirection());
-							Element elementBelowDirection = parentMatrix.getElement(getRow() - 1,
+							Element elementBelowDirection = pixelPhysicsGame.matrix.getElement(getRow() - 1,
 									getColumn() + getDirection());
 
 							if (elementInDirection != null && (elementInDirection.getDensity() < this.getDensity())) {
@@ -130,11 +134,11 @@ public abstract class MovableSolid extends Movable {
 								if (elementBelowDirection != null
 										&& (elementBelowDirection.getDensity() < this.getDensity())) {
 
-									parentMatrix.swap(this, elementBelowDirection);
+									pixelPhysicsGame.matrix.swap(this, elementBelowDirection);
 
 								} else {
 
-									parentMatrix.swap(this, elementInDirection);
+									pixelPhysicsGame.matrix.swap(this, elementInDirection);
 
 								}
 

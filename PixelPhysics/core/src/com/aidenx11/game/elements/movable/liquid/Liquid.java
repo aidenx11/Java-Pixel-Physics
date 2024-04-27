@@ -1,5 +1,6 @@
 package com.aidenx11.game.elements.movable.liquid;
 
+import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.elements.Element;
 import com.aidenx11.game.elements.movable.Movable;
@@ -38,45 +39,45 @@ public class Liquid extends Movable {
 			Element nextVertical2 = null;
 
 			int delta = (int) Math.signum(this.getVerticalVelocity());
-			Element nextVertical = parentMatrix.getElement(this.getRow() - delta, this.getColumn());
+			Element nextVertical = pixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn());
 			int randDirection = Math.random() > 0.5 ? 1 : -1;
 
 			for (int i = 0; i <= dispersionRate; i++) {
-				Element currentElement = parentMatrix.getElement(this.getRow() - delta,
+				Element currentElement = pixelPhysicsGame.matrix.getElement(this.getRow() - delta,
 						this.getColumn() - randDirection * i);
 				if ((!(currentElement instanceof Empty) && !(currentElement instanceof Liquid))
 						|| i == dispersionRate) {
-					nextVertical1 = parentMatrix.getElement(this.getRow() - delta,
+					nextVertical1 = pixelPhysicsGame.matrix.getElement(this.getRow() - delta,
 							this.getColumn() - randDirection * (i));
 					break;
 				}
 			}
 
 			for (int i = 0; i <= dispersionRate; i++) {
-				Element currentElement = parentMatrix.getElement(this.getRow() - delta,
+				Element currentElement = pixelPhysicsGame.matrix.getElement(this.getRow() - delta,
 						this.getColumn() + randDirection * i);
 				if ((!(currentElement instanceof Empty) && !(currentElement instanceof Liquid))
 						|| i == dispersionRate) {
-					nextVertical2 = parentMatrix.getElement(this.getRow() - delta,
+					nextVertical2 = pixelPhysicsGame.matrix.getElement(this.getRow() - delta,
 							this.getColumn() + randDirection * (i));
 					break;
 				}
 			}
 
 			if (nextVertical != null && nextVertical.getDensity() < this.getDensity()) {
-				parentMatrix.swap(this, nextVertical);
+				pixelPhysicsGame.matrix.swap(this, nextVertical);
 			} else if (nextVertical1 != null && !(nextVertical1 instanceof Gas)
 					&& nextVertical1.getDensity() < this.getDensity()) {
-				parentMatrix.swap(this, nextVertical1);
+				pixelPhysicsGame.matrix.swap(this, nextVertical1);
 			} else if (nextVertical2 != null && !(nextVertical2 instanceof Gas)
 					&& nextVertical2.getDensity() < this.getDensity()) {
-				parentMatrix.swap(this, nextVertical2);
+				pixelPhysicsGame.matrix.swap(this, nextVertical2);
 			} else {
 				this.resetVelocity();
 			}
 
-			Element sideways1 = parentMatrix.getElement(this.getRow(), this.getColumn() - randDirection);
-			Element sideways2 = parentMatrix.getElement(this.getRow(), this.getColumn() + randDirection);
+			Element sideways1 = pixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() - randDirection);
+			Element sideways2 = pixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() + randDirection);
 
 			if (sideways1 instanceof MovableSolid) {
 				setElementFreeFalling((MovableSolid) sideways1);
@@ -87,9 +88,9 @@ public class Liquid extends Movable {
 			}
 
 			if (sideways1 != null && sideways1.getDensity() < this.getDensity()) {
-				parentMatrix.swap(this, sideways1);
+				pixelPhysicsGame.matrix.swap(this, sideways1);
 			} else if (sideways2 != null && sideways2.getDensity() < this.getDensity()) {
-				parentMatrix.swap(this, sideways2);
+				pixelPhysicsGame.matrix.swap(this, sideways2);
 			}
 		}
 

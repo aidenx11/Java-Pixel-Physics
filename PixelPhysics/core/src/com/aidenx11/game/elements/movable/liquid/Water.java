@@ -55,7 +55,7 @@ public class Water extends Liquid {
 	 */
 	public boolean actOnOther() {
 
-		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
+		Element[] adjacentElements = pixelPhysicsGame.matrix.getAdjacentElements(this);
 		List<Element> shuffledElements = Arrays.asList(adjacentElements);
 		Collections.shuffle(shuffledElements);
 		Element nextElement;
@@ -63,15 +63,15 @@ public class Water extends Liquid {
 		for (int i = 0; i < shuffledElements.size(); i++) {
 			nextElement = shuffledElements.get(i);
 			if (nextElement instanceof Sand) {
-				Element newElement = parentMatrix.setNewElement(nextElement, ElementTypes.WET_SAND);
+				Element newElement = pixelPhysicsGame.matrix.setNewElement(nextElement, ElementTypes.WET_SAND);
 				((Movable) newElement).setVerticalVelocity(((Movable) nextElement).getVerticalVelocity());
-				parentMatrix.clearElement(this);
+				pixelPhysicsGame.matrix.clearElement(this);
 				return true;
 			}
 			if (nextElement instanceof Dirt) {
-				Element newElement = parentMatrix.setNewElement(nextElement, ElementTypes.WET_DIRT);
+				Element newElement = pixelPhysicsGame.matrix.setNewElement(nextElement, ElementTypes.WET_DIRT);
 				((Movable) newElement).setVerticalVelocity(((Movable) nextElement).getVerticalVelocity());
-				parentMatrix.clearElement(this);
+				pixelPhysicsGame.matrix.clearElement(this);
 				return true;
 			}
 

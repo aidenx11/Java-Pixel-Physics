@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.aidenx11.game.pixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.color.CustomColor.ColorValues;
 
@@ -33,14 +34,14 @@ public class Void extends Element {
 	 */
 	private void actOnOther() {
 
-		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
+		Element[] adjacentElements = pixelPhysicsGame.matrix.getAdjacentElements(this);
 		List<Element> shuffledElements = Arrays.asList(adjacentElements);
 		Collections.shuffle(shuffledElements);
 
 		for (int i = 0; i < shuffledElements.size(); i++) {
 			if (adjacentElements[i] != null && !(adjacentElements[i] instanceof Empty)
 					&& !(adjacentElements[i] instanceof Void)) {
-				parentMatrix.clearElement(adjacentElements[i]);
+				pixelPhysicsGame.matrix.clearElement(adjacentElements[i]);
 			}
 
 		}

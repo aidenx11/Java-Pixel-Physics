@@ -106,26 +106,26 @@ public class Lava extends Liquid {
 			Element nextVertical2 = null;
 
 			int delta = (int) Math.signum(this.getVerticalVelocity());
-			Element nextVertical = parentMatrix.getElement(this.getRow() - delta, this.getColumn());
+			Element nextVertical = pixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn());
 			int randDirection = Math.random() > 0.5 ? 1 : -1;
 
 			for (int i = 0; i <= dispersionRate; i++) {
-				Element currentElement = parentMatrix.getElement(this.getRow() - delta,
+				Element currentElement = pixelPhysicsGame.matrix.getElement(this.getRow() - delta,
 						this.getColumn() - randDirection * i);
 				if ((!(currentElement instanceof Empty) && !(currentElement instanceof Liquid))
 						|| i == dispersionRate) {
-					nextVertical1 = parentMatrix.getElement(this.getRow() - delta,
+					nextVertical1 = pixelPhysicsGame.matrix.getElement(this.getRow() - delta,
 							this.getColumn() - randDirection * (i));
 					break;
 				}
 			}
 
 			for (int i = 0; i <= dispersionRate; i++) {
-				Element currentElement = parentMatrix.getElement(this.getRow() - delta,
+				Element currentElement = pixelPhysicsGame.matrix.getElement(this.getRow() - delta,
 						this.getColumn() + randDirection * i);
 				if ((!(currentElement instanceof Empty) && !(currentElement instanceof Liquid))
 						|| i == dispersionRate) {
-					nextVertical2 = parentMatrix.getElement(this.getRow() - delta,
+					nextVertical2 = pixelPhysicsGame.matrix.getElement(this.getRow() - delta,
 							this.getColumn() + randDirection * (i));
 					break;
 				}
@@ -139,20 +139,20 @@ public class Lava extends Liquid {
 				if (nextVertical instanceof Liquid && !(nextVertical instanceof Lava)) {
 					this.setVerticalVelocity(0.7f);
 				}
-				parentMatrix.swap(this, nextVertical);
+				pixelPhysicsGame.matrix.swap(this, nextVertical);
 			} else if (nextVertical1 != null && nextVertical1.getDensity() < this.getDensity() - 1
 					&& nextVertical != null && nextVertical.getDensity() > this.getDensity()) {
-				parentMatrix.swap(this, nextVertical1);
+				pixelPhysicsGame.matrix.swap(this, nextVertical1);
 			} else if (nextVertical2 != null && nextVertical2.getDensity() < this.getDensity() - 1
 					&& nextVertical != null && nextVertical.getDensity() > this.getDensity()) {
-				parentMatrix.swap(this, nextVertical2);
+				pixelPhysicsGame.matrix.swap(this, nextVertical2);
 			} else {
 				this.setVerticalVelocity(2.5f);
 			}
 
-			Element sideways1 = parentMatrix.getElement(this.getRow(), this.getColumn() - randDirection);
-			Element sideways2 = parentMatrix.getElement(this.getRow(), this.getColumn() + randDirection);
-			nextVertical = parentMatrix.getElement(this.getRow() - delta, this.getColumn());
+			Element sideways1 = pixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() - randDirection);
+			Element sideways2 = pixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() + randDirection);
+			nextVertical = pixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn());
 
 			if (nextVertical == null) {
 				return;
@@ -169,11 +169,11 @@ public class Lava extends Liquid {
 			if (sideways1 != null && sideways1.getDensity() < this.getDensity() - 1
 					&& ((nextVertical != null && nextVertical.getDensity() == this.getDensity())
 							|| nextVertical == null)) {
-				parentMatrix.swap(this, sideways1);
+				pixelPhysicsGame.matrix.swap(this, sideways1);
 			} else if (sideways2 != null && sideways2.getDensity() < this.getDensity() - 1
 					&& ((nextVertical != null && nextVertical.getDensity() == this.getDensity())
 							|| nextVertical == null)) {
-				parentMatrix.swap(this, sideways2);
+				pixelPhysicsGame.matrix.swap(this, sideways2);
 			}
 		}
 	}
@@ -193,7 +193,7 @@ public class Lava extends Liquid {
 	}
 
 	public void distributeHeat() {
-		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
+		Element[] adjacentElements = pixelPhysicsGame.matrix.getAdjacentElements(this);
 		Element nextElement;
 		for (int i = 0; i < adjacentElements.length; i++) {
 			nextElement = adjacentElements[i];
@@ -212,7 +212,7 @@ public class Lava extends Liquid {
 	 */
 	public void actOnOther() {
 
-		Element[] adjacentElements = parentMatrix.getAdjacentElements(this);
+		Element[] adjacentElements = pixelPhysicsGame.matrix.getAdjacentElements(this);
 		List<Element> shuffledElements = Arrays.asList(adjacentElements);
 		Collections.shuffle(shuffledElements);
 		Element newElement;
@@ -220,7 +220,7 @@ public class Lava extends Liquid {
 		for (int i = 0; i < shuffledElements.size(); i++) {
 
 			if (getNumberOfMeltsToHarden() < 1) {
-				newElement = parentMatrix.setNewElement(this, ElementTypes.OBSIDIAN);
+				newElement = pixelPhysicsGame.matrix.setNewElement(this, ElementTypes.OBSIDIAN);
 				((Movable) newElement)
 						.setVerticalVelocity(this.getVerticalVelocity() < 0.7f ? 0.7f : this.getVerticalVelocity());
 				((Movable) newElement).setFreeFalling(true);
@@ -233,22 +233,22 @@ public class Lava extends Liquid {
 
 			if (shuffledElements.get(i) instanceof Empty) {
 				if (Math.random() < 0.0003) {
-					parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.SMOKE);
+					pixelPhysicsGame.matrix.setNewElement(shuffledElements.get(i), ElementTypes.SMOKE);
 				}
 				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
 				continue;
 			} else if (shuffledElements.get(i) instanceof WetSand) {
 				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 50);
-				parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.SAND);
+				pixelPhysicsGame.matrix.setNewElement(shuffledElements.get(i), ElementTypes.SAND);
 				continue;
 			} else if (shuffledElements.get(i) instanceof WetDirt) {
 				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 50);
-				parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.DIRT);
+				pixelPhysicsGame.matrix.setNewElement(shuffledElements.get(i), ElementTypes.DIRT);
 				continue;
 			} else if (shuffledElements.get(i) instanceof Water) {
 				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 10);
 				if (Math.random() < 0.001) {
-					parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.STEAM);
+					pixelPhysicsGame.matrix.setNewElement(shuffledElements.get(i), ElementTypes.STEAM);
 				}
 				continue;
 			} else if (shuffledElements.get(i) instanceof Steel) {
@@ -256,7 +256,7 @@ public class Lava extends Liquid {
 				continue;
 			} else if (shuffledElements.get(i) instanceof Wood) {
 				if (Math.random() < 0.01) {
-					newElement = parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
+					newElement = pixelPhysicsGame.matrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
 					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 25);
 					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden());
 				}
@@ -266,7 +266,7 @@ public class Lava extends Liquid {
 				if (this.numberOfMelts <= 300) {
 					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
 				} else if (Math.random() < chanceToMeltObsidian) {
-					newElement = parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
+					newElement = pixelPhysicsGame.matrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
 					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 250);
 					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden());
 				}
@@ -276,7 +276,7 @@ public class Lava extends Liquid {
 				if (this.numberOfMelts <= 175) {
 					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
 				} else if (Math.random() < chanceToMeltStone) {
-					newElement = parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
+					newElement = pixelPhysicsGame.matrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
 					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 150);
 					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden());
 				}
@@ -286,7 +286,7 @@ public class Lava extends Liquid {
 				if (this.numberOfMelts <= 150) {
 					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
 				} else if (Math.random() < chanceToMeltSand) {
-					newElement = parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
+					newElement = pixelPhysicsGame.matrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
 					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 100);
 					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden());
 				}
@@ -296,7 +296,7 @@ public class Lava extends Liquid {
 				if (this.numberOfMelts <= 150) {
 					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
 				} else if (Math.random() < chanceToMeltDirt) {
-					newElement = parentMatrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
+					newElement = pixelPhysicsGame.matrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
 					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 100);
 					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden());
 				}
