@@ -12,6 +12,6 @@ public class DesktopLauncher {
 		config.setTitle("JavaPixelPhysics");
 		config.useVsync(false);
 		config.setWindowSizeLimits(130, 590, 9999, 9999);
-		new Lwjgl3Application(new pixelPhysicsGame(), config);
+		new Lwjgl3Application(new PixelPhysicsGame(), config);
 	}
 }

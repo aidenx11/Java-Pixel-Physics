@@ -1,6 +1,7 @@
 package com.aidenx11.game.elements.movable.liquid;
 
-import com.aidenx11.game.pixelPhysicsGame;
+import com.aidenx11.game.CellularMatrix;
+import com.aidenx11.game.PixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.elements.Element;
 import com.aidenx11.game.elements.movable.Movable;
@@ -37,47 +38,56 @@ public class Liquid extends Movable {
 
 			Element nextVertical1 = null;
 			Element nextVertical2 = null;
+			Element nextVertical = null;
+			Element sideways1 = null;
+			Element sideways2 = null;
 
 			int delta = (int) Math.signum(this.getVerticalVelocity());
-			Element nextVertical = pixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn());
+
+			if (this.getRow() > 0) {
+				nextVertical = PixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn(), true, false);
+			}
+
 			int randDirection = Math.random() > 0.5 ? 1 : -1;
 
 			for (int i = 0; i <= dispersionRate; i++) {
-				Element currentElement = pixelPhysicsGame.matrix.getElement(this.getRow() - delta,
-						this.getColumn() - randDirection * i);
+				Element currentElement = PixelPhysicsGame.matrix.getElement(this.getRow() - delta,
+						this.getColumn() - randDirection * i, true, true);
 				if ((!(currentElement instanceof Empty) && !(currentElement instanceof Liquid))
 						|| i == dispersionRate) {
-					nextVertical1 = pixelPhysicsGame.matrix.getElement(this.getRow() - delta,
-							this.getColumn() - randDirection * (i));
+					nextVertical1 = PixelPhysicsGame.matrix.getElement(this.getRow() - delta,
+							this.getColumn() - randDirection * i, true, true);
 					break;
 				}
 			}
 
 			for (int i = 0; i <= dispersionRate; i++) {
-				Element currentElement = pixelPhysicsGame.matrix.getElement(this.getRow() - delta,
-						this.getColumn() + randDirection * i);
+				Element currentElement = PixelPhysicsGame.matrix.getElement(this.getRow() - delta,
+						this.getColumn() + randDirection * i, true, true);
 				if ((!(currentElement instanceof Empty) && !(currentElement instanceof Liquid))
 						|| i == dispersionRate) {
-					nextVertical2 = pixelPhysicsGame.matrix.getElement(this.getRow() - delta,
-							this.getColumn() + randDirection * (i));
+					nextVertical2 = PixelPhysicsGame.matrix.getElement(this.getRow() - delta,
+							this.getColumn() + randDirection * i, true, true);
 					break;
 				}
 			}
 
 			if (nextVertical != null && nextVertical.getDensity() < this.getDensity()) {
-				pixelPhysicsGame.matrix.swap(this, nextVertical);
+				PixelPhysicsGame.matrix.swap(this, nextVertical);
 			} else if (nextVertical1 != null && !(nextVertical1 instanceof Gas)
 					&& nextVertical1.getDensity() < this.getDensity()) {
-				pixelPhysicsGame.matrix.swap(this, nextVertical1);
+				PixelPhysicsGame.matrix.swap(this, nextVertical1);
 			} else if (nextVertical2 != null && !(nextVertical2 instanceof Gas)
 					&& nextVertical2.getDensity() < this.getDensity()) {
-				pixelPhysicsGame.matrix.swap(this, nextVertical2);
+				PixelPhysicsGame.matrix.swap(this, nextVertical2);
 			} else {
 				this.resetVelocity();
 			}
 
-			Element sideways1 = pixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() - randDirection);
-			Element sideways2 = pixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() + randDirection);
+			if (this.getColumn() > 0 && this.getColumn() < CellularMatrix.columns) {
+				sideways1 = PixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() - randDirection, false, true);
+				sideways2 = PixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() + randDirection, false, true);
+			}
 
 			if (sideways1 instanceof MovableSolid) {
 				setElementFreeFalling((MovableSolid) sideways1);
@@ -88,9 +98,9 @@ public class Liquid extends Movable {
 			}
 
 			if (sideways1 != null && sideways1.getDensity() < this.getDensity()) {
-				pixelPhysicsGame.matrix.swap(this, sideways1);
+				PixelPhysicsGame.matrix.swap(this, sideways1);
 			} else if (sideways2 != null && sideways2.getDensity() < this.getDensity()) {
-				pixelPhysicsGame.matrix.swap(this, sideways2);
+				PixelPhysicsGame.matrix.swap(this, sideways2);
 			}
 		}
 

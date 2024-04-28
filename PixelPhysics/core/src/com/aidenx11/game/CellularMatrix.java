@@ -102,6 +102,7 @@ public class CellularMatrix {
 	 * Clears the current matrix
 	 */
 	public void clear() {
+		this.matrix = null;
 		this.matrix = generateMatrix();
 	}
 
@@ -141,10 +142,17 @@ public class CellularMatrix {
 	 * @param column column of the element being retrieved
 	 * @return
 	 */
-	public Element getElement(int row, int column) {
-
-		if (!isWithinBounds(row, column)) {
-			return null;
+	public Element getElement(int row, int column, boolean checkRow, boolean checkCol) {
+		if (checkRow) {
+			if (row < 0 || row >= rows) {
+				return null;
+			}
+		}
+		
+		if (checkCol) {
+			if (column < 0 || column >= columns) {
+				return null;
+			}
 		}
 
 		return matrix[row][column];
@@ -156,12 +164,8 @@ public class CellularMatrix {
 	 * @param element element to set in the matrix
 	 */
 	public void setElement(Element element) {
-		int row = element.getRow();
-		int column = element.getColumn();
-
-		if (isWithinBounds(row, column)) {
-			matrix[row][column] = element;
-		}
+		matrix[element.getRow()][element.getColumn()] = null;
+		matrix[element.getRow()][element.getColumn()] = element;
 	}
 
 	/**
@@ -174,7 +178,7 @@ public class CellularMatrix {
 		shapeRenderer.begin(ShapeType.Filled);
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < columns; x++) {
-				if (!(matrix[y][x] instanceof Empty) && isWithinBounds(y, x)) {
+				if (!(matrix[y][x] instanceof Empty)) {
 					Element thisElement = matrix[y][x];
 					if (!(thisElement instanceof Empty)) {
 						shapeRenderer.setColor(thisElement.getColor());
@@ -255,7 +259,7 @@ public class CellularMatrix {
 		int row = element.getRow();
 		int col = element.getColumn();
 		element = null;
-		return this.getElement(row, col);
+		return this.getElement(row, col, false, false);
 	}
 
 	/**
@@ -307,16 +311,16 @@ public class CellularMatrix {
 		}
 	}
 
-	/**
-	 * Checks if the given row and column location is within bounds for the matrix
-	 * 
-	 * @param row row to check
-	 * @param col column to check
-	 * @return whether or not the given row and column is within bounds
-	 */
-	public static boolean isWithinBounds(int row, int col) {
-		return row >= 0 && row < rows && col >= 0 && col < columns;
-	}
+//	/**
+//	 * Checks if the given row and column location is within bounds for the matrix
+//	 * 
+//	 * @param row row to check
+//	 * @param col column to check
+//	 * @return whether or not the given row and column is within bounds
+//	 */
+//	public static boolean isWithinBounds(int row, int col) {
+//		return row >= 0 && row < rows && col >= 0 && col < columns;
+//	}
 
 	/**
 	 * Traverses the matrix between the two given points. The points are given as x
@@ -365,11 +369,9 @@ public class CellularMatrix {
 			}
 			int currentY = row1 + (yIncrease * yModifier);
 			int currentX = col1 + (xIncrease * xModifier);
-			if (isWithinBounds(currentY, currentX)) {
-				points[i - 1][0] = currentY;
-				points[i - 1][1] = currentX;
+			points[i - 1][0] = currentY;
+			points[i - 1][1] = currentX;
 
-			}
 		}
 
 		if (points.length == 0) {
@@ -390,15 +392,35 @@ public class CellularMatrix {
 	 */
 	public Element[] getAdjacentElements(Element element) {
 		Element[] adjacentElements = new Element[8];
+		int row = element.getRow();
+		int col = element.getColumn();
 
-		adjacentElements[0] = this.getElement(element.getRow() + 1, element.getColumn() - 1);
-		adjacentElements[1] = this.getElement(element.getRow() + 1, element.getColumn());
-		adjacentElements[2] = this.getElement(element.getRow() + 1, element.getColumn() + 1);
-		adjacentElements[3] = this.getElement(element.getRow(), element.getColumn() - 1);
-		adjacentElements[4] = this.getElement(element.getRow(), element.getColumn() + 1);
-		adjacentElements[5] = this.getElement(element.getRow() - 1, element.getColumn() - 1);
-		adjacentElements[6] = this.getElement(element.getRow() - 1, element.getColumn());
-		adjacentElements[7] = this.getElement(element.getRow() - 1, element.getColumn() + 1);
+		if (col + 1 < columns) {
+			if (row + 1 < rows) {
+				adjacentElements[2] = matrix[row + 1][col + 1];
+			}
+			adjacentElements[4] = matrix[row][col + 1];
+			if (row - 1 > 0) {
+				adjacentElements[7] = matrix[row - 1][col + 1];
+			}
+		}
+
+		if (col - 1 >= 0) {
+			adjacentElements[3] = matrix[row][col - 1];
+			if (row + 1 < rows) {
+				adjacentElements[0] = matrix[row + 1][col - 1];
+			}
+			if (row - 1 > 0) {
+				adjacentElements[5] = matrix[row - 1][col - 1];
+			}
+		}
+
+		if (row - 1 >= 0) {
+			adjacentElements[6] = matrix[row - 1][col];
+		}
+		if (row + 1 < rows) {
+			adjacentElements[1] = matrix[row + 1][col];
+		}
 
 		return adjacentElements;
 	}

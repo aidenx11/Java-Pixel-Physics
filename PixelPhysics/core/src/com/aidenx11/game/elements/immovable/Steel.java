@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.aidenx11.game.pixelPhysicsGame;
+import com.aidenx11.game.PixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.color.CustomColor.ColorValues;
 import com.aidenx11.game.elements.Element;
@@ -74,7 +74,7 @@ public class Steel extends Immovable {
 	 * amount of time, it will rust.
 	 */
 	public void actOnOther() {
-		Element[] adjacentElements = pixelPhysicsGame.matrix.getAdjacentElements(this);
+		Element[] adjacentElements = PixelPhysicsGame.matrix.getAdjacentElements(this);
 		List<Element> shuffledElements = Arrays.asList(adjacentElements);
 		Collections.shuffle(shuffledElements);
 		Element nextElement;

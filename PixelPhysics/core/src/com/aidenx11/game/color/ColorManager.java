@@ -19,7 +19,7 @@ public class ColorManager extends Color {
 	public static int[] varyColor(CustomColor color) {
 		int[] hslValues = convertToHSLFromRGB(new int[] { color.getR(), color.getG(), color.getB() });
 
-		double saturation = hslValues[1] + Math.floor(Math.random() * (20) - 20);
+		double saturation = hslValues[1] + Math.floor(Math.random() * 20 - 20);
 
 		if (saturation > 100) {
 			saturation = 100;
@@ -27,7 +27,7 @@ public class ColorManager extends Color {
 			saturation = 0;
 		}
 
-		double lightness = hslValues[2] + Math.floor(Math.random() * (20) - 10);
+		double lightness = hslValues[2] + Math.floor(Math.random() * 20 - 10);
 
 		if (lightness > 100) {
 			lightness = 100;
@@ -76,7 +76,7 @@ public class ColorManager extends Color {
 		if (chroma == 0) {
 			hue = 0;
 		} else if (max == rPrime) {
-			hue = ((gPrime - bPrime) / chroma) % 6;
+			hue = (gPrime - bPrime) / chroma % 6;
 		} else if (max == gPrime) {
 			hue = (bPrime - rPrime) / chroma + 2;
 		} else {
@@ -113,8 +113,8 @@ public class ColorManager extends Color {
 		double saturation = hslValues[1] / 100.0;
 		double lightness = hslValues[2] / 100.0;
 
-		double chroma = ((1 - Math.abs(2 * lightness - 1)) * saturation);
-		double x = (chroma * (1 - Math.abs((hue / 60) % 2 - 1)));
+		double chroma = (1 - Math.abs(2 * lightness - 1)) * saturation;
+		double x = chroma * (1 - Math.abs(hue / 60 % 2 - 1));
 		double m = lightness - chroma / 2;
 		double r = 0;
 		double g = 0;

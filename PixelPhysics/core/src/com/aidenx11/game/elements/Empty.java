@@ -16,6 +16,7 @@ public class Empty extends Element {
 
 	@Override
 	public void update() {
+		// Empty should do nothing
 	}
 
 }

@@ -1,6 +1,6 @@
 package com.aidenx11.game.elements.movable.gas;
 
-import com.aidenx11.game.pixelPhysicsGame;
+import com.aidenx11.game.PixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.elements.Element;
 import com.aidenx11.game.elements.movable.Movable;
@@ -37,22 +37,22 @@ public class Gas extends Movable {
 			Element nextVertical2;
 
 			int delta = (int) Math.signum(this.getVerticalVelocity());
-			Element nextVertical = pixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn());
+			Element nextVertical = PixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn(), true, false);
 			int randDirection = Math.random() > 0.5 ? 1 : -1;
 
-			nextVertical1 = pixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn() - randDirection);
-			nextVertical2 = pixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn() + randDirection);
+			nextVertical1 = PixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn() - randDirection, true, true);
+			nextVertical2 = PixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn() + randDirection, true, true);
 
-			Element sideways1 = pixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() - randDirection);
-			Element sideways2 = pixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() + randDirection);
+			Element sideways1 = PixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() - randDirection, false, true);
+			Element sideways2 = PixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() + randDirection, false, true);
 
 			if (nextVertical != null && nextVertical.getDensity() < this.getDensity()) {
-				pixelPhysicsGame.matrix.swap(this, nextVertical);
+				PixelPhysicsGame.matrix.swap(this, nextVertical);
 			} else if (nextVertical1 != null && nextVertical1.getDensity() < this.getDensity()) {
-				pixelPhysicsGame.matrix.swap(this, nextVertical1);
+				PixelPhysicsGame.matrix.swap(this, nextVertical1);
 			} else if (nextVertical2 != null && nextVertical2.getDensity() < this.getDensity()
 					&& this.isFreeFalling()) {
-				pixelPhysicsGame.matrix.swap(this, nextVertical2);
+				PixelPhysicsGame.matrix.swap(this, nextVertical2);
 			} else {
 				this.resetVelocity();
 			}
@@ -67,13 +67,13 @@ public class Gas extends Movable {
 
 			if (this.movesSideways()) {
 
-				sideways1 = pixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() - randDirection);
-				sideways2 = pixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() + randDirection);
+				sideways1 = PixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() - randDirection, false, true);
+				sideways2 = PixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() + randDirection, false, true);
 
 				if (sideways1 != null && sideways1.getDensity() < this.getDensity()) {
-					pixelPhysicsGame.matrix.swap(this, sideways1);
+					PixelPhysicsGame.matrix.swap(this, sideways1);
 				} else if (sideways2 != null && sideways2.getDensity() < this.getDensity()) {
-					pixelPhysicsGame.matrix.swap(this, sideways2);
+					PixelPhysicsGame.matrix.swap(this, sideways2);
 				}
 			}
 

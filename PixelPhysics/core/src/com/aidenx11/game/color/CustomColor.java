@@ -43,7 +43,7 @@ public class CustomColor extends ColorManager {
 		 * 
 		 * @param hexCode hexCode of the color
 		 */
-		private ColorValues(int r, int g, int b) {
+		ColorValues(int r, int g, int b) {
 			this.r = r;
 			this.g = g;
 			this.b = b;

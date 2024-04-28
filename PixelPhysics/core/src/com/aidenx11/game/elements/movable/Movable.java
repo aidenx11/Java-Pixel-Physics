@@ -1,6 +1,6 @@
 package com.aidenx11.game.elements.movable;
 
-import com.aidenx11.game.pixelPhysicsGame;
+import com.aidenx11.game.PixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.elements.Element;
 import com.aidenx11.game.elements.movable.liquid.Water;
@@ -120,11 +120,11 @@ public abstract class Movable extends Element {
 
 		this.setVerticalVelocity(newVelocity);
 
-		if (this.getRow() > 0) {
-			if (pixelPhysicsGame.matrix.getElement(this.getRow() - 1, this.getColumn()) instanceof Water
-					&& this.getVerticalVelocity() > 0.7f) {
-				this.setVerticalVelocity(this.getVerticalVelocity() - 0.1f);
-			}
+		if (this.getRow() > 0
+				&& PixelPhysicsGame.matrix.getElement(this.getRow() - 1, this.getColumn(), false, false) instanceof Water
+				&& this.getVerticalVelocity() > 0.7f) {
+			this.setVerticalVelocity(this.getVerticalVelocity() - 0.1f);
+
 		}
 
 	}
@@ -156,10 +156,7 @@ public abstract class Movable extends Element {
 	}
 
 	public boolean isFreeFalling() {
-		if (!(this instanceof MovableSolid)) {
-			return true;
-		}
-		return isFreeFalling;
+		return isFreeFalling || !(this instanceof MovableSolid);
 	}
 
 	public void setFreeFalling(boolean isFreeFalling) {

@@ -1,7 +1,7 @@
 package com.aidenx11.game.ui;
 
 import com.aidenx11.game.CellularMatrix;
-import com.aidenx11.game.pixelPhysicsGame;
+import com.aidenx11.game.PixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor.ColorValues;
 import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.input.MouseInput;
@@ -10,7 +10,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -57,7 +56,7 @@ public class UIStage extends Stage {
 	MouseInput mouse;
 
 	/** Keeps track of whether the simulation is in light or dark mode */
-	boolean lightsOn = pixelPhysicsGame.lightsOn;
+	boolean lightsOn = PixelPhysicsGame.lightsOn;
 
 	boolean elementTableMoved = false;
 
@@ -249,7 +248,7 @@ public class UIStage extends Stage {
 		brushSizeSlider = new Slider(1f, 75f, 1f, true, skinButton);
 		brushSizeSlider.setWidth(10f);
 		brushSizeSlider.setHeight(Gdx.graphics.getHeight() > 400f + 15f ? 400f : Gdx.graphics.getHeight() - 30f);
-		brushSizeSlider.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 15,
+		brushSizeSlider.setPosition(Gdx.graphics.getWidth() - PixelPhysicsGame.uiOffset + 15,
 				Gdx.graphics.getHeight() - brushSizeSlider.getHeight() - 15);
 		brushSizeSlider.addListener(new ClickListener() {
 			@Override
@@ -264,13 +263,13 @@ public class UIStage extends Stage {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				if (canvasColorButton.getColor().equals(Color.NAVY)) {
-					pixelPhysicsGame.lightsOn = true;
+					PixelPhysicsGame.lightsOn = true;
 					lightsOn = true;
 					canvasColorButton.setColor(Color.TEAL);
 					canvasColorButton.setText("Lights off");
 					resetButtonColors();
 				} else {
-					pixelPhysicsGame.lightsOn = false;
+					PixelPhysicsGame.lightsOn = false;
 					lightsOn = false;
 					canvasColorButton.setColor(Color.NAVY);
 					canvasColorButton.setText("Lights on");
@@ -279,15 +278,15 @@ public class UIStage extends Stage {
 			}
 		});
 
-		pauseButton = new TextButton(pixelPhysicsGame.isPaused ? "Resume" : "Pause", skinButton, "default");
+		pauseButton = new TextButton(PixelPhysicsGame.isPaused ? "Resume" : "Pause", skinButton, "default");
 		pauseButton.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
-				if (pixelPhysicsGame.isPaused) {
+				if (PixelPhysicsGame.isPaused) {
 					pauseButton.setText("Pause");
-					pixelPhysicsGame.isPaused = false;
+					PixelPhysicsGame.isPaused = false;
 				} else {
 					pauseButton.setText("Resume");
-					pixelPhysicsGame.isPaused = true;
+					PixelPhysicsGame.isPaused = true;
 				}
 				resetButtonColors();
 			}
@@ -357,8 +356,8 @@ public class UIStage extends Stage {
 
 		resetButtonColors();
 
-		brushTypeTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset + 65, 85f);
-		elementTable.setPosition(Gdx.graphics.getWidth() - pixelPhysicsGame.uiOffset / 2 + 15,
+		brushTypeTable.setPosition(Gdx.graphics.getWidth() - PixelPhysicsGame.uiOffset + 65, 85f);
+		elementTable.setPosition(Gdx.graphics.getWidth() - PixelPhysicsGame.uiOffset / 2 + 15,
 				Gdx.graphics.getHeight() - 215f);
 		this.addActor(brushTypeTable);
 		this.addActor(elementTable);
@@ -450,7 +449,7 @@ public class UIStage extends Stage {
 			} else {
 				rectBrushButton.setColor(Color.WHITE);
 			}
-			if (pixelPhysicsGame.isPaused) {
+			if (PixelPhysicsGame.isPaused) {
 				pauseButton.setColor(Color.RED);
 			} else {
 				pauseButton.setColor(Color.WHITE);
@@ -533,7 +532,7 @@ public class UIStage extends Stage {
 			} else {
 				rectBrushButton.setColor(Color.GRAY);
 			}
-			if (pixelPhysicsGame.isPaused) {
+			if (PixelPhysicsGame.isPaused) {
 				pauseButton.setColor(Color.RED);
 			} else {
 				pauseButton.setColor(Color.GRAY);

@@ -1,13 +1,13 @@
 package com.aidenx11.game.elements.movable.movable_solid;
 
-import com.aidenx11.game.pixelPhysicsGame;
+import com.aidenx11.game.PixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.color.CustomColor.ColorValues;
 
 public class Rust extends MovableSolid {
 
 	public static ElementTypes type = ElementTypes.RUST;
-	private static float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION - 0.05f;
+	private static float acceleration = PixelPhysicsGame.GRAVITY_ACCELERATION - 0.05f;
 	private static float maxSpeed = 2f;
 	private static int density = 8;
 	private static float inertialResistance = 0.8f;

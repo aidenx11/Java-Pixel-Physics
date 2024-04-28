@@ -27,7 +27,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  * 
  * @author Aiden Schroeder
  */
-public class pixelPhysicsGame extends ApplicationAdapter {
+public class PixelPhysicsGame extends ApplicationAdapter {
 	
 	public FPSLogger logger = new FPSLogger();
 
@@ -44,7 +44,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 	public static final float GRAVITY_ACCELERATION = 0.1f;
 
 	/** Pixel size modifier of the game */
-	public static int pixelSizeModifier = 5;
+	public static int pixelSizeModifier = 2;
 
 	/** Matrix for use in the game */
 	public static CellularMatrix matrix;
@@ -121,8 +121,8 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 
 		// Determines number of rows and columns for the matrix based on pixel size
 		// modifier
-		rows = (int) Math.ceil(SCREEN_HEIGHT / pixelSizeModifier);
-		columns = (int) Math.ceil((SCREEN_WIDTH - uiOffset) / pixelSizeModifier);
+		rows = (int) Math.ceil(SCREEN_HEIGHT / (float) pixelSizeModifier);
+		columns = (int) Math.ceil((SCREEN_WIDTH - uiOffset) / (float) pixelSizeModifier);
 
 		// Make sure rows and columns are at least zero to avoid negative sized arrays
 		if (rows < 0) {
@@ -233,7 +233,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 		// fill the old matrix
 		for (int row = 0; row < CellularMatrix.rows; row++) {
 			for (int col = 0; col < CellularMatrix.columns; col++) {
-				oldMatrix.setElement(matrix.getElement(row, col));
+				oldMatrix.setElement(matrix.getElement(row, col, false, false));
 			}
 		}
 
@@ -245,7 +245,7 @@ public class pixelPhysicsGame extends ApplicationAdapter {
 			for (int col = 0; col < CellularMatrix.columns; col++) {
 				Element elementToSet;
 				if (row >= 0 && row < oldRows && col >= 0 && col < oldCols) {
-					elementToSet = oldMatrix.getElement(row, col);
+					elementToSet = oldMatrix.getElement(row, col, false, false);
 				} else {
 					elementToSet = new Empty(row, col);
 				}

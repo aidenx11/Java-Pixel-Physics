@@ -1,7 +1,7 @@
 package com.aidenx11.game.input;
 
 import com.aidenx11.game.CellularMatrix;
-import com.aidenx11.game.pixelPhysicsGame;
+import com.aidenx11.game.PixelPhysicsGame;
 import com.aidenx11.game.elements.Element.ElementTypes;
 import com.aidenx11.game.elements.immovable.Fire;
 import com.aidenx11.game.elements.immovable.Leaf;
@@ -39,7 +39,7 @@ public class MouseInput implements InputProcessor {
 	private CellularMatrix matrix;
 
 	/** Pixel size modifier of this simulation */
-	private static int pixelSizeModifier = pixelPhysicsGame.pixelSizeModifier;
+	private static int pixelSizeModifier = PixelPhysicsGame.pixelSizeModifier;
 
 	/** Position of the mouse in 3D space. Z is always zero */
 	public Vector3 mousePos = new Vector3();
@@ -86,7 +86,7 @@ public class MouseInput implements InputProcessor {
 	 */
 	public void setElementType(ElementTypes type) {
 		this.elementType = type;
-		pixelPhysicsGame.mouseElementType = type;
+		PixelPhysicsGame.mouseElementType = type;
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class MouseInput implements InputProcessor {
 	 */
 	public void setBrushSize(int brushSize) {
 		this.brushSize = brushSize;
-		pixelPhysicsGame.mouseBrushSize = brushSize;
+		PixelPhysicsGame.mouseBrushSize = brushSize;
 	}
 
 	/**
@@ -152,7 +152,7 @@ public class MouseInput implements InputProcessor {
 	 */
 	public void setBrushType(BrushTypes brushType) {
 		this.brushType = brushType;
-		pixelPhysicsGame.mouseBrushType = brushType;
+		PixelPhysicsGame.mouseBrushType = brushType;
 	}
 
 	/**
@@ -192,11 +192,11 @@ public class MouseInput implements InputProcessor {
 		sr.begin();
 		sr.setColor(Color.WHITE);
 		if (getBrushType() == BrushTypes.CIRCLE) {
-			sr.circle(Gdx.input.getX(), pixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY(),
-					(getCursorSize() * pixelSizeModifier) / 2);
+			sr.circle(Gdx.input.getX(), PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY(),
+					getCursorSize() * pixelSizeModifier / 2);
 		} else if (getBrushType() == BrushTypes.SQUARE) {
 			sr.rect(Gdx.input.getX() - getBrushSize() * pixelSizeModifier / 2,
-					pixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY() - getBrushSize() * pixelSizeModifier / 2
+					PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY() - getBrushSize() * pixelSizeModifier / 2
 							- pixelSizeModifier,
 					getCursorSize() * pixelSizeModifier, getCursorSize() * pixelSizeModifier);
 		} else if (getBrushType() == BrushTypes.RECTANGLE && Gdx.input.isTouched()) {
@@ -217,9 +217,9 @@ public class MouseInput implements InputProcessor {
 			if (Gdx.input.justTouched()) {
 				if (this.getBrushType() == BrushTypes.RECTANGLE) {
 					this.rectOriginX = Gdx.input.getX();
-					this.rectOriginY = pixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY();
+					this.rectOriginY = PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY();
 				}
-				lastMousePos.set(pixelPhysicsGame.mousePosLastFrame);
+				lastMousePos.set(PixelPhysicsGame.mousePosLastFrame);
 			} else {
 				lastMousePos.set(mousePos.x, mousePos.y, 0);
 			}
@@ -258,12 +258,13 @@ public class MouseInput implements InputProcessor {
 					break;
 				}
 
+				
 				if (getBrushType() == BrushTypes.CIRCLE) {
 					drawCircle(points[i][0], points[i][1], getBrushSize() / 2, elementType, probability);
 				} else if (getBrushType() == BrushTypes.SQUARE) {
 					drawRectangle(points[i][0], points[i][1], getBrushSize(), getBrushSize(), probability);
 				} else if (getBrushType() == BrushTypes.RECTANGLE) {
-
+					return;
 				}
 
 			}
@@ -290,10 +291,42 @@ public class MouseInput implements InputProcessor {
 		}
 
 		// Define bounding box
-		int top = (int) (Math.ceil(row + radius) < 0 ? 0 : Math.ceil(row + radius));
-		int bottom = (int) (Math.floor(row - radius) < 0 ? 0 : Math.floor(row - radius));
-		int left = (int) (Math.floor(column - radius) < 0 ? 0 : Math.floor(column - radius));
-		int right = (int) (Math.ceil(column + radius) < 0 ? 0 : Math.ceil(column + radius));
+		int top = row + radius;
+		int bottom = row - radius;
+		int left = column - radius;
+		int right = column + radius;
+		
+		if (top < 0) {
+			top = 0;
+		}
+		
+		if (top >= CellularMatrix.rows) {
+			top = CellularMatrix.rows - 1;
+		}
+		
+		if (bottom < 0) {
+			bottom = 0;
+		}
+		
+		if (bottom >= CellularMatrix.rows) {
+			bottom = CellularMatrix.rows - 1;
+		}
+		
+		if (left < 0) {
+			left = 0;
+		}
+		
+		if (left >= CellularMatrix.columns) {
+			left = CellularMatrix.columns - 1;
+		}
+		
+		if (right < 0) {
+			right = 0;
+		}
+		
+		if (right >= CellularMatrix.columns) {
+			right = CellularMatrix.columns - 1;
+		}
 
 		for (int rowCount = bottom; rowCount <= top; rowCount++) {
 			for (int colCount = left; colCount <= right; colCount++) {
@@ -303,7 +336,7 @@ public class MouseInput implements InputProcessor {
 					}
 					switch (type) {
 					case SAND:
-						if (!(matrix.getElement(rowCount, colCount) instanceof Sand)) {
+						if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Sand)) {
 							matrix.setElement(new Sand(rowCount, colCount));
 						}
 						break;
@@ -311,57 +344,57 @@ public class MouseInput implements InputProcessor {
 						matrix.setElement(new Empty(rowCount, colCount));
 						break;
 					case WOOD:
-						if (!(matrix.getElement(rowCount, colCount) instanceof Wood)) {
+						if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Wood)) {
 							matrix.setElement(new Wood(rowCount, colCount));
 						}
 						break;
 					case SMOKE:
-						if (!(matrix.getElement(rowCount, colCount) instanceof Smoke)) {
+						if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Smoke)) {
 							matrix.setElement(new Smoke(rowCount, colCount));
 						}
 						break;
 					case FIRE:
-						if (!(matrix.getElement(rowCount, colCount) instanceof Fire)) {
+						if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Fire)) {
 							matrix.setElement(new Fire(rowCount, colCount));
 						}
 						break;
 					case WATER:
-						if (!(matrix.getElement(rowCount, colCount) instanceof Water)) {
+						if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Water)) {
 							matrix.setElement(new Water(rowCount, colCount));
 						}
 						break;
 					case LEAF:
-						if (!(matrix.getElement(rowCount, colCount) instanceof Leaf)) {
+						if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Leaf)) {
 							matrix.setElement(new Leaf(rowCount, colCount));
 						}
 						break;
 					case DIRT:
-						if (!(matrix.getElement(rowCount, colCount) instanceof Dirt)) {
+						if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Dirt)) {
 							matrix.setElement(new Dirt(rowCount, colCount));
 						}
 						break;
 					case STONE:
-						if (!(matrix.getElement(rowCount, colCount) instanceof Stone)) {
+						if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Stone)) {
 							matrix.setElement(new Stone(rowCount, colCount));
 						}
 						break;
 					case LAVA:
-						if (!(matrix.getElement(rowCount, colCount) instanceof Lava)) {
+						if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Lava)) {
 							matrix.setElement(new Lava(rowCount, colCount));
 						}
 						break;
 					case OBSIDIAN:
-						if (!(matrix.getElement(rowCount, colCount) instanceof Obsidian)) {
+						if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Obsidian)) {
 							matrix.setElement(new Obsidian(rowCount, colCount));
 						}
 						break;
 					case STEEL:
-						if (!(matrix.getElement(rowCount, colCount) instanceof Steel)) {
+						if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Steel)) {
 							matrix.setElement(new Steel(rowCount, colCount));
 						}
 						break;
 					case VOID:
-						if (!(matrix.getElement(rowCount, colCount) instanceof Void)) {
+						if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Void)) {
 							matrix.setElement(new Void(rowCount, colCount));
 						}
 						break;
@@ -390,7 +423,7 @@ public class MouseInput implements InputProcessor {
 	 * @param y  y location of the start of the box
 	 */
 	private void detectAndDrawRectangleBoundingBox(ShapeRenderer sr, float x, float y) {
-		sr.rect(x, y, Gdx.input.getX() - x, pixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY() - y);
+		sr.rect(x, y, Gdx.input.getX() - x, PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY() - y);
 	}
 
 	/**
@@ -423,65 +456,81 @@ public class MouseInput implements InputProcessor {
 				if (Math.random() > p) {
 					continue;
 				}
+				
+				if (rowCount - rowDifference < 0) {
+					continue;
+				}
+				
+				if (rowCount >= CellularMatrix.rows) {
+					break;
+				}
+				
+				if (colCount < 0) {
+					continue;
+				}
+				
+				if (colCount >= CellularMatrix.columns) {
+					break;
+				}
 
 				switch (this.elementType) {
 				case SAND:
-					if (!(matrix.getElement(rowCount, colCount) instanceof Sand)) {
+					if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Sand)) {
 						matrix.setElement(new Sand(rowCount, colCount));
 					}
 					break;
 				case EMPTY:
-					if (!(matrix.getElement(rowCount, colCount) instanceof Empty)) {
+					if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Empty)) {
 						matrix.setElement(new Empty(rowCount, colCount));
 					}
 					break;
 				case WOOD:
-					if (!(matrix.getElement(rowCount, colCount) instanceof Wood)) {
+					if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Wood)) {
 						matrix.setElement(new Wood(rowCount, colCount));
 					}
 					break;
 				case FIRE:
-					if (!(matrix.getElement(rowCount, colCount) instanceof Fire)) {
+					if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Fire)) {
 						matrix.setElement(new Fire(rowCount, colCount));
 					}
 					break;
 				case LEAF:
-					if (!(matrix.getElement(rowCount, colCount) instanceof Leaf)) {
+					if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Leaf)) {
 						matrix.setElement(new Leaf(rowCount, colCount));
 					}
 					break;
 				case WATER:
-					if (!(matrix.getElement(rowCount, colCount) instanceof Water)) {
+					if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Water)) {
 						matrix.setElement(new Water(rowCount, colCount));
 					}
 					break;
 				case DIRT:
-					if (!(matrix.getElement(rowCount, colCount) instanceof Dirt)) {
+					if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Dirt)) {
 						matrix.setElement(new Dirt(rowCount, colCount));
 					}
 					break;
 				case STONE:
-					if (!(matrix.getElement(rowCount, colCount) instanceof Stone)) {
+					if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Stone)) {
 						matrix.setElement(new Stone(rowCount, colCount));
 					}
 					break;
 				case LAVA:
-					if (!(matrix.getElement(rowCount, colCount) instanceof Lava)) {
+					if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Lava)) {
 						matrix.setElement(new Lava(rowCount, colCount));
 					}
 					break;
 				case OBSIDIAN:
-					if (!(matrix.getElement(rowCount, colCount) instanceof Obsidian)) {
+					if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Obsidian)) {
 						matrix.setElement(new Obsidian(rowCount, colCount));
 					}
 					break;
 				case STEEL:
-					if (!(matrix.getElement(rowCount, colCount) instanceof Steel)) {
+					if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Steel)) {
 						matrix.setElement(new Steel(rowCount, colCount));
 					}
 					break;
 				case VOID:
-					if (!(matrix.getElement(rowCount, colCount) instanceof Void)) {
+					if (!(matrix.getElement(rowCount, colCount, false, false) instanceof Void)) {
 						matrix.setElement(new Void(rowCount, colCount));
 					}
 					break;
@@ -506,8 +555,8 @@ public class MouseInput implements InputProcessor {
 		if (brushType == BrushTypes.RECTANGLE) {
 			int row = 0;
 			int col = 0;
-			int height = (int) Math.ceil(Math.abs((mousePos.x - rectOriginX) / pixelPhysicsGame.pixelSizeModifier));
-			int width = (int) Math.ceil(Math.abs((mousePos.y - rectOriginY) / pixelPhysicsGame.pixelSizeModifier));
+			int height = (int) Math.ceil(Math.abs((mousePos.x - rectOriginX) / PixelPhysicsGame.pixelSizeModifier));
+			int width = (int) Math.ceil(Math.abs((mousePos.y - rectOriginY) / PixelPhysicsGame.pixelSizeModifier));
 
 			if (width < 2) {
 				width = 2;
@@ -521,15 +570,15 @@ public class MouseInput implements InputProcessor {
 			boolean drawnRight = mousePos.x - rectOriginX > 0;
 
 			if (drawnUp) {
-				row = (int) Math.round(rectOriginY / pixelPhysicsGame.pixelSizeModifier) + width / 2;
+				row = (int) Math.round(rectOriginY / PixelPhysicsGame.pixelSizeModifier) + width / 2;
 			} else {
-				row = (int) Math.round(rectOriginY / pixelPhysicsGame.pixelSizeModifier) - width / 2;
+				row = (int) Math.round(rectOriginY / PixelPhysicsGame.pixelSizeModifier) - width / 2;
 			}
 
 			if (drawnRight) {
-				col = (int) (rectOriginX / pixelPhysicsGame.pixelSizeModifier) + height / 2;
+				col = (int) (rectOriginX / PixelPhysicsGame.pixelSizeModifier) + height / 2;
 			} else {
-				col = (int) (rectOriginX / pixelPhysicsGame.pixelSizeModifier) - height / 2;
+				col = (int) (rectOriginX / PixelPhysicsGame.pixelSizeModifier) - height / 2;
 			}
 
 			if (drawnUp && drawnRight) {

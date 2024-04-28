@@ -1,11 +1,6 @@
 package com.aidenx11.game.elements;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import com.aidenx11.game.CellularMatrix;
-import com.aidenx11.game.pixelPhysicsGame;
+import com.aidenx11.game.PixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
 import com.aidenx11.game.elements.immovable.Fire;
 import com.aidenx11.game.elements.immovable.Steel;
@@ -129,15 +124,15 @@ public abstract class Element {
 	public void updateElementLife() {
 		if (this.limitedLife() && this.getLifetime() < 1) {
 			if (this instanceof Smoke || this instanceof Steam) {
-				pixelPhysicsGame.matrix.clearElement(this);
+				PixelPhysicsGame.matrix.clearElement(this);
 			} else if (this instanceof Fire || this.isOnFire()) {
 				if (Math.random() < 0.3) {
-					pixelPhysicsGame.matrix.setElement(new Smoke(this.getRow(), this.getColumn()));
+					PixelPhysicsGame.matrix.setElement(new Smoke(this.getRow(), this.getColumn()));
 				} else {
-					pixelPhysicsGame.matrix.clearElement(this);
+					PixelPhysicsGame.matrix.clearElement(this);
 				}
 			} else if (this instanceof Steel) {
-				pixelPhysicsGame.matrix.setNewElement(this, ElementTypes.RUST);
+				PixelPhysicsGame.matrix.setNewElement(this, ElementTypes.RUST);
 			}
 		}
 
@@ -152,18 +147,13 @@ public abstract class Element {
 	 * When called by an element, causes elements that can rust to turn into rust
 	 * around the element.
 	 */
-	public void causeRust() {
-		Element[] adjacentElements = pixelPhysicsGame.matrix.getAdjacentElements(this);
-		List<Element> shuffledElements = Arrays.asList(adjacentElements);
-		Collections.shuffle(shuffledElements);
-		Element nextElement;
-		for (int i = 0; i < shuffledElements.size(); i++) {
-			nextElement = shuffledElements.get(i);
-			if (nextElement instanceof Steel && !nextElement.limitedLife()
-					&& Math.random() < ((Steel) nextElement).getChanceToRust()) {
-				nextElement.setLimitedLife(true);
-			}
+	public void causeRust(Element nextElement) {
+		
+		if (nextElement instanceof Steel && !nextElement.limitedLife()
+				&& Math.random() < ((Steel) nextElement).getChanceToRust()) {
+			nextElement.setLimitedLife(true);
 		}
+
 	}
 
 	/**
@@ -178,15 +168,15 @@ public abstract class Element {
 		for (int i = 0; i < elements.length; i++) {
 			if (elements[i] != null && elements[i].extinguishesThings() && this.isOnFire()) {
 				if (elements[i] instanceof Water && Math.random() < 0.4) {
-					pixelPhysicsGame.matrix.setNewElement(elements[i], ElementTypes.STEAM);
+					PixelPhysicsGame.matrix.setNewElement(elements[i], ElementTypes.STEAM);
 					extinguished = true;
 				} else if (elements[i] instanceof WetSand) {
-					pixelPhysicsGame.matrix.setNewElement(this, ElementTypes.STEAM);
-					pixelPhysicsGame.matrix.setNewElement(elements[i], ElementTypes.SAND);
+					PixelPhysicsGame.matrix.setNewElement(this, ElementTypes.STEAM);
+					PixelPhysicsGame.matrix.setNewElement(elements[i], ElementTypes.SAND);
 					extinguished = true;
 				} else if (elements[i] instanceof WetDirt) {
-					pixelPhysicsGame.matrix.setNewElement(this, ElementTypes.STEAM);
-					pixelPhysicsGame.matrix.setNewElement(elements[i], ElementTypes.DIRT);
+					PixelPhysicsGame.matrix.setNewElement(this, ElementTypes.STEAM);
+					PixelPhysicsGame.matrix.setNewElement(elements[i], ElementTypes.DIRT);
 					extinguished = true;
 				}
 			}
@@ -216,7 +206,7 @@ public abstract class Element {
 	 */
 	public void updateBurningLogic() {
 
-		Element[] adjacentElements = pixelPhysicsGame.matrix.getAdjacentElements(this);
+		Element[] adjacentElements = PixelPhysicsGame.matrix.getAdjacentElements(this);
 		boolean extinguished = updateDryingLogic(adjacentElements);
 		int numberOfFire = updateNumberOfAdjacentFire(adjacentElements);
 
@@ -225,10 +215,9 @@ public abstract class Element {
 			this.setOnFire(true);
 		}
 
-		if (extinguished) {
-			if (this.isOnFire()) {
-				pixelPhysicsGame.matrix.setNewElement(this, ElementTypes.SMOKE);
-			}
+		if (extinguished && this.isOnFire()) {
+				PixelPhysicsGame.matrix.setNewElement(this, ElementTypes.SMOKE);
+			
 		}
 
 	}
@@ -238,7 +227,7 @@ public abstract class Element {
 	 * array
 	 */
 	public void flicker() {
-		int idx = (int) (Math.round(Math.random() * 3));
+		int idx = (int) Math.round(Math.random() * 3);
 		this.setColor(fireColors[idx]);
 	}
 

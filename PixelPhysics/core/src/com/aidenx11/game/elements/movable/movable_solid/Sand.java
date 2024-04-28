@@ -1,13 +1,13 @@
 package com.aidenx11.game.elements.movable.movable_solid;
 
-import com.aidenx11.game.pixelPhysicsGame;
+import com.aidenx11.game.PixelPhysicsGame;
 import com.aidenx11.game.color.CustomColor;
-import com.aidenx11.game.color.CustomColor.*;
+import com.aidenx11.game.color.CustomColor.ColorValues;
 
 public class Sand extends MovableSolid {
 
 	public static ElementTypes type = ElementTypes.SAND;
-	private static float acceleration = pixelPhysicsGame.GRAVITY_ACCELERATION;
+	private static float acceleration = PixelPhysicsGame.GRAVITY_ACCELERATION;
 	private static float maxSpeed = 8f;
 	private static int density = 7;
 	private static float inertialResistance = 0.01f;
