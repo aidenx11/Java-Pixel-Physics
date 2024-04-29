@@ -22,6 +22,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -45,7 +46,7 @@ public class MouseInput implements InputProcessor {
 	public Vector3 mousePos = new Vector3();
 
 	/** Position of the mouse last frame */
-	public Vector3 lastMousePos = new Vector3(1, 1, 0);
+	public Vector3 lastMousePos = new Vector3();
 
 	/** Size of brush (radius of circle) */
 	private int brushSize;
@@ -190,6 +191,7 @@ public class MouseInput implements InputProcessor {
 	 */
 	public void drawCursor(ShapeRenderer sr) {
 		sr.begin();
+		sr.set(ShapeType.Line);
 		sr.setColor(Color.WHITE);
 		if (getBrushType() == BrushTypes.CIRCLE) {
 			sr.circle(Gdx.input.getX(), PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY(),
@@ -203,6 +205,7 @@ public class MouseInput implements InputProcessor {
 			sr.setColor(Color.RED);
 			this.detectAndDrawRectangleBoundingBox(sr, rectOriginX, rectOriginY);
 		}
+		sr.set(ShapeType.Filled);
 		sr.end();
 	}
 
@@ -226,6 +229,13 @@ public class MouseInput implements InputProcessor {
 
 			mousePos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			getCamera().unproject(mousePos);
+
+			if (mousePos.x / PixelPhysicsGame.pixelSizeModifier < 0
+					|| mousePos.x / PixelPhysicsGame.pixelSizeModifier >= PixelPhysicsGame.columns
+					|| mousePos.y / PixelPhysicsGame.pixelSizeModifier < 0
+					|| mousePos.y / PixelPhysicsGame.pixelSizeModifier >= PixelPhysicsGame.rows) {
+				return;
+			}
 
 			int[][] points = CellularMatrix.traverseMatrix(mousePos.x, mousePos.y, lastMousePos.x, lastMousePos.y);
 			if (points.length == 1) {
@@ -251,14 +261,13 @@ public class MouseInput implements InputProcessor {
 					break;
 				case WATER:
 				case FIRE:
-					probability = 0.03f * (76 - this.brushSize);
+					probability = 0.06f * (76 - this.brushSize);
 					break;
 				default:
 					probability = 1;
 					break;
 				}
 
-				
 				if (getBrushType() == BrushTypes.CIRCLE) {
 					drawCircle(points[i][0], points[i][1], getBrushSize() / 2, elementType, probability);
 				} else if (getBrushType() == BrushTypes.SQUARE) {
@@ -295,35 +304,35 @@ public class MouseInput implements InputProcessor {
 		int bottom = row - radius;
 		int left = column - radius;
 		int right = column + radius;
-		
+
 		if (top < 0) {
 			top = 0;
 		}
-		
+
 		if (top >= CellularMatrix.rows) {
 			top = CellularMatrix.rows - 1;
 		}
-		
+
 		if (bottom < 0) {
 			bottom = 0;
 		}
-		
+
 		if (bottom >= CellularMatrix.rows) {
 			bottom = CellularMatrix.rows - 1;
 		}
-		
+
 		if (left < 0) {
 			left = 0;
 		}
-		
+
 		if (left >= CellularMatrix.columns) {
 			left = CellularMatrix.columns - 1;
 		}
-		
+
 		if (right < 0) {
 			right = 0;
 		}
-		
+
 		if (right >= CellularMatrix.columns) {
 			right = CellularMatrix.columns - 1;
 		}
@@ -456,21 +465,21 @@ public class MouseInput implements InputProcessor {
 				if (Math.random() > p) {
 					continue;
 				}
-				
-				if (rowCount - rowDifference < 0) {
+
+				if (rowCount < 0) {
 					continue;
 				}
-				
+
 				if (rowCount >= CellularMatrix.rows) {
-					break;
+					continue;
 				}
-				
+
 				if (colCount < 0) {
 					continue;
 				}
-				
+
 				if (colCount >= CellularMatrix.columns) {
-					break;
+					continue;
 				}
 
 				switch (this.elementType) {

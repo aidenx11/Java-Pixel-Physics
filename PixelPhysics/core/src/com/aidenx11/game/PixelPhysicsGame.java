@@ -10,7 +10,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -29,7 +28,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  */
 public class PixelPhysicsGame extends ApplicationAdapter {
 	
-	public FPSLogger logger = new FPSLogger();
+//	public FPSLogger logger = new FPSLogger();
 
 	/** Width of the screen */
 	public static int SCREEN_WIDTH = 1440;
@@ -44,7 +43,7 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 	public static final float GRAVITY_ACCELERATION = 0.1f;
 
 	/** Pixel size modifier of the game */
-	public static int pixelSizeModifier = 2;
+	public static int pixelSizeModifier = 3;
 
 	/** Matrix for use in the game */
 	public static CellularMatrix matrix;
@@ -178,9 +177,9 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 		} else {
 			shapeRenderer.setColor(Color.DARK_GRAY);
 		}
-		shapeRenderer.rect(SCREEN_WIDTH - uiOffset, 0, uiOffset + 3, SCREEN_HEIGHT);
+		shapeRenderer.rect(SCREEN_WIDTH - uiOffset + pixelSizeModifier - 1, 0, uiOffset + 3, SCREEN_HEIGHT);
 		shapeRenderer.setColor(Color.BROWN);
-		shapeRenderer.rect(SCREEN_WIDTH - uiOffset - 2, 0, 2f, SCREEN_HEIGHT);
+		shapeRenderer.rect(SCREEN_WIDTH - uiOffset + pixelSizeModifier - 1, 0, 2f, SCREEN_HEIGHT);
 		shapeRenderer.end();
 
 		// Draw the UI to the screen
@@ -206,7 +205,7 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 		
 		buttonStage.act();
 		
-		logger.log();
+//		logger.log();
 
 	}
 

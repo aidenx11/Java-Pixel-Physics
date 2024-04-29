@@ -32,14 +32,15 @@ import com.aidenx11.game.elements.movable.movable_solid.Sand;
 public class Water extends Liquid {
 
 	public static ElementTypes type = ElementTypes.WATER;
-	private static float acceleration = PixelPhysicsGame.GRAVITY_ACCELERATION;
+	private static float acceleration = PixelPhysicsGame.GRAVITY_ACCELERATION + 0.2f;
 	private static float maxSpeed = 12f;
 	private static int density = 6;
-	private static int dispersionRate = 5;
+	private static int dispersionRate = 9;
 
 	public Water(int row, int column) {
-		super(type, row, column, new CustomColor(ColorValues.WATER, false), false, 1, true, true, 0, false, 2f,
+		super(type, row, column, new CustomColor(ColorValues.WATER, false), false, 1, true, true, 0, false, 0,
 				acceleration, maxSpeed, density, true, dispersionRate, -1);
+		super.setFallingThroughAir(true);
 	}
 
 	@Override

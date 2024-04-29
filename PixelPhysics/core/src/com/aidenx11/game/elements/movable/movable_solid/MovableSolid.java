@@ -46,7 +46,6 @@ public abstract class MovableSolid extends Movable {
 			}
 
 			if (delta > 0) {
-				int minRow = this.getRow() - 15 < 0 ? 0 : this.getRow() - 15;
 				for (int i = this.getRow() - delta; i >= 0; i--) {
 					Element elementToCheck = PixelPhysicsGame.matrix.getElement(i, this.getColumn(), false, false);
 					
