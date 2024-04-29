@@ -1,6 +1,6 @@
 # Java Pixel Physics
 
-## [Try the web version (UNSTABLE)](https://aidenx11.github.io/Java-Pixel-Physics/)
+## [Try the web version](https://aidenx11.github.io/Java-Pixel-Physics/)
 
 ## [Download Latest Release](https://github.com/aidenx11/Java-Pixel-Physics/releases/tag/v0.1.0-beta.1) 
 
