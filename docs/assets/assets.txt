@@ -7,7 +7,9 @@ t:skin/skin.atlas:skin/skin-254346b6914e60082e39ddf1e6ebe258.atlas:3208:applicat
 i:skin/uiskin.png:skin/uiskin-34b28ea01f92a90fa485f007870f9eff.png:28299:image/png:1
 t:skin/uiskin.json:skin/uiskin-2d597e823966ee8606d28d466f3aef54.json:2432:application/json:1
 i:Qg4GIigACTmMvyMY3NLcJGto.ttf_0.png:Qg4GIigACTmMvyMY3NLcJGto.ttf_0-139731a6d7bd21eb5f4e84c9cd97b2af.png:6216:image/png:1
+i:libgdx.png:libgdx-3708f33d27b8977682d1bc8504e6a821.png:2458:image/png:1
 t:font.fnt:font-b71e44f64fa5df4ac992404b129e818b.fnt:11051:application/unknown:1
+t:assets.txt:assets-d04d60c0ca69cc6bcaad698ff0cb56bb.txt:176:text/plain:1
 i:badlogic.jpg:badlogic-ba3e909e98a4c58c6a15f043f2e1a8a7.jpg:68465:image/jpeg:1
 t:default.fnt:default-301cd793092dcaaafd793b66d5d46060.fnt:11628:application/unknown:1
 t:com/badlogic/gdx/graphics/g3d/particles/particles.fragment.glsl:particles.fragment-b90524761fdf09b0a836056d590c30b8.glsl:820:application/unknown:1
