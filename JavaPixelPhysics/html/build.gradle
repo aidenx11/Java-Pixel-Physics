@@ -84,7 +84,7 @@ clean.delete += [file("war")]
 // This next line can be changed if you want to, for instance, always build into the
 // docs/ folder of a Git repo, which can be set to automatically publish on GitHub Pages.
 // This is relative to the html/ folder.
-var outputPath = "build/dist/"
+var outputPath = "../../docs"
 
 task dist(dependsOn: [clean, compileGwt]) {
   doLast {
@@ -93,7 +93,7 @@ task dist(dependsOn: [clean, compileGwt]) {
     // default unless the outputPath is inside build/ (then the clean task removes them).
     // Do not uncomment the next line if you changed outputPath to a folder that has
     // non-generated files that you want to keep!
-    //delete(file(outputPath))
+    delete(file(outputPath))
 
     file(outputPath).mkdirs()
     copy {
