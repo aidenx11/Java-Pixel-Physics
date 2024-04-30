@@ -36,8 +36,13 @@ public class Liquid extends Movable {
 
 		for (int v = 0; v < this.getVerticalUpdateCount(); v++) {
 
-			
 			int randDirection = Math.random() > 0.5 ? 1 : -1;
+
+			if (this.isFallingThroughAir()) {
+				this.setFallingThroughAir(false);
+			}
+			
+			int dispersionRate = (int) Math.round(this.getDispersionRate() * Math.random() + 0.5);
 
 			Element nextVertical1 = null;
 			Element nextVertical2 = null;
@@ -47,25 +52,28 @@ public class Liquid extends Movable {
 
 			nextVertical = PixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn(), true, false);
 
-			for (int i = -dispersionRate; i <= dispersionRate; i++) {
-				Element currentElement = PixelPhysicsGame.matrix.getElement(this.getRow() - delta,
-						this.getColumn() - randDirection * i, true, true);
-				if (currentElement == null || currentElement instanceof Immovable) {
-					break;
-				}
+			if (!(nextVertical instanceof Immovable)) {
+				for (int i = 0; i <= dispersionRate; i++) {
+					Element currentElement = PixelPhysicsGame.matrix.getElement(this.getRow() - delta,
+							this.getColumn() - randDirection * i, true, true);
+					if (currentElement instanceof Immovable) {
+						break;
+					}
 
-				if (i < 0) {
 					nextVertical1 = currentElement;
 
-				} else {
+				}
+
+				for (int i = 0; i <= dispersionRate; i++) {
+					Element currentElement = PixelPhysicsGame.matrix.getElement(this.getRow() - delta,
+							this.getColumn() + randDirection * i, true, true);
+					if (currentElement instanceof Immovable) {
+						break;
+					}
+
 					nextVertical2 = currentElement;
 
 				}
-
-			}
-
-			if (this.isFallingThroughAir()) {
-				this.setFallingThroughAir(false);
 			}
 
 			for (int i = this.getRow() - delta; i >= 0; i--) {
@@ -105,20 +113,27 @@ public class Liquid extends Movable {
 				Element sideways2 = PixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() + randDirection,
 						false, true);
 
-				for (int i = -dispersionRate; i <= dispersionRate; i++) {
+				for (int i = 0; i <= dispersionRate; i++) {
 					Element currentElement = PixelPhysicsGame.matrix.getElement(this.getRow(),
 							this.getColumn() - randDirection * i, false, true);
-					if (currentElement == null || currentElement instanceof Immovable) {
+
+					if (currentElement instanceof Immovable) {
 						break;
 					}
 
-					if (i < 0) {
-						sideways1 = currentElement;
+					sideways1 = currentElement;
 
-					} else {
-						sideways2 = currentElement;
+				}
 
+				for (int i = 0; i <= dispersionRate; i++) {
+					Element currentElement = PixelPhysicsGame.matrix.getElement(this.getRow(),
+							this.getColumn() + randDirection * i, false, true);
+
+					if (currentElement instanceof Immovable) {
+						break;
 					}
+
+					sideways2 = currentElement;
 
 				}
 
