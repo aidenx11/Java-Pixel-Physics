@@ -1,5 +1,7 @@
 package com.aidenx11.JavaPixelPhysics.input;
 
+import java.util.Arrays;
+
 import com.aidenx11.JavaPixelPhysics.CellularMatrix;
 import com.aidenx11.JavaPixelPhysics.PixelPhysicsGame;
 import com.aidenx11.JavaPixelPhysics.elements.Element.ElementTypes;
@@ -54,15 +56,19 @@ public class MouseInput implements InputProcessor {
 	/** Size of cursor */
 	private int cursorSize;
 
-	private float rectOriginX = 150;
+	private float rectOriginCol = 0;
 
-	private float rectOriginY = 150;
+	private float rectOriginRow = 0;
 
 	/** Element type being drawn by the mouse */
 	private ElementTypes elementType;
 
 	/** Type of brush, from the enumeration BrushTypes */
 	private BrushTypes brushType;
+
+	private float rectOriginY;
+
+	private float rectOriginX;
 
 	/** Public enumeration to handle the different types of brush type */
 	public enum BrushTypes {
@@ -192,20 +198,28 @@ public class MouseInput implements InputProcessor {
 	public void drawCursor(ShapeRenderer sr) {
 		sr.begin();
 		sr.set(ShapeType.Line);
-		sr.setColor(Color.WHITE);
+		sr.setColor(Color.RED);
 		if (getBrushType() == BrushTypes.CIRCLE) {
+
 			sr.circle(Gdx.input.getX(), PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY(),
 					getCursorSize() * pixelSizeModifier / 2);
+
 		} else if (getBrushType() == BrushTypes.SQUARE) {
-			sr.rect(Gdx.input.getX() - getBrushSize() * pixelSizeModifier / 2,
-					PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY() - getBrushSize() * pixelSizeModifier / 2
-							- pixelSizeModifier,
-					getCursorSize() * pixelSizeModifier, getCursorSize() * pixelSizeModifier);
+
+			float xOrigin = pixelSizeModifier * Math.round(Gdx.input.getX() / pixelSizeModifier)
+					- getBrushSize() * pixelSizeModifier / 2;
+			float yOrigin = pixelSizeModifier
+					* Math.round((PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY()) / pixelSizeModifier)
+					- getBrushSize() * pixelSizeModifier / 2;
+
+			sr.rect(pixelSizeModifier * Math.round(xOrigin / pixelSizeModifier),
+					pixelSizeModifier * Math.round(yOrigin / pixelSizeModifier), getCursorSize() * pixelSizeModifier,
+					getCursorSize() * pixelSizeModifier);
+
 		} else if (getBrushType() == BrushTypes.RECTANGLE && Gdx.input.isTouched()) {
-			sr.setColor(Color.RED);
-			this.detectAndDrawRectangleBoundingBox(sr, rectOriginX, rectOriginY);
+			this.detectAndDrawRectangleBoundingBox(sr, rectOriginCol * pixelSizeModifier,
+					rectOriginRow * pixelSizeModifier);
 		}
-		sr.set(ShapeType.Filled);
 		sr.end();
 	}
 
@@ -219,10 +233,19 @@ public class MouseInput implements InputProcessor {
 
 			if (Gdx.input.justTouched()) {
 				if (this.getBrushType() == BrushTypes.RECTANGLE) {
-					this.rectOriginX = Gdx.input.getX();
-					this.rectOriginY = PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY();
+
+					float xOrigin = (float) (pixelSizeModifier * Math.floor(Gdx.input.getX() / pixelSizeModifier));
+					float yOrigin = (float) (pixelSizeModifier
+							* Math.floor((PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY()) / pixelSizeModifier));
+
+					this.rectOriginX = xOrigin;
+					this.rectOriginY = yOrigin;
+
+					this.rectOriginCol = Math.round(xOrigin / pixelSizeModifier);
+					this.rectOriginRow = Math.round(yOrigin / pixelSizeModifier);
 				}
 				lastMousePos.set(PixelPhysicsGame.mousePosLastFrame);
+
 			} else {
 				lastMousePos.set(mousePos.x, mousePos.y, 0);
 			}
@@ -271,7 +294,7 @@ public class MouseInput implements InputProcessor {
 				if (getBrushType() == BrushTypes.CIRCLE) {
 					drawCircle(points[i][0], points[i][1], getBrushSize() / 2, elementType, probability);
 				} else if (getBrushType() == BrushTypes.SQUARE) {
-					drawRectangle(points[i][0], points[i][1], getBrushSize(), getBrushSize(), probability);
+					drawRectangle(points[i][0], points[i][1], getBrushSize() - 1, getBrushSize() - 1, probability);
 				} else if (getBrushType() == BrushTypes.RECTANGLE) {
 					return;
 				}
@@ -424,43 +447,54 @@ public class MouseInput implements InputProcessor {
 	}
 
 	/**
-	 * Detects user input for the rectangle BrushType and draws a bounding box
-	 * starting at where the user clicked, and following the cursor.
-	 * 
-	 * @param sr shapeRenderer to draw the box with
-	 * @param x  x location of the start of the box
-	 * @param y  y location of the start of the box
-	 */
-	private void detectAndDrawRectangleBoundingBox(ShapeRenderer sr, float x, float y) {
-		sr.rect(x, y, Gdx.input.getX() - x, PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY() - y);
-	}
-
-	/**
 	 * Draws a square of the brush's element type and size to the matrix.
 	 * 
-	 * @param row    row of the center of the square
-	 * @param column column of the center of the square
-	 * @param width  width of the square
+	 * @param row    row of the bottom left of the square
+	 * @param column column of the bottom left of the square
+	 * @param height width of the square
 	 * @param p      probability of each pixel in the square being drawn
 	 * @param type   element type to be drawn
 	 */
-	public void drawRectangle(int row, int column, int width, int length, double p) {
+	public void drawRectangle(int row, int column, int height, int width, double p) {
 
 		int rowDifference;
 		int colDifference;
-		int mod;
-		if (width == 1) {
-			rowDifference = 0;
+
+		if (width <= 1) {
 			colDifference = 0;
-			mod = 0;
 		} else {
-			rowDifference = width / 2;
-			colDifference = length / 2;
-			mod = 1;
+			colDifference = (int) Math.floor(width / 2f);
 		}
 
-		for (int rowCount = row - rowDifference; rowCount <= row + rowDifference - mod; rowCount++) {
-			for (int colCount = column - colDifference; colCount <= column + colDifference; colCount++) {
+		if (height <= 1) {
+			rowDifference = 0;
+		} else {
+			rowDifference = (int) Math.floor(height / 2f);
+		}
+
+		int extraColOffset = 0;
+		int extraRowOffset = 0;
+
+		if (brushType == BrushTypes.SQUARE) {
+			if (height % 2 != 0) {
+				extraRowOffset = 1;
+			}
+
+			if (width % 2 != 0) {
+				extraColOffset = 1;
+			}
+		} else if (brushType == BrushTypes.RECTANGLE) {
+			if (height % 2 == 0) {
+				extraRowOffset = -1;
+			}
+
+			if (width % 2 == 0) {
+				extraColOffset = -1;
+			}
+		}
+
+		for (int colCount = column - colDifference - extraColOffset; colCount <= column + colDifference; colCount++) {
+			for (int rowCount = row - rowDifference - extraRowOffset; rowCount <= row + rowDifference; rowCount++) {
 
 				if (Math.random() > p) {
 					continue;
@@ -555,6 +589,25 @@ public class MouseInput implements InputProcessor {
 	}
 
 	/**
+	 * Detects user input for the rectangle BrushType and draws a bounding box
+	 * starting at where the user clicked, and following the cursor.
+	 * 
+	 * @param sr shapeRenderer to draw the box with
+	 * @param x  x location of the start of the box
+	 * @param y  y location of the start of the box
+	 */
+	private void detectAndDrawRectangleBoundingBox(ShapeRenderer sr, float x, float y) {
+
+		float width = Gdx.input.getX() - x;
+		float height = PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY() - y;
+
+		width = (float) (pixelSizeModifier * Math.round(width / pixelSizeModifier));
+		height = (float) (pixelSizeModifier * Math.round(height / pixelSizeModifier));
+
+		sr.rect(x, y, width, height);
+	}
+
+	/**
 	 * Detects when the the input on the screen is released. If the brush type is
 	 * rectangle, this is where the brush actually draws to the screen using the
 	 * bounding box generated by the user's input.
@@ -562,42 +615,75 @@ public class MouseInput implements InputProcessor {
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		if (brushType == BrushTypes.RECTANGLE) {
-			int row = 0;
-			int col = 0;
-			int height = (int) Math.ceil(Math.abs((mousePos.x - rectOriginX) / PixelPhysicsGame.pixelSizeModifier));
-			int width = (int) Math.ceil(Math.abs((mousePos.y - rectOriginY) / PixelPhysicsGame.pixelSizeModifier));
 
-			if (width < 2) {
-				width = 2;
-			}
+			int[][] traversedMatrix = CellularMatrix.traverseMatrix(rectOriginX, rectOriginY, screenX,
+					PixelPhysicsGame.SCREEN_HEIGHT - screenY);
 
-			if (height < 1) {
-				height = 1;
-			}
+			int startRow = Math.min(traversedMatrix[0][0], traversedMatrix[traversedMatrix.length - 1][0]);
+			int startCol = Math.min(traversedMatrix[0][1], traversedMatrix[traversedMatrix.length - 1][1]);
 
-			boolean drawnUp = mousePos.y - rectOriginY > 0;
-			boolean drawnRight = mousePos.x - rectOriginX > 0;
+			boolean drawnRight = rectOriginX < screenX;
+			boolean drawnUp = rectOriginY < PixelPhysicsGame.SCREEN_HEIGHT - screenY;
 
-			if (drawnUp) {
-				row = (int) Math.round(rectOriginY / PixelPhysicsGame.pixelSizeModifier) + width / 2;
-			} else {
-				row = (int) Math.round(rectOriginY / PixelPhysicsGame.pixelSizeModifier) - width / 2;
-			}
+			int width = 0;
+			int height = 0;
 
 			if (drawnRight) {
-				col = (int) (rectOriginX / PixelPhysicsGame.pixelSizeModifier) + height / 2;
+				width = (int) Math.round((screenX - rectOriginX) / (float) pixelSizeModifier);
 			} else {
-				col = (int) (rectOriginX / PixelPhysicsGame.pixelSizeModifier) - height / 2;
+				width = (int) Math.round((rectOriginX - screenX) / (float) pixelSizeModifier);
 			}
 
-			if (drawnUp && drawnRight) {
-				width += 1;
-				row++;
-			} else if (!drawnUp) {
-				width += 2;
+			if (drawnUp) {
+				height = (int) Math
+						.round(((PixelPhysicsGame.SCREEN_HEIGHT - screenY) - rectOriginY) / (float) pixelSizeModifier);
+			} else {
+				height = (int) Math
+						.round((rectOriginY - (PixelPhysicsGame.SCREEN_HEIGHT - screenY)) / (float) pixelSizeModifier);
 			}
 
-			this.drawRectangle(row, col, width, height, 1);
+			for (int i = 4; i < width; i += 2) {
+				startCol++;
+			}
+
+			if (height == 2) {
+				startRow--;
+			}
+
+			if (height > 4) {
+				startRow++;
+			}
+			if (height > 6) {
+				startRow++;
+			}
+			if (height > 8) {
+				for (int i = 8; i < height; i += 2) {
+					startRow++;
+				}
+			}
+
+			if (width > 2) {
+				if (!drawnRight) {
+					startCol++;
+				}
+
+				if (drawnRight && height > width) {
+					startCol++;
+				}
+			}
+
+			if (height > 1) {
+				if (!drawnUp) {
+					startRow++;
+				}
+
+				if (drawnUp && width > height) {
+					startRow++;
+				}
+			}
+
+			drawRectangle(startRow, startCol, height, width, 1);
+
 		}
 		return false;
 	}
@@ -622,7 +708,8 @@ public class MouseInput implements InputProcessor {
 
 	@Override
 	public boolean scrolled(float amountX, float amountY) {
-		UIStage.brushSizeSlider.setValue(UIStage.brushSizeSlider.getValue() - amountY);
+		UIStage.brushSizeSlider
+				.setValue(UIStage.brushSizeSlider.getValue() - amountY * UIStage.brushSizeSlider.getStepSize());
 		this.setBrushSize((int) UIStage.brushSizeSlider.getValue());
 		this.setCursorSize((int) UIStage.brushSizeSlider.getValue());
 		return false;

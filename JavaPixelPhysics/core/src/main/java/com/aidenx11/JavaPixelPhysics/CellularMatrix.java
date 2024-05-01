@@ -338,10 +338,10 @@ public class CellularMatrix {
 	 *         between the given points
 	 */
 	public static int[][] traverseMatrix(float x1, float y1, float x2, float y2) {
-		int col1 = (int) Math.floor(x1 / pixelSizeModifier);
-		int row1 = (int) Math.floor(y1 / pixelSizeModifier);
-		int col2 = (int) Math.floor(x2 / pixelSizeModifier);
-		int row2 = (int) Math.floor(y2 / pixelSizeModifier);
+		int col1 = (int) Math.round(x1 / pixelSizeModifier);
+		int row1 = (int) Math.round(y1 / pixelSizeModifier);
+		int col2 = (int) Math.round(x2 / pixelSizeModifier);
+		int row2 = (int) Math.round(y2 / pixelSizeModifier);
 
 		int xDifference = col2 - col1;
 		int yDifference = row2 - row1;

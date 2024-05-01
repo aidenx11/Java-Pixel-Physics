@@ -73,10 +73,10 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 	private MouseInput mouse;
 
 	/** Brush type of the mouse */
-	public static BrushTypes mouseBrushType = BrushTypes.CIRCLE;
+	public static BrushTypes mouseBrushType = BrushTypes.RECTANGLE;
 
 	/** Element type of the mouse */
-	public static ElementTypes mouseElementType = ElementTypes.SAND;
+	public static ElementTypes mouseElementType = ElementTypes.STEEL;
 
 	/** Size of the mouse brush */
 	public static int mouseBrushSize = 1;
