@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.aidenx11.JavaPixelPhysics.PixelPhysicsGame;
+import com.aidenx11.JavaPixelPhysics.color.ColorManager;
 import com.aidenx11.JavaPixelPhysics.color.CustomColor;
 import com.aidenx11.JavaPixelPhysics.elements.Element;
 import com.aidenx11.JavaPixelPhysics.elements.Empty;
@@ -191,7 +192,7 @@ public class Lava extends Liquid {
 		}
 		if (newIdx != colorIdx) {
 			colorIdx = newIdx;
-			super.setColor(lavaColorsRGB[newIdx]);
+			super.setColor(ColorManager.varyColor(lavaColorsRGB[newIdx]));
 		}
 	}
 

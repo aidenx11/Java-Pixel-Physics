@@ -123,11 +123,6 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 		// Initializes viewport to screen width and height
 		viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT, camera);
 
-//		// Initializes the shape renderer to project onto the camera
-//		shapeRenderer = new ShapeRenderer();
-//		shapeRenderer.setProjectionMatrix(camera.combined);
-//		shapeRenderer.setAutoShapeType(true);
-
 		Pixmap pixmap = new Pixmap(1, 1, Format.RGBA8888);
 		pixmap.setColor(Color.WHITE);
 		pixmap.drawPixel(0, 0);
@@ -192,14 +187,7 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 			ScreenUtils.clear(skyColorDark[0], skyColorDark[1], skyColorDark[2], 1, false);
 		}
 
-		// Draw the UI background on the right side of the screen
-//		shapeRenderer.begin(ShapeType.Filled);
 		batch.begin();
-
-//		shapeRenderer.rect(SCREEN_WIDTH - uiOffset + pixelSizeModifier, 0, uiOffset + 3, SCREEN_HEIGHT);
-//		shapeRenderer.setColor(Color.BROWN);
-//		shapeRenderer.rect(SCREEN_WIDTH - uiOffset + pixelSizeModifier, 0, 2f, SCREEN_HEIGHT);
-//		shapeRenderer.end();
 
 		// Update the mouse position last frame for use in MouseInput
 		mousePosLastFrame.set(Gdx.input.getX(), SCREEN_HEIGHT - Gdx.input.getY(), 0);
@@ -220,10 +208,8 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 		
 		
 		if (lightsOn) {
-//			shapeRenderer.setColor(Color.GRAY);
 			shapeDrawer.setColor(Color.GRAY);
 		} else {
-//			shapeRenderer.setColor(Color.DARK_GRAY);
 			shapeDrawer.setColor(Color.DARK_GRAY);
 		}
 
@@ -232,8 +218,7 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 		shapeDrawer.filledRectangle(SCREEN_WIDTH - uiOffset + pixelSizeModifier, 0, 2f, SCREEN_HEIGHT);
 
 		buttonStage.act();
-//		logger.log();
-
+		
 		batch.end();
 
 		// Draw the UI to the screen
@@ -296,7 +281,6 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 	 */
 	@Override
 	public void dispose() {
-//		shapeRenderer.dispose();
 		batch.dispose();
 		texture.dispose();
 		buttonStage.dispose();

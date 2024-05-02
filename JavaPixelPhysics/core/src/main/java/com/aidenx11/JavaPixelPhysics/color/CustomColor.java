@@ -7,7 +7,7 @@ package com.aidenx11.JavaPixelPhysics.color;
  * @author Aiden Schroeder
  */
 public class CustomColor extends ColorManager {
-	
+
 	/** Red value of this color */
 	private int r;
 	/** Green value of this color */
@@ -16,7 +16,7 @@ public class CustomColor extends ColorManager {
 	private int b;
 	/** Alpha value of this color */
 	private int a;
-	
+
 	public boolean varyColor;
 
 	/**
@@ -55,13 +55,6 @@ public class CustomColor extends ColorManager {
 		public int[] getRGB() {
 			return new int[] { r, g, b };
 		}
-
-	}
-
-	/**
-	 * Enumeration for sets of colors. May be used later.
-	 */
-	public enum ColorSets {
 
 	}
 
@@ -182,7 +175,5 @@ public class CustomColor extends ColorManager {
 		g = rgb[1];
 		b = rgb[2];
 	}
-
-	
 
 }
