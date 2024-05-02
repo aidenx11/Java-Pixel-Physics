@@ -1,7 +1,7 @@
 # Java Pixel Physics
 
 ## [Try the web version](https://aidenx11.github.io/Java-Pixel-Physics/)
-*The web verion has a lower resolution than the desktop version to help with performance.*
+*The web version is currently unstable, and may experience low framerates.*
 
 ## [Download Latest Release](https://github.com/aidenx11/Java-Pixel-Physics/releases/tag/v0.1.0-beta.1) 
 
