@@ -1,7 +1,5 @@
 package com.aidenx11.JavaPixelPhysics.color;
 
-import com.badlogic.gdx.graphics.Color;
-
 /**
  * Class to handle custom colors for the simulation. Primarily created to use
  * the colorValue enumeration. May be better to just use the color class.
@@ -9,9 +7,7 @@ import com.badlogic.gdx.graphics.Color;
  * @author Aiden Schroeder
  */
 public class CustomColor extends ColorManager {
-
-	/** Keeps track of the color in a LibGDX color object */
-	private Color color = new Color();
+	
 	/** Red value of this color */
 	private int r;
 	/** Green value of this color */
@@ -20,6 +16,8 @@ public class CustomColor extends ColorManager {
 	private int b;
 	/** Alpha value of this color */
 	private int a;
+	
+	public boolean varyColor;
 
 	/**
 	 * Enumeration to handle custom color values for elements and rainbow colors
@@ -75,8 +73,9 @@ public class CustomColor extends ColorManager {
 	 */
 	public CustomColor(ColorValues colorValue, boolean varyColor) {
 		int[] rgb;
+		this.varyColor = varyColor;
 		if (varyColor) {
-			rgb = varyColor(new CustomColor(colorValue.getRGB()));
+			rgb = varyColor(colorValue.getRGB());
 		} else {
 			rgb = colorValue.getRGB();
 		}
@@ -182,38 +181,8 @@ public class CustomColor extends ColorManager {
 		r = rgb[0];
 		g = rgb[1];
 		b = rgb[2];
-		if (rgb.length == 4) {
-			setColor(r, g, b, rgb[3]);
-		} else {
-			setColor(r, g, b);
-		}
 	}
 
-	/**
-	 * Sets the color given r, g, and b as integers
-	 * 
-	 * @param r red value
-	 * @param g green value
-	 * @param b blue value
-	 */
-	public void setColor(int r, int g, int b) {
-		color.set((float) (r / 255.0), (float) (g / 255.0), (float) (b / 255.0), 1);
-	}
-
-	/**
-	 * Sets the color given r, g, b, and a as integers
-	 * 
-	 * @param r red value
-	 * @param g green value
-	 * @param b blue value
-	 * @param a alpha value
-	 */
-	public void setColor(int r, int g, int b, int a) {
-		color.set((float) (r / 255.0), (float) (g / 255.0), (float) (b / 255.0), (float) (a / 100));
-	}
-
-	public Color getColor() {
-		return color;
-	}
+	
 
 }

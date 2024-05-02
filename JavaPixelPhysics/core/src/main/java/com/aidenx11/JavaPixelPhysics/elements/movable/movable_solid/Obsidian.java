@@ -18,9 +18,11 @@ public class Obsidian extends MovableSolid {
 	private static int density = 8;
 	private static float inertialResistance = 0.995f;
 	private static float friction = 0.7f;
+	
+	public static CustomColor color = new CustomColor(ColorValues.OBSIDIAN, true);
 
 	public Obsidian(int row, int column) {
-		super(type, row, column, new CustomColor(ColorValues.OBSIDIAN, true), false, -1, false, true, 0, false, 0,
+		super(type, row, column, color, false, -1, false, true, 0, false, 0,
 				acceleration, maxSpeed, density, false, inertialResistance, friction, -1);
 		super.setFreeFalling(true);
 	}

@@ -55,21 +55,25 @@ public class Lava extends Liquid {
 	private static float chanceToMeltObsidian = 0.01f;
 
 	private float currentMaxSpeed;
+	
+	public static int[][] lavaColorsRGB = new int[][] { { 236, 168, 61 }, { 236, 156, 61 }, { 236, 145, 61 },
+		{ 236, 127, 61 }, { 236, 117, 61 }, { 236, 102, 61 }, { 236, 86, 61 }, { 226, 59, 45 }, { 209, 46, 34 },
+		{ 176, 35, 23 }, { 151, 28, 18 }, { 117, 18, 38 } };
+	
+	public static CustomColor color = new CustomColor(lavaColorsRGB[0]);
 
 	public static float[] speeds = new float[] { maxSpeed, maxSpeed - maxSpeed / 11, maxSpeed - maxSpeed / 10,
 			maxSpeed - maxSpeed / 9, maxSpeed - maxSpeed / 8, maxSpeed - maxSpeed / 7, maxSpeed - maxSpeed / 6,
 			maxSpeed - maxSpeed / 5, maxSpeed - maxSpeed / 5, maxSpeed - maxSpeed / 5, maxSpeed - maxSpeed / 5,
 			maxSpeed - maxSpeed / 5 };
 
-	public static int[][] lavaColorsRGB = new int[][] { { 236, 168, 61 }, { 236, 156, 61 }, { 236, 145, 61 },
-			{ 236, 127, 61 }, { 236, 117, 61 }, { 236, 102, 61 }, { 236, 86, 61 }, { 226, 59, 45 }, { 209, 46, 34 },
-			{ 176, 35, 23 }, { 151, 28, 18 }, { 117, 18, 38 } };
+	
 
 	private int colorIdx;
 	private float idxDifference;
 
 	public Lava(int row, int column) {
-		super(type, row, column, new CustomColor(lavaColorsRGB[0]), false, 1, false, false, 0, true, 0.9f, acceleration,
+		super(type, row, column, color, false, 1, false, false, 0, true, 0.9f, acceleration,
 				maxSpeed, density, false, dispersionRate, meltingPoint);
 		super.setOnFire(true);
 		colorIdx = -1;
@@ -187,8 +191,7 @@ public class Lava extends Liquid {
 		}
 		if (newIdx != colorIdx) {
 			colorIdx = newIdx;
-			CustomColor color = new CustomColor(lavaColorsRGB[newIdx]);
-			this.setColor(color.varyColor());
+			super.setColor(lavaColorsRGB[newIdx]);
 		}
 	}
 

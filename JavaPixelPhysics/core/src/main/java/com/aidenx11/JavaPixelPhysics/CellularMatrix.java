@@ -19,9 +19,6 @@ import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.Rust;
 import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.Sand;
 import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.WetDirt;
 import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.WetSand;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 /**
@@ -106,6 +103,7 @@ public class CellularMatrix {
 	public void clear() {
 		this.matrix = null;
 		this.matrix = generateMatrix();
+		System.gc();
 	}
 
 	/**
@@ -310,16 +308,6 @@ public class CellularMatrix {
 		}
 	}
 
-//	/**
-//	 * Checks if the given row and column location is within bounds for the matrix
-//	 * 
-//	 * @param row row to check
-//	 * @param col column to check
-//	 * @return whether or not the given row and column is within bounds
-//	 */
-//	public static boolean isWithinBounds(int row, int col) {
-//		return row >= 0 && row < rows && col >= 0 && col < columns;
-//	}
 
 	/**
 	 * Traverses the matrix between the two given points. The points are given as x

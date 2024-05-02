@@ -15,9 +15,11 @@ public class Steam extends Gas {
 	private static float acceleration = -0.3f;
 	private static float maxSpeed = 0.75f;
 	private static int density = 1;
+	
+	private static CustomColor color = new CustomColor(ColorValues.STEAM, true);
 
 	public Steam(int row, int column) {
-		super(type, row, column, new CustomColor(ColorValues.STEAM, true), true, (int) (150 + Math.random() * 100),
+		super(type, row, column, color, true, (int) (150 + Math.random() * 100),
 				false, false, 0, false, -0.15f, acceleration, maxSpeed, density, true);
 	}
 

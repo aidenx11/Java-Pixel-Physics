@@ -31,12 +31,14 @@ public class Steel extends Immovable {
 	public static ElementTypes type = ElementTypes.STEEL;
 	private static float chanceToRust = 0.0001f;
 	private static int colorIdx;
+	
+	public static CustomColor color = new CustomColor(ColorValues.STEEL, true);
 
 	private static int[][] steelColors = new int[][] { { 206, 211, 212 }, { 192, 198, 199 }, { 168, 176, 178 },
 			{ 153, 163, 163 } };
 
 	public Steel(int row, int column) {
-		super(type, row, column, new CustomColor(ColorValues.STEEL, true), false, 5, false, false, 0, false, 0);
+		super(type, row, column, color, false, 5, false, false, 0, false, 0);
 		setColor();
 	}
 
@@ -51,7 +53,7 @@ public class Steel extends Immovable {
 	 * texture
 	 */
 	public void setColor() {
-		setColor(new CustomColor(steelColors[colorIdx]));
+		super.setColor(steelColors[colorIdx]);
 		if (colorIdx < 3) {
 			colorIdx++;
 		} else {

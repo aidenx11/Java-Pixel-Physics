@@ -19,11 +19,10 @@ public class Smoke extends Gas {
 	private static float maxSpeed = 0.35f;
 	private static int density = 1;
 
-	static CustomColor[] fireColors = new CustomColor[] { new CustomColor(253, 207, 88), new CustomColor(242, 125, 12),
-			new CustomColor(199, 14, 14), new CustomColor(240, 127, 19) };
+	public static CustomColor color = new CustomColor(ColorValues.SMOKE, true);
 
 	public Smoke(int row, int column) {
-		super(type, row, column, new CustomColor(ColorValues.SMOKE, true), true, (int) (150 + (Math.random() * 50)),
+		super(type, row, column, color, true, (int) (150 + (Math.random() * 50)),
 				false, false, 0, false, 0, acceleration, maxSpeed, density, true);
 		super.setOnFire(Math.random() < 0.1);
 	}

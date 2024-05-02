@@ -538,5 +538,6 @@ public class UIStage extends Stage {
 				pauseButton.setColor(Color.GRAY);
 			}
 		}
+		System.gc();
 	}
 }

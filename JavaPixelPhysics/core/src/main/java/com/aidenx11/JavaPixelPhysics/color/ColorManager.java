@@ -40,6 +40,37 @@ public class ColorManager extends Color {
 
 		return convertToRGBFromHSL(hslValues);
 	}
+	
+	/**
+	 * Varies the saturation and lightness of a color and returns it as a hex string
+	 * 
+	 * @param color color to be varied
+	 * @return the varied color as a hex string
+	 */
+	public static int[] varyColor(int[] rgb) {
+		int[] hslValues = convertToHSLFromRGB(rgb);
+
+		double saturation = hslValues[1] + Math.floor(Math.random() * 20 - 20);
+
+		if (saturation > 100) {
+			saturation = 100;
+		} else if (saturation < 0) {
+			saturation = 0;
+		}
+
+		double lightness = hslValues[2] + Math.floor(Math.random() * 20 - 10);
+
+		if (lightness > 100) {
+			lightness = 100;
+		} else if (lightness < 0) {
+			lightness = 0;
+		}
+
+		hslValues[1] = (int) Math.round(saturation);
+		hslValues[2] = (int) Math.round(lightness);
+
+		return convertToRGBFromHSL(hslValues);
+	}
 
 	/**
 	 * Converts a hexadecimal color to an HSL color in the format

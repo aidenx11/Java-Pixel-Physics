@@ -18,9 +18,11 @@ import com.aidenx11.JavaPixelPhysics.color.CustomColor.ColorValues;
 public class Void extends Element {
 
 	public static ElementTypes type = ElementTypes.VOID;
+	
+	public static CustomColor color = new CustomColor(ColorValues.VOID, true);
 
 	public Void(int row, int column) {
-		super(type, row, column, new CustomColor(ColorValues.VOID, true), false, 0, false, false, 0, false, 0);
+		super(type, row, column, color, false, 0, false, false, 0, false, 0);
 		super.setDensity(9999);
 	}
 

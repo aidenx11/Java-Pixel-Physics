@@ -28,8 +28,7 @@ public abstract class Element {
 	/** Column location of this element */
 	private int column;
 
-	/** Color of this element */
-	private CustomColor color;
+	private int[] color;
 
 	/** Density of this element */
 	private int density;
@@ -60,8 +59,6 @@ public abstract class Element {
 
 	/** Whether or not this element is falling through air */
 	private boolean fallingThroughAir = false;
-	
-	
 
 	/**
 	 * Public enumeration that contains all the types of elements in the simulation
@@ -117,6 +114,10 @@ public abstract class Element {
 		setLimitedLife(canDie);
 		setMovesDown(movesDown);
 		setTemperature(temperature);
+
+		if (color != null && color.varyColor) {
+			this.setColor(color.varyColor());
+		}
 	}
 
 	/**
@@ -150,7 +151,7 @@ public abstract class Element {
 	 * around the element.
 	 */
 	public void causeRust(Element nextElement) {
-		
+
 		if (nextElement instanceof Steel && !nextElement.limitedLife()
 				&& Math.random() < ((Steel) nextElement).getChanceToRust()) {
 			nextElement.setLimitedLife(true);
@@ -218,8 +219,8 @@ public abstract class Element {
 		}
 
 		if (extinguished && this.isOnFire()) {
-				PixelPhysicsGame.matrix.setNewElement(this, ElementTypes.SMOKE);
-			
+			PixelPhysicsGame.matrix.setNewElement(this, ElementTypes.SMOKE);
+
 		}
 
 	}
@@ -271,7 +272,9 @@ public abstract class Element {
 	 * @param color color to set
 	 */
 	public void setColor(CustomColor color) {
-		this.color = color;
+		if (color != null) {
+			this.color = new int[] { color.getR(), color.getG(), color.getB() };
+		}
 	}
 
 	/**
@@ -280,7 +283,7 @@ public abstract class Element {
 	 * @param rgb integer array of rgb values
 	 */
 	public void setColor(int[] rgb) {
-		this.color = new CustomColor(rgb);
+		this.color = rgb;
 	}
 
 	/**
@@ -319,7 +322,7 @@ public abstract class Element {
 	 * @return the color of this element as a LibGDX color object
 	 */
 	public Color getColor() {
-		return new Color(color.getR() / 255f, color.getG() / 255f, color.getB() / 255f, 1f);
+		return new Color(color[0] / 255f, color[1] / 255f, color[2] / 255f, 1f);
 	}
 
 	/**

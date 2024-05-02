@@ -195,20 +195,6 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 		// Draw the UI background on the right side of the screen
 //		shapeRenderer.begin(ShapeType.Filled);
 		batch.begin();
-		
-		mouse.drawCursor(shapeDrawer);
-		
-		if (lightsOn) {
-//			shapeRenderer.setColor(Color.GRAY);
-			shapeDrawer.setColor(Color.GRAY);
-		} else {
-//			shapeRenderer.setColor(Color.DARK_GRAY);
-			shapeDrawer.setColor(Color.DARK_GRAY);
-		}
-		
-		shapeDrawer.filledRectangle(SCREEN_WIDTH - uiOffset + pixelSizeModifier, 0, uiOffset + 3, SCREEN_HEIGHT);
-		shapeDrawer.setColor(Color.BROWN);
-		shapeDrawer.filledRectangle(SCREEN_WIDTH - uiOffset + pixelSizeModifier, 0, 2f, SCREEN_HEIGHT);
 
 //		shapeRenderer.rect(SCREEN_WIDTH - uiOffset + pixelSizeModifier, 0, uiOffset + 3, SCREEN_HEIGHT);
 //		shapeRenderer.setColor(Color.BROWN);
@@ -228,13 +214,28 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 		}
 
 		matrix.draw(shapeDrawer);
+		
+		mouse.drawCursor(shapeDrawer);
+
+		
+		
+		if (lightsOn) {
+//			shapeRenderer.setColor(Color.GRAY);
+			shapeDrawer.setColor(Color.GRAY);
+		} else {
+//			shapeRenderer.setColor(Color.DARK_GRAY);
+			shapeDrawer.setColor(Color.DARK_GRAY);
+		}
+
+		shapeDrawer.filledRectangle(SCREEN_WIDTH - uiOffset + pixelSizeModifier, 0, uiOffset + 3, SCREEN_HEIGHT);
+		shapeDrawer.setColor(Color.BROWN);
+		shapeDrawer.filledRectangle(SCREEN_WIDTH - uiOffset + pixelSizeModifier, 0, 2f, SCREEN_HEIGHT);
 
 		buttonStage.act();
-
 //		logger.log();
 
 		batch.end();
-		
+
 		// Draw the UI to the screen
 		buttonStage.draw();
 
@@ -297,6 +298,7 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 	public void dispose() {
 //		shapeRenderer.dispose();
 		batch.dispose();
+		texture.dispose();
 		buttonStage.dispose();
 		matrix = null;
 	}

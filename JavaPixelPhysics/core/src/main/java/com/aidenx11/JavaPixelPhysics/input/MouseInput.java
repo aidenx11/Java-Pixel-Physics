@@ -1,7 +1,5 @@
 package com.aidenx11.JavaPixelPhysics.input;
 
-import java.util.Arrays;
-
 import com.aidenx11.JavaPixelPhysics.CellularMatrix;
 import com.aidenx11.JavaPixelPhysics.PixelPhysicsGame;
 import com.aidenx11.JavaPixelPhysics.elements.Element.ElementTypes;
@@ -23,8 +21,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector3;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
@@ -198,27 +194,29 @@ public class MouseInput implements InputProcessor {
 	 * @param radius      radius of the circle
 	 */
 	public void drawCursor(ShapeDrawer shapeDrawer) {
-		shapeDrawer.setColor(Color.RED);
-		if (getBrushType() == BrushTypes.CIRCLE) {
+		if (Gdx.input.getX() < PixelPhysicsGame.SCREEN_WIDTH - PixelPhysicsGame.uiOffset) {
+			shapeDrawer.setColor(Color.RED);
+			if (getBrushType() == BrushTypes.CIRCLE) {
 
-			shapeDrawer.circle(Gdx.input.getX(), PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY(),
-					getCursorSize() * pixelSizeModifier / 2);
+				shapeDrawer.circle(Gdx.input.getX(), PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY(),
+						getCursorSize() * pixelSizeModifier / 2);
 
-		} else if (getBrushType() == BrushTypes.SQUARE) {
+			} else if (getBrushType() == BrushTypes.SQUARE) {
 
-			float xOrigin = pixelSizeModifier * Math.round(Gdx.input.getX() / pixelSizeModifier)
-					- getBrushSize() * pixelSizeModifier / 2;
-			float yOrigin = pixelSizeModifier
-					* Math.round((PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY()) / pixelSizeModifier)
-					- getBrushSize() * pixelSizeModifier / 2;
+				float xOrigin = pixelSizeModifier * Math.round(Gdx.input.getX() / pixelSizeModifier)
+						- getBrushSize() * pixelSizeModifier / 2;
+				float yOrigin = pixelSizeModifier
+						* Math.round((PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY()) / pixelSizeModifier)
+						- getBrushSize() * pixelSizeModifier / 2;
 
-			shapeDrawer.rectangle(pixelSizeModifier * Math.round(xOrigin / pixelSizeModifier),
-					pixelSizeModifier * Math.round(yOrigin / pixelSizeModifier), getCursorSize() * pixelSizeModifier,
-					getCursorSize() * pixelSizeModifier);
+				shapeDrawer.rectangle(pixelSizeModifier * Math.round(xOrigin / pixelSizeModifier),
+						pixelSizeModifier * Math.round(yOrigin / pixelSizeModifier),
+						getCursorSize() * pixelSizeModifier, getCursorSize() * pixelSizeModifier);
 
-		} else if (getBrushType() == BrushTypes.RECTANGLE && Gdx.input.isTouched()) {
-			this.detectAndDrawRectangleBoundingBox(shapeDrawer, rectOriginCol * pixelSizeModifier,
-					rectOriginRow * pixelSizeModifier);
+			} else if (getBrushType() == BrushTypes.RECTANGLE && Gdx.input.isTouched()) {
+				this.detectAndDrawRectangleBoundingBox(shapeDrawer, rectOriginCol * pixelSizeModifier,
+						rectOriginRow * pixelSizeModifier);
+			}
 		}
 
 	}

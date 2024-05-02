@@ -36,9 +36,11 @@ public class Water extends Liquid {
 	private static float maxSpeed = 12f;
 	private static int density = 6;
 	private static int dispersionRate = 9;
+	
+	public static CustomColor color = new CustomColor(ColorValues.WATER, false);
 
 	public Water(int row, int column) {
-		super(type, row, column, new CustomColor(ColorValues.WATER, false), false, 1, true, true, 0, false, 0,
+		super(type, row, column, color, false, 1, true, true, 0, false, 0,
 				acceleration, maxSpeed, density, true, dispersionRate, -1);
 		super.setFallingThroughAir(true);
 	}

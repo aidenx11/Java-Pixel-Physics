@@ -12,9 +12,11 @@ public class Sand extends MovableSolid {
 	private static int density = 7;
 	private static float inertialResistance = 0.01f;
 	private static float friction = 0.05f;
+	
+	public static CustomColor color = new CustomColor(ColorValues.SAND_COLOR, true);
 
 	public Sand(int row, int column) {
-		super(type, row, column, new CustomColor(ColorValues.SAND_COLOR, true), false, -1, false, true, 0, false, 0,
+		super(type, row, column, color, false, -1, false, true, 0, false, 0,
 				acceleration, maxSpeed, density, false, inertialResistance, friction, -1);
 		super.setFreeFalling(true);
 	}
