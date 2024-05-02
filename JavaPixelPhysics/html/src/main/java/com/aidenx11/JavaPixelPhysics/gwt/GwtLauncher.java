@@ -13,6 +13,7 @@ public class GwtLauncher extends GwtApplication {
             GwtApplicationConfiguration cfg = new GwtApplicationConfiguration(GwtApplication.isMobileDevice());
             cfg.padVertical = 50;
             cfg.padHorizontal = 100;
+            cfg.useAccelerometer = false;
             return cfg;
             // If you want a fixed size application, comment out the above resizable section,
             // and uncomment below:

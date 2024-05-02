@@ -11,12 +11,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
+import space.earlygrey.shapedrawer.*;
 
 /**
  * Main class of the simulation. Handles all fields related to window size, UI,
@@ -27,7 +34,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  * @author Aiden Schroeder
  */
 public class PixelPhysicsGame extends ApplicationAdapter {
-	
+
 //	public FPSLogger logger = new FPSLogger();
 
 	/** Width of the screen */
@@ -43,7 +50,7 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 	public static final float GRAVITY_ACCELERATION = 0.1f;
 
 	/** Pixel size modifier of the game */
-	public static int pixelSizeModifier = 5;
+	public static int pixelSizeModifier = 12;
 
 	/** Matrix for use in the game */
 	public static CellularMatrix matrix;
@@ -60,8 +67,13 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 	/** Controls whether the simulation is paused or not */
 	public static boolean isPaused = false;
 
-	/** Shape renderer to be used for this game */
-	public static ShapeRenderer shapeRenderer;
+	/** Shape drawer to be used in the simulation */
+	public static ShapeDrawer shapeDrawer;
+
+	public static Texture texture;
+
+	/** Batch for shapeDrawer */
+	public static PolygonSpriteBatch batch;
 
 	/** Camera to be used for this game */
 	private OrthographicCamera camera;
@@ -113,10 +125,22 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 		// Initializes viewport to screen width and height
 		viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT, camera);
 
-		// Initializes the shape renderer to project onto the camera
-		shapeRenderer = new ShapeRenderer();
-		shapeRenderer.setProjectionMatrix(camera.combined);
-		shapeRenderer.setAutoShapeType(true);
+//		// Initializes the shape renderer to project onto the camera
+//		shapeRenderer = new ShapeRenderer();
+//		shapeRenderer.setProjectionMatrix(camera.combined);
+//		shapeRenderer.setAutoShapeType(true);
+
+		Pixmap pixmap = new Pixmap(1, 1, Format.RGBA8888);
+		pixmap.setColor(Color.WHITE);
+		pixmap.drawPixel(0, 0);
+		texture = new Texture(pixmap); // remember to dispose of later
+		pixmap.dispose();
+		TextureRegion region = new TextureRegion(texture, 0, 0, 1, 1);
+
+		batch = new PolygonSpriteBatch();
+		batch.setProjectionMatrix(camera.combined);
+		shapeDrawer = new ShapeDrawer(batch, region);
+		shapeDrawer.update();
 
 		// Determines number of rows and columns for the matrix based on pixel size
 		// modifier
@@ -171,41 +195,50 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 		}
 
 		// Draw the UI background on the right side of the screen
-		shapeRenderer.begin(ShapeType.Filled);
+//		shapeRenderer.begin(ShapeType.Filled);
+		batch.begin();
+		
+		mouse.drawCursor(shapeDrawer);
+		
 		if (lightsOn) {
-			shapeRenderer.setColor(Color.GRAY);
+//			shapeRenderer.setColor(Color.GRAY);
+			shapeDrawer.setColor(Color.GRAY);
 		} else {
-			shapeRenderer.setColor(Color.DARK_GRAY);
+//			shapeRenderer.setColor(Color.DARK_GRAY);
+			shapeDrawer.setColor(Color.DARK_GRAY);
 		}
-		shapeRenderer.rect(SCREEN_WIDTH - uiOffset + pixelSizeModifier, 0, uiOffset + 3, SCREEN_HEIGHT);
-		shapeRenderer.setColor(Color.BROWN);
-		shapeRenderer.rect(SCREEN_WIDTH - uiOffset + pixelSizeModifier, 0, 2f, SCREEN_HEIGHT);
-		shapeRenderer.end();
+		
+		shapeDrawer.filledRectangle(SCREEN_WIDTH - uiOffset + pixelSizeModifier, 0, uiOffset + 3, SCREEN_HEIGHT);
+		shapeDrawer.setColor(Color.BROWN);
+		shapeDrawer.filledRectangle(SCREEN_WIDTH - uiOffset + pixelSizeModifier, 0, 2f, SCREEN_HEIGHT);
 
-		// Draw the UI to the screen
-		buttonStage.draw();
+//		shapeRenderer.rect(SCREEN_WIDTH - uiOffset + pixelSizeModifier, 0, uiOffset + 3, SCREEN_HEIGHT);
+//		shapeRenderer.setColor(Color.BROWN);
+//		shapeRenderer.rect(SCREEN_WIDTH - uiOffset + pixelSizeModifier, 0, 2f, SCREEN_HEIGHT);
+//		shapeRenderer.end();
 
 		// Update the mouse position last frame for use in MouseInput
 		mousePosLastFrame.set(Gdx.input.getX(), SCREEN_HEIGHT - Gdx.input.getY(), 0);
 
 		// Detects mouse input and performs manipulation on matrix depending on brush
 		// type/size/element etc.
-		mouse.detectInput(shapeRenderer);
+		mouse.detectInput(shapeDrawer);
 
 		// Perform matrix update logic for all elements and draw it to the screen
 		if (!isPaused) {
-			matrix.updateFrame(shapeRenderer);
+			matrix.updateFrame(shapeDrawer);
 		}
 
-		matrix.draw(shapeRenderer);
+		matrix.draw(shapeDrawer);
 
-		// Draw the mouse cursor to the screen (left at end of render so it appears on
-		// top)
-		mouse.drawCursor(shapeRenderer);
-		
 		buttonStage.act();
-		
+
 //		logger.log();
+
+		batch.end();
+		
+		// Draw the UI to the screen
+		buttonStage.draw();
 
 	}
 
@@ -264,7 +297,8 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 	 */
 	@Override
 	public void dispose() {
-		shapeRenderer.dispose();
+//		shapeRenderer.dispose();
+		batch.dispose();
 		buttonStage.dispose();
 		matrix = null;
 	}

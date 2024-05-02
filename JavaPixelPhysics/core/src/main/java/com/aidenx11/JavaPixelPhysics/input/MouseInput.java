@@ -27,6 +27,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector3;
 
+import space.earlygrey.shapedrawer.ShapeDrawer;
+
 /**
  * Class to handle detection of mouse input and drawing of elements in the
  * matrix.
@@ -192,16 +194,14 @@ public class MouseInput implements InputProcessor {
 	/**
 	 * Draws the cursor around the mouse on the screen
 	 * 
-	 * @param sr     shapeRenderer of the viewport
-	 * @param radius radius of the circle
+	 * @param shapeDrawer shapeRenderer of the viewport
+	 * @param radius      radius of the circle
 	 */
-	public void drawCursor(ShapeRenderer sr) {
-		sr.begin();
-		sr.set(ShapeType.Line);
-		sr.setColor(Color.RED);
+	public void drawCursor(ShapeDrawer shapeDrawer) {
+		shapeDrawer.setColor(Color.RED);
 		if (getBrushType() == BrushTypes.CIRCLE) {
 
-			sr.circle(Gdx.input.getX(), PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY(),
+			shapeDrawer.circle(Gdx.input.getX(), PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY(),
 					getCursorSize() * pixelSizeModifier / 2);
 
 		} else if (getBrushType() == BrushTypes.SQUARE) {
@@ -212,22 +212,22 @@ public class MouseInput implements InputProcessor {
 					* Math.round((PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY()) / pixelSizeModifier)
 					- getBrushSize() * pixelSizeModifier / 2;
 
-			sr.rect(pixelSizeModifier * Math.round(xOrigin / pixelSizeModifier),
+			shapeDrawer.rectangle(pixelSizeModifier * Math.round(xOrigin / pixelSizeModifier),
 					pixelSizeModifier * Math.round(yOrigin / pixelSizeModifier), getCursorSize() * pixelSizeModifier,
 					getCursorSize() * pixelSizeModifier);
 
 		} else if (getBrushType() == BrushTypes.RECTANGLE && Gdx.input.isTouched()) {
-			this.detectAndDrawRectangleBoundingBox(sr, rectOriginCol * pixelSizeModifier,
+			this.detectAndDrawRectangleBoundingBox(shapeDrawer, rectOriginCol * pixelSizeModifier,
 					rectOriginRow * pixelSizeModifier);
 		}
-		sr.end();
+
 	}
 
 	/**
 	 * Detects the input of the mouse and sets the matrix values corresponding to
 	 * the mouse location and elementType.
 	 */
-	public void detectInput(ShapeRenderer sr) {
+	public void detectInput(ShapeDrawer shapeDrawer) {
 
 		if (Gdx.input.isTouched()) {
 
@@ -592,11 +592,11 @@ public class MouseInput implements InputProcessor {
 	 * Detects user input for the rectangle BrushType and draws a bounding box
 	 * starting at where the user clicked, and following the cursor.
 	 * 
-	 * @param sr shapeRenderer to draw the box with
-	 * @param x  x location of the start of the box
-	 * @param y  y location of the start of the box
+	 * @param shapeDrawer shapeRenderer to draw the box with
+	 * @param x           x location of the start of the box
+	 * @param y           y location of the start of the box
 	 */
-	private void detectAndDrawRectangleBoundingBox(ShapeRenderer sr, float x, float y) {
+	private void detectAndDrawRectangleBoundingBox(ShapeDrawer shapeDrawer, float x, float y) {
 
 		float width = Gdx.input.getX() - x;
 		float height = PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY() - y;
@@ -604,7 +604,7 @@ public class MouseInput implements InputProcessor {
 		width = (float) (pixelSizeModifier * Math.round(width / pixelSizeModifier));
 		height = (float) (pixelSizeModifier * Math.round(height / pixelSizeModifier));
 
-		sr.rect(x, y, width, height);
+		shapeDrawer.rectangle(x, y, width, height);
 	}
 
 	/**

@@ -22,6 +22,8 @@ import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.WetSand;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
+import space.earlygrey.shapedrawer.ShapeDrawer;
+
 /**
  * Manages the matrix that contains all elements to be drawn to the screen.
  * Keeps track of its number of rows and columns, the pixelSizeModifier, and the
@@ -171,24 +173,21 @@ public class CellularMatrix {
 	/**
 	 * Draws the current matrix to the screen
 	 * 
-	 * @param shapeRenderer shape renderer that draws to viewport
+	 * @param shapeDrawer shape renderer that draws to viewport
 	 */
-	public void draw(ShapeRenderer shapeRenderer) {
-
-		shapeRenderer.begin(ShapeType.Filled);
+	public void draw(ShapeDrawer shapeDrawer) {
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < columns; x++) {
 				if (!(matrix[y][x] instanceof Empty)) {
 					Element thisElement = matrix[y][x];
 					if (!(thisElement instanceof Empty)) {
-						shapeRenderer.setColor(thisElement.getColor());
-						shapeRenderer.rect(x * pixelSizeModifier, y * pixelSizeModifier, pixelSizeModifier,
+						shapeDrawer.setColor(thisElement.getColor());
+						shapeDrawer.filledRectangle(x * pixelSizeModifier, y * pixelSizeModifier, pixelSizeModifier,
 								pixelSizeModifier);
 					}
 				}
 			}
 		}
-		shapeRenderer.end();
 	}
 
 	/**
@@ -268,9 +267,9 @@ public class CellularMatrix {
 	 * direction to update based on which way the element moves. The horizontal
 	 * update direction is chosen randomly to create a more realistic simulation.
 	 * 
-	 * @param sr shape renderer that draws to the viewport
+	 * @param shapeDrawer shape renderer that draws to the viewport
 	 */
-	public void updateFrame(ShapeRenderer sr) {
+	public void updateFrame(ShapeDrawer shapeDrawer) {
 
 		direction = direction ? false : true;
 		Element element;
