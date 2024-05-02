@@ -48,7 +48,9 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 	public static final float GRAVITY_ACCELERATION = 0.1f;
 
 	/** Pixel size modifier of the game */
-	public static int pixelSizeModifier = 5;
+	public static int pixelSizeModifier = 12;
+	
+	public static int chunkSize = 10;
 
 	/** Matrix for use in the game */
 	public static CellularMatrix matrix;
@@ -150,7 +152,7 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 		}
 
 		// Initialize the matrix
-		matrix = new CellularMatrix(rows, columns, pixelSizeModifier);
+		matrix = new CellularMatrix(rows, columns, pixelSizeModifier, chunkSize);
 
 		// Initialize mouse input and set brush and cursor size to 1, and brush set to
 		// circle with sand selected
@@ -179,6 +181,8 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 	 */
 	@Override
 	public void render() {
+		
+		
 
 		// Set background color based on light mode
 		if (lightsOn) {
@@ -219,10 +223,14 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 
 		buttonStage.act();
 		
+		CellularMatrix.drawChunks(shapeDrawer);
+		
 		batch.end();
 
 		// Draw the UI to the screen
 		buttonStage.draw();
+		
+		CellularMatrix.stepChunks();
 
 	}
 
@@ -242,7 +250,7 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 
 		// Store the old matrix
 		CellularMatrix oldMatrix = new CellularMatrix(rows >= 0 ? rows : 0, columns >= 0 ? columns : 0,
-				pixelSizeModifier);
+				pixelSizeModifier, chunkSize);
 		int oldRows = rows;
 		int oldCols = columns;
 

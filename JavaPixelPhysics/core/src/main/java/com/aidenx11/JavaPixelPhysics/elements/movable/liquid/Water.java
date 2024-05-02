@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.aidenx11.JavaPixelPhysics.CellularMatrix;
 import com.aidenx11.JavaPixelPhysics.PixelPhysicsGame;
 import com.aidenx11.JavaPixelPhysics.color.CustomColor;
 import com.aidenx11.JavaPixelPhysics.color.CustomColor.ColorValues;
@@ -36,18 +37,20 @@ public class Water extends Liquid {
 	private static float maxSpeed = 12f;
 	private static int density = 6;
 	private static int dispersionRate = 9;
-	
+
 	public static CustomColor color = new CustomColor(ColorValues.WATER, false);
 
 	public Water(int row, int column) {
-		super(type, row, column, color, false, 1, true, true, 0, false, 0,
-				acceleration, maxSpeed, density, true, dispersionRate, -1);
+		super(type, row, column, color, false, 1, true, true, 0, false, 0, acceleration, maxSpeed, density, true,
+				dispersionRate, -1);
 		super.setFallingThroughAir(true);
 	}
 
 	@Override
 	public void update() {
-		this.actOnOther();
+		if (CellularMatrix.getChunk(getRow(), getColumn()).activeThisFrame) {
+			this.actOnOther();
+		}
 		super.update();
 	}
 

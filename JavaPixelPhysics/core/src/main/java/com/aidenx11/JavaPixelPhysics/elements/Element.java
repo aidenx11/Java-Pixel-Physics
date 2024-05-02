@@ -1,5 +1,6 @@
 package com.aidenx11.JavaPixelPhysics.elements;
 
+import com.aidenx11.JavaPixelPhysics.CellularMatrix;
 import com.aidenx11.JavaPixelPhysics.PixelPhysicsGame;
 import com.aidenx11.JavaPixelPhysics.color.CustomColor;
 import com.aidenx11.JavaPixelPhysics.elements.immovable.Fire;
@@ -118,6 +119,7 @@ public abstract class Element {
 		if (color != null && color.varyColor) {
 			this.setColor(color.varyColor());
 		}
+
 	}
 
 	/**

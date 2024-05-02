@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.aidenx11.JavaPixelPhysics.CellularMatrix;
 import com.aidenx11.JavaPixelPhysics.PixelPhysicsGame;
 import com.aidenx11.JavaPixelPhysics.color.ColorManager;
 import com.aidenx11.JavaPixelPhysics.color.CustomColor;
@@ -56,11 +57,11 @@ public class Lava extends Liquid {
 	private static float chanceToMeltObsidian = 0.01f;
 
 	private float currentMaxSpeed;
-	
+
 	public static int[][] lavaColorsRGB = new int[][] { { 236, 168, 61 }, { 236, 156, 61 }, { 236, 145, 61 },
-		{ 236, 127, 61 }, { 236, 117, 61 }, { 236, 102, 61 }, { 236, 86, 61 }, { 226, 59, 45 }, { 209, 46, 34 },
-		{ 176, 35, 23 }, { 151, 28, 18 }, { 117, 18, 38 } };
-	
+			{ 236, 127, 61 }, { 236, 117, 61 }, { 236, 102, 61 }, { 236, 86, 61 }, { 226, 59, 45 }, { 209, 46, 34 },
+			{ 176, 35, 23 }, { 151, 28, 18 }, { 117, 18, 38 } };
+
 	public static CustomColor color = new CustomColor(lavaColorsRGB[0]);
 
 	public static float[] speeds = new float[] { maxSpeed, maxSpeed - maxSpeed / 11, maxSpeed - maxSpeed / 10,
@@ -68,14 +69,12 @@ public class Lava extends Liquid {
 			maxSpeed - maxSpeed / 5, maxSpeed - maxSpeed / 5, maxSpeed - maxSpeed / 5, maxSpeed - maxSpeed / 5,
 			maxSpeed - maxSpeed / 5 };
 
-	
-
 	private int colorIdx;
 	private float idxDifference;
 
 	public Lava(int row, int column) {
-		super(type, row, column, color, false, 1, false, false, 0, true, 0.9f, acceleration,
-				maxSpeed, density, false, dispersionRate, meltingPoint);
+		super(type, row, column, color, false, 1, false, false, 0, true, 0.9f, acceleration, maxSpeed, density, false,
+				dispersionRate, meltingPoint);
 		super.setOnFire(true);
 		colorIdx = -1;
 		idxDifference = (float) numberOfMelts / lavaColorsRGB.length;
@@ -84,11 +83,13 @@ public class Lava extends Liquid {
 
 	@Override
 	public void update() {
+		if (CellularMatrix.getChunk(getRow(), getColumn()).activeThisFrame) {
+			this.updateSpeed();
+			this.updateMovementLogic();
+		}
 		this.updateColor();
 		this.actOnOther();
 		this.distributeHeat();
-		this.updateSpeed();
-		this.updateMovementLogic();
 	}
 
 	/**
@@ -111,7 +112,8 @@ public class Lava extends Liquid {
 			Element nextVertical2 = null;
 
 			int delta = (int) Math.signum(this.getVerticalVelocity());
-			Element nextVertical = PixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn(), true, false);
+			Element nextVertical = PixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn(), true,
+					false);
 			int randDirection = Math.random() > 0.5 ? 1 : -1;
 
 			for (int i = 0; i <= dispersionRate; i++) {
@@ -155,8 +157,10 @@ public class Lava extends Liquid {
 				this.setVerticalVelocity(2.5f);
 			}
 
-			Element sideways1 = PixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() - randDirection, false, true);
-			Element sideways2 = PixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() + randDirection, false, true);
+			Element sideways1 = PixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() - randDirection,
+					false, true);
+			Element sideways2 = PixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() + randDirection,
+					false, true);
 			nextVertical = PixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn(), true, false);
 
 			if (nextVertical == null) {

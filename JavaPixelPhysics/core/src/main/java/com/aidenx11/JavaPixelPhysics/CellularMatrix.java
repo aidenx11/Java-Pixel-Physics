@@ -19,6 +19,8 @@ import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.Rust;
 import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.Sand;
 import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.WetDirt;
 import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.WetSand;
+import com.badlogic.gdx.graphics.Color;
+
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 /**
@@ -40,6 +42,10 @@ public class CellularMatrix {
 	/** Pixel size modifier of the matrix */
 	public static int pixelSizeModifier;
 
+	private static Chunk[][] chunkMatrix;
+
+	private static int chunkSize;
+
 	/** The matrix itself. Stores elements */
 	private Element[][] matrix;
 
@@ -54,11 +60,13 @@ public class CellularMatrix {
 	 * @param columns           number of columns
 	 * @param pixelSizeModifier size of the pixels
 	 */
-	public CellularMatrix(int rows, int columns, int pixelSizeModifier) {
+	public CellularMatrix(int rows, int columns, int pixelSizeModifier, int chunkSize) {
 		CellularMatrix.rows = rows;
 		CellularMatrix.columns = columns;
 		CellularMatrix.pixelSizeModifier = pixelSizeModifier;
+		CellularMatrix.chunkSize = pixelSizeModifier * chunkSize;
 		this.matrix = generateMatrix();
+
 	}
 
 	/**
@@ -69,13 +77,105 @@ public class CellularMatrix {
 	 */
 	private Element[][] generateMatrix() {
 
+		resetChunks();
+
 		Element[][] array = new Element[rows][columns];
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < columns; x++) {
 				array[y][x] = new Empty(y, x);
 			}
 		}
+
 		return array;
+	}
+
+	public static void resetChunks() {
+		chunkMatrix = new Chunk[PixelPhysicsGame.SCREEN_HEIGHT / chunkSize
+				+ 1][(PixelPhysicsGame.SCREEN_WIDTH - PixelPhysicsGame.uiOffset) / chunkSize + 1];
+
+		for (int i = 0; i < chunkMatrix.length; i++) {
+			for (int j = 0; j < chunkMatrix[i].length; j++) {
+				chunkMatrix[i][j] = new Chunk();
+			}
+		}
+
+	}
+
+	public static void stepChunks() {
+		for (int i = 0; i < chunkMatrix.length; i++) {
+			for (int j = 0; j < chunkMatrix[i].length; j++) {
+				chunkMatrix[i][j].stepChunk();
+			}
+		}
+	}
+
+	public static void drawChunks(ShapeDrawer sd) {
+		for (int i = 0; i < chunkMatrix.length; i++) {
+			for (int j = 0; j < chunkMatrix[i].length; j++) {
+				if (chunkMatrix[i][j].activeThisFrame) {
+					sd.setColor(Color.WHITE);
+					sd.rectangle(j * chunkSize, i * chunkSize, chunkSize, chunkSize);
+				} else if (chunkMatrix[i][j].activeNextFrame) {
+					sd.setColor(Color.RED);
+					sd.rectangle(j * chunkSize, i * chunkSize, chunkSize, chunkSize);
+				}
+			}
+		}
+	}
+
+	public static void activateChunk(int row, int col) {
+		boolean activateChunkLeft = false;
+		boolean activateChunkRight = false;
+		boolean activateChunkBelow = false;
+		boolean activateChunkAbove = false;
+
+		if (Math.floor((float) row / chunkSize * pixelSizeModifier) != Math
+				.floor((float) (row + 1) / chunkSize * pixelSizeModifier)) {
+			activateChunkAbove = true;
+		}
+		if (Math.floor((float) row / chunkSize * pixelSizeModifier) != Math
+				.floor((float) (row - 1) / chunkSize * pixelSizeModifier)) {
+			activateChunkBelow = true;
+		}
+		if (Math.floor((float) col / chunkSize * pixelSizeModifier) != Math
+				.floor((float) (col - 1) / chunkSize * pixelSizeModifier)) {
+			activateChunkLeft = true;
+		}
+		if (Math.floor((float) col / chunkSize * pixelSizeModifier) != Math
+				.floor((float) (col + 1) / chunkSize * pixelSizeModifier)) {
+			activateChunkRight = true;
+		}
+
+		int chunkRow = (int) Math.floor((float) row / chunkSize * pixelSizeModifier);
+		int chunkCol = (int) Math.floor((float) col / chunkSize * pixelSizeModifier);
+
+		if (chunkRow < chunkMatrix.length && chunkCol < chunkMatrix[0].length) {
+			chunkMatrix[chunkRow][chunkCol].activeNextFrame = true;
+			chunkMatrix[chunkRow][chunkCol].activeInTwoFrames = true;
+
+			if (chunkCol - 1 > 0 && activateChunkLeft) {
+				chunkMatrix[chunkRow][chunkCol - 1].activeNextFrame = true;
+				chunkMatrix[chunkRow][chunkCol - 1].activeInTwoFrames = true;
+			}
+			if (chunkCol + 1 < chunkMatrix[0].length && activateChunkRight) {
+				chunkMatrix[chunkRow][chunkCol + 1].activeNextFrame = true;
+				chunkMatrix[chunkRow][chunkCol + 1].activeInTwoFrames = true;
+			}
+			if (chunkRow + 1 < chunkMatrix.length && activateChunkAbove) {
+				chunkMatrix[chunkRow + 1][chunkCol].activeNextFrame = true;
+				chunkMatrix[chunkRow + 1][chunkCol].activeInTwoFrames = true;
+			}
+			if (chunkRow - 1 > 0 && activateChunkBelow) {
+				chunkMatrix[chunkRow - 1][chunkCol].activeNextFrame = true;
+				chunkMatrix[chunkRow - 1][chunkCol].activeInTwoFrames = true;
+			}
+		}
+	}
+
+	public static Chunk getChunk(int row, int col) {
+		int chunkRow = (int) Math.floor((float) row / chunkSize * pixelSizeModifier);
+		int chunkCol = (int) Math.floor((float) col / chunkSize * pixelSizeModifier);
+		return chunkMatrix[chunkRow][chunkCol];
 	}
 
 	/**
@@ -133,6 +233,9 @@ public class CellularMatrix {
 
 		this.setElement(element1);
 		this.setElement(element2);
+
+		CellularMatrix.activateChunk(element1.getRow(), element1.getColumn());
+		CellularMatrix.activateChunk(element2.getRow(), element2.getColumn());
 	}
 
 	/**
@@ -148,7 +251,7 @@ public class CellularMatrix {
 				return null;
 			}
 		}
-		
+
 		if (checkCol) {
 			if (column < 0 || column >= columns) {
 				return null;
@@ -166,6 +269,7 @@ public class CellularMatrix {
 	public void setElement(Element element) {
 		matrix[element.getRow()][element.getColumn()] = null;
 		matrix[element.getRow()][element.getColumn()] = element;
+		CellularMatrix.activateChunk(element.getRow(), element.getColumn());
 	}
 
 	/**
@@ -197,6 +301,9 @@ public class CellularMatrix {
 	 * @return the newly changed element
 	 */
 	public Element setNewElement(Element element, ElementTypes newElement) {
+
+		CellularMatrix.activateChunk(element.getRow(), element.getColumn());
+
 		switch (newElement) {
 		case EMPTY:
 			this.setElement(new Empty(element.getRow(), element.getColumn()));
@@ -307,7 +414,6 @@ public class CellularMatrix {
 			}
 		}
 	}
-
 
 	/**
 	 * Traverses the matrix between the two given points. The points are given as x

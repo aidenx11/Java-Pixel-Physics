@@ -1,5 +1,6 @@
 package com.aidenx11.JavaPixelPhysics.elements.movable;
 
+import com.aidenx11.JavaPixelPhysics.CellularMatrix;
 import com.aidenx11.JavaPixelPhysics.PixelPhysicsGame;
 import com.aidenx11.JavaPixelPhysics.color.CustomColor;
 import com.aidenx11.JavaPixelPhysics.elements.Element;
@@ -30,6 +31,8 @@ public abstract class Movable extends Element {
 
 	/** Maximum speed of this element */
 	private float maxSpeed;
+
+	protected boolean movedLastFrame = false;
 
 	/**
 	 * Inertial resistance of this element in the range 0-1 with 0 being the least
@@ -63,6 +66,9 @@ public abstract class Movable extends Element {
 	 */
 	private boolean isFreeFalling;
 
+	protected int previousRow;
+	protected int previousCol;
+
 	public Movable(ElementTypes type, int row, int column, CustomColor color, boolean canDie, int lifetime,
 			boolean flammable, boolean extinguishesThings, float chanceToCatch, boolean burnsThings, float velocity,
 			float acceleration, float maxSpeed, int density, boolean movesSideways, boolean movesDown, float friction,
@@ -75,18 +81,21 @@ public abstract class Movable extends Element {
 		setDensity(density);
 		setMovesSideways(movesSideways);
 		setFriction(friction);
+		this.movedLastFrame = true;
 	}
 
 	public abstract void updateMovementLogic();
 
 	@Override
 	public void update() {
-		this.updateMovementLogic();
-		if (this.limitedLife()) {
-			super.updateElementLife();
-		}
-		if (this.isFlammable()) {
-			super.updateBurningLogic();
+		if (CellularMatrix.getChunk(getRow(), getColumn()).activeThisFrame) {
+			this.updateMovementLogic();
+			if (this.limitedLife()) {
+				super.updateElementLife();
+			}
+			if (this.isFlammable()) {
+				super.updateBurningLogic();
+			}
 		}
 	}
 
@@ -120,9 +129,8 @@ public abstract class Movable extends Element {
 
 		this.setVerticalVelocity(newVelocity);
 
-		if (this.getRow() > 0
-				&& PixelPhysicsGame.matrix.getElement(this.getRow() - 1, this.getColumn(), false, false) instanceof Water
-				&& this.getVerticalVelocity() > 0.7f) {
+		if (this.getRow() > 0 && PixelPhysicsGame.matrix.getElement(this.getRow() - 1, this.getColumn(), false,
+				false) instanceof Water && this.getVerticalVelocity() > 0.7f) {
 			this.setVerticalVelocity(this.getVerticalVelocity() - 0.1f);
 
 		}
@@ -142,6 +150,7 @@ public abstract class Movable extends Element {
 	public boolean setElementFreeFalling(MovableSolid sideways1) {
 		if (Math.random() > sideways1.getInertialResistance()) {
 			sideways1.setFreeFalling(true);
+			sideways1.movedLastFrame = true;
 			return true;
 		}
 		return false;
