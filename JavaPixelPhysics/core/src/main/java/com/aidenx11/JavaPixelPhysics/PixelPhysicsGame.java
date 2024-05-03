@@ -48,8 +48,8 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 	public static final float GRAVITY_ACCELERATION = 0.1f;
 
 	/** Pixel size modifier of the game */
-	public static int pixelSizeModifier = 12;
-	
+	public static int pixelSizeModifier = 3;
+
 	public static int chunkSize = 10;
 
 	/** Matrix for use in the game */
@@ -172,6 +172,9 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 		im.addProcessor(mouse);
 
 		Gdx.input.setInputProcessor(im);
+		
+//		System.out.println("rows: " + rows);
+//		System.out.println("cols: " + columns);
 
 	}
 
@@ -181,8 +184,6 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 	 */
 	@Override
 	public void render() {
-		
-		
 
 		// Set background color based on light mode
 		if (lightsOn) {
@@ -206,11 +207,9 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 		}
 
 		matrix.draw(shapeDrawer);
-		
+
 		mouse.drawCursor(shapeDrawer);
 
-		
-		
 		if (lightsOn) {
 			shapeDrawer.setColor(Color.GRAY);
 		} else {
@@ -222,14 +221,15 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 		shapeDrawer.filledRectangle(SCREEN_WIDTH - uiOffset + pixelSizeModifier, 0, 2f, SCREEN_HEIGHT);
 
 		buttonStage.act();
-		
-		CellularMatrix.drawChunks(shapeDrawer);
-		
+
+//		 Used for debugging
+//		CellularMatrix.drawChunks(shapeDrawer);
+
 		batch.end();
 
 		// Draw the UI to the screen
 		buttonStage.draw();
-		
+
 		CellularMatrix.stepChunks();
 
 	}
@@ -253,6 +253,8 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 				pixelSizeModifier, chunkSize);
 		int oldRows = rows;
 		int oldCols = columns;
+		
+		CellularMatrix.resetChunks();
 
 		// fill the old matrix
 		for (int row = 0; row < CellularMatrix.rows; row++) {

@@ -19,7 +19,7 @@ public class Void extends Element {
 
 	public static ElementTypes type = ElementTypes.VOID;
 	
-	public static CustomColor color = new CustomColor(ColorValues.VOID, true);
+	public static CustomColor color = new CustomColor(ColorValues.VOID, false);
 
 	public Void(int row, int column) {
 		super(type, row, column, color, false, 0, false, false, 0, false, 0);

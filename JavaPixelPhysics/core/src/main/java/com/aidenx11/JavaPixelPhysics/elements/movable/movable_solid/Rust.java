@@ -13,7 +13,7 @@ public class Rust extends MovableSolid {
 	private static float inertialResistance = 0.8f;
 	private static float friction = 1f;
 
-	public static CustomColor color = new CustomColor(ColorValues.RUST, true);
+	public static CustomColor color = new CustomColor(ColorValues.RUST, false);
 	
 	public Rust(int row, int column) {
 		super(type, row, column, color, false, -1, false, false, 0, false, 0,

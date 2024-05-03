@@ -4,6 +4,10 @@ import com.aidenx11.JavaPixelPhysics.CellularMatrix;
 import com.aidenx11.JavaPixelPhysics.PixelPhysicsGame;
 import com.aidenx11.JavaPixelPhysics.color.CustomColor;
 import com.aidenx11.JavaPixelPhysics.elements.Element;
+import com.aidenx11.JavaPixelPhysics.elements.Empty;
+import com.aidenx11.JavaPixelPhysics.elements.movable.gas.Gas;
+import com.aidenx11.JavaPixelPhysics.elements.movable.liquid.Lava;
+import com.aidenx11.JavaPixelPhysics.elements.movable.liquid.Liquid;
 import com.aidenx11.JavaPixelPhysics.elements.movable.liquid.Water;
 import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.MovableSolid;
 
@@ -88,7 +92,16 @@ public abstract class Movable extends Element {
 
 	@Override
 	public void update() {
-		if (CellularMatrix.getChunk(getRow(), getColumn()).activeThisFrame) {
+		if ((this instanceof Liquid || this instanceof Lava)
+				&& PixelPhysicsGame.matrix.getElement(getRow() + 1, getColumn(), true, false) instanceof Empty) {
+			CellularMatrix.activateChunk(getRow(), getColumn());
+		}
+		if (this instanceof MovableSolid
+				&& PixelPhysicsGame.matrix.getElement(getRow() + 1, getColumn(), true, false) instanceof Liquid
+				&& PixelPhysicsGame.matrix.getElement(getRow() - 1, getColumn(), true, false) instanceof Liquid) {
+			CellularMatrix.activateChunk(getRow(), getColumn());
+		}
+		if (CellularMatrix.getChunk(getRow(), getColumn()).activeThisFrame || this instanceof Gas) {
 			this.updateMovementLogic();
 			if (this.limitedLife()) {
 				super.updateElementLife();

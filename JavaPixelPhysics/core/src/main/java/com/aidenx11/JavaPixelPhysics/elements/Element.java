@@ -116,7 +116,7 @@ public abstract class Element {
 		setMovesDown(movesDown);
 		setTemperature(temperature);
 
-		if (color != null && color.varyColor) {
+		if (color != null && !(this instanceof Water)) {
 			this.setColor(color.varyColor());
 		}
 

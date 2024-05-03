@@ -19,7 +19,7 @@ public class Obsidian extends MovableSolid {
 	private static float inertialResistance = 0.995f;
 	private static float friction = 0.7f;
 	
-	public static CustomColor color = new CustomColor(ColorValues.OBSIDIAN, true);
+	public static CustomColor color = new CustomColor(ColorValues.OBSIDIAN, false);
 
 	public Obsidian(int row, int column) {
 		super(type, row, column, color, false, -1, false, true, 0, false, 0,

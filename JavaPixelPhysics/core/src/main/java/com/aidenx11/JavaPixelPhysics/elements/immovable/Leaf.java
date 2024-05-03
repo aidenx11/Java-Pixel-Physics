@@ -20,7 +20,7 @@ public class Leaf extends Immovable {
 	private static float chanceToCatch = 0.03f;
 	private static int lifetime = 50;
 	
-	private static CustomColor color = new CustomColor(ColorValues.LEAF, true);
+	private static CustomColor color = new CustomColor(ColorValues.LEAF, false);
 
 	public Leaf(int row, int column) {
 		super(type, row, column, color, false, lifetime, true, false, chanceToCatch,

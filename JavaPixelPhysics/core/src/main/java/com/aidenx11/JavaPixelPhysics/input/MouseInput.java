@@ -194,29 +194,30 @@ public class MouseInput implements InputProcessor {
 	 * @param radius      radius of the circle
 	 */
 	public void drawCursor(ShapeDrawer shapeDrawer) {
-		if (Gdx.input.getX() < PixelPhysicsGame.SCREEN_WIDTH - PixelPhysicsGame.uiOffset) {
-			shapeDrawer.setColor(Color.RED);
-			if (getBrushType() == BrushTypes.CIRCLE) {
 
-				shapeDrawer.circle(Gdx.input.getX(), PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY(),
-						getCursorSize() * pixelSizeModifier / 2);
+		boolean mouseInBounds = Gdx.input.getX() < PixelPhysicsGame.SCREEN_WIDTH - PixelPhysicsGame.uiOffset;
 
-			} else if (getBrushType() == BrushTypes.SQUARE) {
+		shapeDrawer.setColor(Color.RED);
+		if (getBrushType() == BrushTypes.CIRCLE && mouseInBounds) {
 
-				float xOrigin = pixelSizeModifier * Math.round(Gdx.input.getX() / pixelSizeModifier)
-						- getBrushSize() * pixelSizeModifier / 2;
-				float yOrigin = pixelSizeModifier
-						* Math.round((PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY()) / pixelSizeModifier)
-						- getBrushSize() * pixelSizeModifier / 2;
+			shapeDrawer.circle(Gdx.input.getX(), PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY(),
+					getCursorSize() * pixelSizeModifier / 2);
 
-				shapeDrawer.rectangle(pixelSizeModifier * Math.round(xOrigin / pixelSizeModifier),
-						pixelSizeModifier * Math.round(yOrigin / pixelSizeModifier),
-						getCursorSize() * pixelSizeModifier, getCursorSize() * pixelSizeModifier);
+		} else if (getBrushType() == BrushTypes.SQUARE && mouseInBounds) {
 
-			} else if (getBrushType() == BrushTypes.RECTANGLE && Gdx.input.isTouched()) {
-				this.detectAndDrawRectangleBoundingBox(shapeDrawer, rectOriginCol * pixelSizeModifier,
-						rectOriginRow * pixelSizeModifier);
-			}
+			float xOrigin = pixelSizeModifier * Math.round(Gdx.input.getX() / pixelSizeModifier)
+					- getBrushSize() * pixelSizeModifier / 2;
+			float yOrigin = pixelSizeModifier
+					* Math.round((PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY()) / pixelSizeModifier)
+					- getBrushSize() * pixelSizeModifier / 2;
+
+			shapeDrawer.rectangle(pixelSizeModifier * Math.round(xOrigin / pixelSizeModifier),
+					pixelSizeModifier * Math.round(yOrigin / pixelSizeModifier), getCursorSize() * pixelSizeModifier,
+					getCursorSize() * pixelSizeModifier);
+
+		} else if (getBrushType() == BrushTypes.RECTANGLE && Gdx.input.isTouched()) {
+			this.detectAndDrawRectangleBoundingBox(shapeDrawer, rectOriginCol * pixelSizeModifier,
+					rectOriginRow * pixelSizeModifier);
 		}
 
 	}

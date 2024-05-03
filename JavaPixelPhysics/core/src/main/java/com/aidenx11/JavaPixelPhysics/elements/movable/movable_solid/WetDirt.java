@@ -13,7 +13,7 @@ public class WetDirt extends MovableSolid {
 	private static float inertialResistance = 0.7f;
 	private static float friction = 0.9f;
 	
-	public static CustomColor color = new CustomColor(ColorValues.DIRT, true);
+	public static CustomColor color = new CustomColor(ColorValues.DIRT, false);
 
 	public WetDirt(int row, int column) {
 		super(type, row, column, color, false, -1, false, Math.random() < 0.8, 0, false,

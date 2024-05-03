@@ -1,5 +1,6 @@
 package com.aidenx11.JavaPixelPhysics.elements.movable.liquid;
 
+import com.aidenx11.JavaPixelPhysics.CellularMatrix;
 import com.aidenx11.JavaPixelPhysics.PixelPhysicsGame;
 import com.aidenx11.JavaPixelPhysics.color.CustomColor;
 import com.aidenx11.JavaPixelPhysics.elements.Element;
@@ -59,6 +60,7 @@ public class Liquid extends Movable {
 					if (currentElement instanceof Immovable) {
 						break;
 					}
+					
 
 					nextVertical1 = currentElement;
 
@@ -70,6 +72,7 @@ public class Liquid extends Movable {
 					if (currentElement instanceof Immovable) {
 						break;
 					}
+					
 
 					nextVertical2 = currentElement;
 

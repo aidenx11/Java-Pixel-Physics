@@ -20,7 +20,7 @@ public class Wood extends Immovable {
 	private static int lifetime = 220;
 	private static float chanceToCatch = 0.006f;
 	
-	public static CustomColor color =  new CustomColor(ColorValues.WOOD_COLOR, true);
+	public static CustomColor color =  new CustomColor(ColorValues.WOOD_COLOR, false);
 
 	public Wood(int row, int column) {
 		super(type, row, column, color, false, lifetime, true, false,

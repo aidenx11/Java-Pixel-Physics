@@ -73,6 +73,7 @@ public class Water extends Liquid {
 				((Movable) newElement).setVerticalVelocity(((Movable) nextElement).getVerticalVelocity());
 				PixelPhysicsGame.matrix.clearElement(this);
 				adjacentElements = null;
+				CellularMatrix.activateChunk(getRow(), getColumn());
 				return true;
 			}
 			if (nextElement instanceof Dirt) {
@@ -80,6 +81,7 @@ public class Water extends Liquid {
 				((Movable) newElement).setVerticalVelocity(((Movable) nextElement).getVerticalVelocity());
 				PixelPhysicsGame.matrix.clearElement(this);
 				adjacentElements = null;
+				CellularMatrix.activateChunk(getRow(), getColumn());
 				return true;
 			}
 			if (nextElement instanceof Steel) {

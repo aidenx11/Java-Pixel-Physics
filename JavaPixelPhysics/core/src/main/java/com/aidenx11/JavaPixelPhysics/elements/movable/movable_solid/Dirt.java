@@ -14,7 +14,7 @@ public class Dirt extends MovableSolid {
 	private static float friction = 0.4f;
 	private static int meltingPoint = -1;
 	
-	public static CustomColor color = new CustomColor(ColorValues.WET_DIRT, true);
+	public static CustomColor color = new CustomColor(ColorValues.WET_DIRT, false);
 
 	public Dirt(int row, int column) {
 		super(type, row, column, color, false, -1, false, Math.random() < 0.8, 0,

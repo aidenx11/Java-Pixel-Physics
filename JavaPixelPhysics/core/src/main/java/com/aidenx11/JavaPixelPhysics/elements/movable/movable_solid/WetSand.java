@@ -13,7 +13,7 @@ public class WetSand extends MovableSolid {
 	private static float inertialResistance = 0.01f;
 	private static float friction = 1f;
 	
-	public static CustomColor color = new CustomColor(ColorValues.WET_SAND, true);
+	public static CustomColor color = new CustomColor(ColorValues.WET_SAND, false);
 
 	public WetSand(int row, int column) {
 		super(type, row, column, color, false, -1, false, true, 0, false, 1f,

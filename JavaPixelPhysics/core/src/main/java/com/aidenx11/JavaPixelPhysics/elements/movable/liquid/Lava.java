@@ -86,9 +86,14 @@ public class Lava extends Liquid {
 		if (CellularMatrix.getChunk(getRow(), getColumn()).activeThisFrame) {
 			this.updateSpeed();
 			this.updateMovementLogic();
+			this.actOnOther();
+		} else if (Math.random() < 0.1f){
+			this.setNumberOfMeltsToHarden(numberOfMelts - 1);
+		}
+		if (this.getNumberOfMeltsToHarden() < 10) {
+			CellularMatrix.activateChunk(getRow(), getColumn());
 		}
 		this.updateColor();
-		this.actOnOther();
 		this.distributeHeat();
 	}
 
@@ -208,6 +213,8 @@ public class Lava extends Liquid {
 			if (nextElement instanceof Lava && this.getTemperature() < nextElement.getTemperature()) {
 				nextElement.setTemperature(nextElement.getTemperature() - heatTransferCoefficient);
 				this.setTemperature(this.getTemperature() + heatTransferCoefficient);
+				((Lava) nextElement).setNumberOfMeltsToHarden(((Lava) nextElement).getNumberOfMeltsToHarden() - heatTransferCoefficient);
+				this.setNumberOfMeltsToHarden(numberOfMelts + heatTransferCoefficient);
 
 			}
 		}

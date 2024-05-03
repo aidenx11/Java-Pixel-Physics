@@ -16,7 +16,7 @@ public class Stone extends Immovable {
 	public static ElementTypes type = ElementTypes.STONE;
 	private static int meltingPoint = 150;
 	
-	public static CustomColor color = new CustomColor(ColorValues.STONE, true);
+	public static CustomColor color = new CustomColor(ColorValues.STONE, false);
 
 	public Stone(int row, int column) {
 		super(type, row, column, color, false, 0, false, false, 0, false,

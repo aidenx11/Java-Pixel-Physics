@@ -91,7 +91,7 @@ public class CellularMatrix {
 
 	public static void resetChunks() {
 		chunkMatrix = new Chunk[PixelPhysicsGame.SCREEN_HEIGHT / chunkSize
-				+ 1][(PixelPhysicsGame.SCREEN_WIDTH - PixelPhysicsGame.uiOffset) / chunkSize + 1];
+				+ chunkSize][(PixelPhysicsGame.SCREEN_WIDTH - PixelPhysicsGame.uiOffset) / chunkSize + chunkSize];
 
 		for (int i = 0; i < chunkMatrix.length; i++) {
 			for (int j = 0; j < chunkMatrix[i].length; j++) {
@@ -129,53 +129,63 @@ public class CellularMatrix {
 		boolean activateChunkBelow = false;
 		boolean activateChunkAbove = false;
 
-		if (Math.floor((float) row / chunkSize * pixelSizeModifier) != Math
-				.floor((float) (row + 1) / chunkSize * pixelSizeModifier)) {
+//		System.out.println();
+//
+//		System.out.println("Row: " + row);
+//		System.out.println("Col: " + col);
+
+		int chunkRow = CellularMatrix.getChunkLocation(row, col)[0];
+		int chunkCol = CellularMatrix.getChunkLocation(row, col)[1];
+
+//		System.out.println("ChunkCol: " + chunkCol);
+//
+//		System.out.println();
+
+		if (chunkRow != Math.floor((float) (row + 1) / chunkSize * pixelSizeModifier)) {
 			activateChunkAbove = true;
 		}
-		if (Math.floor((float) row / chunkSize * pixelSizeModifier) != Math
-				.floor((float) (row - 1) / chunkSize * pixelSizeModifier)) {
+		if (chunkRow != Math.floor((float) (row - 1) / chunkSize * pixelSizeModifier)) {
 			activateChunkBelow = true;
 		}
-		if (Math.floor((float) col / chunkSize * pixelSizeModifier) != Math
-				.floor((float) (col - 1) / chunkSize * pixelSizeModifier)) {
+		if (chunkCol != Math.floor((float) (col - 1) / chunkSize * pixelSizeModifier)) {
 			activateChunkLeft = true;
 		}
-		if (Math.floor((float) col / chunkSize * pixelSizeModifier) != Math
-				.floor((float) (col + 1) / chunkSize * pixelSizeModifier)) {
+		if (chunkCol != Math.floor((float) (col + 1) / chunkSize * pixelSizeModifier)) {
 			activateChunkRight = true;
 		}
 
-		int chunkRow = (int) Math.floor((float) row / chunkSize * pixelSizeModifier);
-		int chunkCol = (int) Math.floor((float) col / chunkSize * pixelSizeModifier);
+		chunkMatrix[chunkRow][chunkCol].activeNextFrame = true;
+		chunkMatrix[chunkRow][chunkCol].activeInTwoFrames = true;
 
-		if (chunkRow < chunkMatrix.length && chunkCol < chunkMatrix[0].length) {
-			chunkMatrix[chunkRow][chunkCol].activeNextFrame = true;
-			chunkMatrix[chunkRow][chunkCol].activeInTwoFrames = true;
-
-			if (chunkCol - 1 > 0 && activateChunkLeft) {
-				chunkMatrix[chunkRow][chunkCol - 1].activeNextFrame = true;
-				chunkMatrix[chunkRow][chunkCol - 1].activeInTwoFrames = true;
-			}
-			if (chunkCol + 1 < chunkMatrix[0].length && activateChunkRight) {
-				chunkMatrix[chunkRow][chunkCol + 1].activeNextFrame = true;
-				chunkMatrix[chunkRow][chunkCol + 1].activeInTwoFrames = true;
-			}
-			if (chunkRow + 1 < chunkMatrix.length && activateChunkAbove) {
-				chunkMatrix[chunkRow + 1][chunkCol].activeNextFrame = true;
-				chunkMatrix[chunkRow + 1][chunkCol].activeInTwoFrames = true;
-			}
-			if (chunkRow - 1 > 0 && activateChunkBelow) {
-				chunkMatrix[chunkRow - 1][chunkCol].activeNextFrame = true;
-				chunkMatrix[chunkRow - 1][chunkCol].activeInTwoFrames = true;
-			}
+		if (chunkCol - 1 > 0 && activateChunkLeft) {
+			chunkMatrix[chunkRow][chunkCol - 1].activeNextFrame = true;
+			chunkMatrix[chunkRow][chunkCol - 1].activeInTwoFrames = true;
 		}
+		if (chunkCol + 1 < chunkMatrix[0].length && activateChunkRight) {
+			chunkMatrix[chunkRow][chunkCol + 1].activeNextFrame = true;
+			chunkMatrix[chunkRow][chunkCol + 1].activeInTwoFrames = true;
+		}
+		if (chunkRow + 1 < chunkMatrix.length && activateChunkAbove) {
+			chunkMatrix[chunkRow + 1][chunkCol].activeNextFrame = true;
+			chunkMatrix[chunkRow + 1][chunkCol].activeInTwoFrames = true;
+		}
+		if (chunkRow - 1 > 0 && activateChunkBelow) {
+			chunkMatrix[chunkRow - 1][chunkCol].activeNextFrame = true;
+			chunkMatrix[chunkRow - 1][chunkCol].activeInTwoFrames = true;
+		}
+
 	}
 
 	public static Chunk getChunk(int row, int col) {
 		int chunkRow = (int) Math.floor((float) row / chunkSize * pixelSizeModifier);
 		int chunkCol = (int) Math.floor((float) col / chunkSize * pixelSizeModifier);
 		return chunkMatrix[chunkRow][chunkCol];
+	}
+
+	public static int[] getChunkLocation(int row, int col) {
+		int chunkRow = (int) Math.floor((float) row / chunkSize * pixelSizeModifier);
+		int chunkCol = (int) Math.floor((float) col / chunkSize * pixelSizeModifier);
+		return new int[] { chunkRow, chunkCol };
 	}
 
 	/**
@@ -267,7 +277,6 @@ public class CellularMatrix {
 	 * @param element element to set in the matrix
 	 */
 	public void setElement(Element element) {
-		matrix[element.getRow()][element.getColumn()] = null;
 		matrix[element.getRow()][element.getColumn()] = element;
 		CellularMatrix.activateChunk(element.getRow(), element.getColumn());
 	}
