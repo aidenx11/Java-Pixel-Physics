@@ -1,5 +1,6 @@
 package com.aidenx11.JavaPixelPhysics.elements.immovable;
 
+import com.aidenx11.JavaPixelPhysics.CellularMatrix;
 import com.aidenx11.JavaPixelPhysics.color.CustomColor;
 import com.aidenx11.JavaPixelPhysics.elements.Element;
 
@@ -23,11 +24,16 @@ public class Immovable extends Element {
 	 */
 	@Override
 	public void update() {
+		if (this.isOnFire() || this.limitedLife()) {
+			CellularMatrix.activateChunk(getRow(), getColumn());
+		}
 		if (this.limitedLife()) {
 			super.updateElementLife();
 		}
 		if (!this.isOnFire()) {
 			super.updateBurningLogic();
+		} else {
+			super.checkForExtinguishingElements();
 		}
 
 	}

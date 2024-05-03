@@ -92,6 +92,9 @@ public abstract class Movable extends Element {
 
 	@Override
 	public void update() {
+		if (this instanceof Gas) {
+			CellularMatrix.activateChunk(getRow(), getColumn());
+		}
 		if ((this instanceof Liquid || this instanceof Lava)
 				&& PixelPhysicsGame.matrix.getElement(getRow() + 1, getColumn(), true, false) instanceof Empty) {
 			CellularMatrix.activateChunk(getRow(), getColumn());
@@ -101,7 +104,7 @@ public abstract class Movable extends Element {
 				&& PixelPhysicsGame.matrix.getElement(getRow() - 1, getColumn(), true, false) instanceof Liquid) {
 			CellularMatrix.activateChunk(getRow(), getColumn());
 		}
-		if (CellularMatrix.getChunk(getRow(), getColumn()).activeThisFrame || this instanceof Gas) {
+		if (CellularMatrix.getChunk(getRow(), getColumn()).activeThisFrame) {
 			this.updateMovementLogic();
 			if (this.limitedLife()) {
 				super.updateElementLife();

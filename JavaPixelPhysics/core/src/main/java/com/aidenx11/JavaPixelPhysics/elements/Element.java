@@ -3,6 +3,7 @@ package com.aidenx11.JavaPixelPhysics.elements;
 import com.aidenx11.JavaPixelPhysics.CellularMatrix;
 import com.aidenx11.JavaPixelPhysics.PixelPhysicsGame;
 import com.aidenx11.JavaPixelPhysics.color.CustomColor;
+import com.aidenx11.JavaPixelPhysics.elements.Element.ElementTypes;
 import com.aidenx11.JavaPixelPhysics.elements.immovable.Fire;
 import com.aidenx11.JavaPixelPhysics.elements.immovable.Steel;
 import com.aidenx11.JavaPixelPhysics.elements.movable.gas.Smoke;
@@ -225,6 +226,52 @@ public abstract class Element {
 
 		}
 
+	}
+	
+	/**
+	 * Checks elements above this fire, and to the left and right. If one of the
+	 * elements extinguishes elements, extinguishes the fire.
+	 */
+	public void checkForExtinguishingElements() {
+		Element[] elementsAbove = new Element[] { PixelPhysicsGame.matrix.getElement(getRow() + 1, getColumn(), true, false),
+				PixelPhysicsGame.matrix.getElement(getRow() + 1, getColumn() - 1, true, true),
+				PixelPhysicsGame.matrix.getElement(getRow() + 1, getColumn() + 1, true, true),
+				PixelPhysicsGame.matrix.getElement(getRow(), getColumn() - 1, false, true),
+				PixelPhysicsGame.matrix.getElement(getRow(), getColumn() + 1, false, true) };
+
+		float chanceToExtinguish = 0;
+
+		for (int i = 0; i < elementsAbove.length; i++) {
+			if (elementsAbove[i] != null && elementsAbove[i].extinguishesThings()) {
+
+				ElementTypes type = elementsAbove[i].getType();
+
+				switch (type) {
+				case WATER:
+					chanceToExtinguish = 1;
+					if (Math.random() < 0.3) {
+						PixelPhysicsGame.matrix.setNewElement(elementsAbove[i], ElementTypes.STEAM);
+					}
+					break;
+				case SAND:
+				case DIRT:
+					chanceToExtinguish = 0.3f;
+					break;
+				default:
+					chanceToExtinguish = 1;
+				}
+
+				if (Math.random() < chanceToExtinguish) {
+					if (Math.random() < 0.5f) {
+						PixelPhysicsGame.matrix.setNewElement(this, ElementTypes.SMOKE);
+						return;
+					} else {
+						PixelPhysicsGame.matrix.clearElement(this);
+						return;
+					}
+				}
+			}
+		}
 	}
 
 	/**
