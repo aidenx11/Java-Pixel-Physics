@@ -87,8 +87,8 @@ public class Lava extends Liquid {
 			this.updateSpeed();
 			this.updateMovementLogic();
 			this.actOnOther();
-		} else if (Math.random() < 0.1f){
-			this.setNumberOfMeltsToHarden(numberOfMelts - 1);
+		} else if (Math.random() < 0.1f) {
+			this.setNumberOfMeltsToHarden(numberOfMelts - 1, false);
 		}
 		if (this.getNumberOfMeltsToHarden() < 10) {
 			CellularMatrix.activateChunk(getRow(), getColumn());
@@ -213,8 +213,9 @@ public class Lava extends Liquid {
 			if (nextElement instanceof Lava && this.getTemperature() < nextElement.getTemperature()) {
 				nextElement.setTemperature(nextElement.getTemperature() - heatTransferCoefficient);
 				this.setTemperature(this.getTemperature() + heatTransferCoefficient);
-				((Lava) nextElement).setNumberOfMeltsToHarden(((Lava) nextElement).getNumberOfMeltsToHarden() - heatTransferCoefficient);
-				this.setNumberOfMeltsToHarden(numberOfMelts + heatTransferCoefficient);
+				((Lava) nextElement).setNumberOfMeltsToHarden(
+						((Lava) nextElement).getNumberOfMeltsToHarden() - heatTransferCoefficient, false);
+				this.setNumberOfMeltsToHarden(numberOfMelts + heatTransferCoefficient, false);
 
 			}
 		}
@@ -249,74 +250,74 @@ public class Lava extends Liquid {
 				if (Math.random() < 0.0003) {
 					PixelPhysicsGame.matrix.setNewElement(shuffledElements.get(i), ElementTypes.SMOKE);
 				}
-				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
+				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1, false);
 				continue;
 			} else if (shuffledElements.get(i) instanceof WetSand) {
-				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 50);
+				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 50, true);
 				PixelPhysicsGame.matrix.setNewElement(shuffledElements.get(i), ElementTypes.SAND);
 				continue;
 			} else if (shuffledElements.get(i) instanceof WetDirt) {
-				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 50);
+				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 50, true);
 				PixelPhysicsGame.matrix.setNewElement(shuffledElements.get(i), ElementTypes.DIRT);
 				continue;
 			} else if (shuffledElements.get(i) instanceof Water) {
-				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 10);
+				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 10, true);
 				if (Math.random() < 0.001) {
 					PixelPhysicsGame.matrix.setNewElement(shuffledElements.get(i), ElementTypes.STEAM);
 				}
 				continue;
 			} else if (shuffledElements.get(i) instanceof Steel) {
-				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
+				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1, true);
 				continue;
 			} else if (shuffledElements.get(i) instanceof Wood) {
 				if (Math.random() < 0.01) {
 					newElement = PixelPhysicsGame.matrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
-					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 25);
-					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden());
+					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 25, false);
+					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden(), false);
 				}
 				continue;
 			}
 			if (shuffledElements.get(i) instanceof Obsidian) {
 				if (this.numberOfMelts <= 300) {
-					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
+					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1, true);
 				} else if (Math.random() < chanceToMeltObsidian) {
 					newElement = PixelPhysicsGame.matrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
-					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 250);
-					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden());
+					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 250, false);
+					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden(), false);
 				}
 				continue;
 			}
 			if (shuffledElements.get(i) instanceof Stone) {
 				if (this.numberOfMelts <= 175) {
-					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
+					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1, true);
 				} else if (Math.random() < chanceToMeltStone) {
 					newElement = PixelPhysicsGame.matrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
-					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 150);
-					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden());
+					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 150, false);
+					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden(), false);
 				}
 				continue;
 			}
 			if (shuffledElements.get(i) instanceof Sand) {
 				if (this.numberOfMelts <= 150) {
-					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
+					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1, true);
 				} else if (Math.random() < chanceToMeltSand) {
 					newElement = PixelPhysicsGame.matrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
-					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 100);
-					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden());
+					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 100, false);
+					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden(), false);
 				}
 				continue;
 			}
 			if (shuffledElements.get(i) instanceof Dirt) {
 				if (this.numberOfMelts <= 150) {
-					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
+					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1, true);
 				} else if (Math.random() < chanceToMeltDirt) {
 					newElement = PixelPhysicsGame.matrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
-					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 100);
-					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden());
+					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 100, false);
+					((Lava) newElement).setNumberOfMeltsToHarden(this.getNumberOfMeltsToHarden(), false);
 				}
 				continue;
 			} else if (Math.random() < 0.03) {
-				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1);
+				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1, false);
 			}
 		}
 	}
@@ -325,8 +326,11 @@ public class Lava extends Liquid {
 		return numberOfMelts;
 	}
 
-	public void setNumberOfMeltsToHarden(int numberOfMeltsToHarden) {
+	public void setNumberOfMeltsToHarden(int numberOfMeltsToHarden, boolean activateChunk) {
 		this.numberOfMelts = numberOfMeltsToHarden;
+		if (activateChunk && !CellularMatrix.getChunk(getRow(), getColumn()).activeNextFrame) {
+			CellularMatrix.activateChunk(getRow(), getColumn());
+		}
 	}
 
 	public float getCurrentMaxSpeed() {
