@@ -86,6 +86,7 @@ public abstract class Movable extends Element {
 		setMovesSideways(movesSideways);
 		setFriction(friction);
 		this.movedLastFrame = true;
+		CellularMatrix.activateChunk(row, column);
 	}
 
 	public abstract void updateMovementLogic();

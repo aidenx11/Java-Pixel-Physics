@@ -262,14 +262,17 @@ public class Lava extends Liquid {
 				continue;
 			} else if (shuffledElements.get(i) instanceof Water) {
 				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 10, true);
+				CellularMatrix.activateChunk(getRow(), getColumn());
 				if (Math.random() < 0.001) {
 					PixelPhysicsGame.matrix.setNewElement(shuffledElements.get(i), ElementTypes.STEAM);
 				}
 				continue;
 			} else if (shuffledElements.get(i) instanceof Steel) {
 				setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1, true);
+				CellularMatrix.activateChunk(getRow(), getColumn());
 				continue;
 			} else if (shuffledElements.get(i) instanceof Wood) {
+				CellularMatrix.activateChunk(getRow(), getColumn());
 				if (Math.random() < 0.01) {
 					newElement = PixelPhysicsGame.matrix.setNewElement(shuffledElements.get(i), ElementTypes.LAVA);
 					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 25, false);
@@ -278,6 +281,7 @@ public class Lava extends Liquid {
 				continue;
 			}
 			if (shuffledElements.get(i) instanceof Obsidian) {
+				CellularMatrix.activateChunk(getRow(), getColumn());
 				if (this.numberOfMelts <= 300) {
 					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1, true);
 				} else if (Math.random() < chanceToMeltObsidian) {
@@ -288,6 +292,7 @@ public class Lava extends Liquid {
 				continue;
 			}
 			if (shuffledElements.get(i) instanceof Stone) {
+				CellularMatrix.activateChunk(getRow(), getColumn());
 				if (this.numberOfMelts <= 175) {
 					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1, true);
 				} else if (Math.random() < chanceToMeltStone) {
@@ -298,6 +303,7 @@ public class Lava extends Liquid {
 				continue;
 			}
 			if (shuffledElements.get(i) instanceof Sand) {
+				CellularMatrix.activateChunk(getRow(), getColumn());
 				if (this.numberOfMelts <= 150) {
 					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1, true);
 				} else if (Math.random() < chanceToMeltSand) {
@@ -308,6 +314,7 @@ public class Lava extends Liquid {
 				continue;
 			}
 			if (shuffledElements.get(i) instanceof Dirt) {
+				CellularMatrix.activateChunk(getRow(), getColumn());
 				if (this.numberOfMelts <= 150) {
 					setNumberOfMeltsToHarden(getNumberOfMeltsToHarden() - 1, true);
 				} else if (Math.random() < chanceToMeltDirt) {

@@ -17,6 +17,7 @@ public class Immovable extends Element {
 		super(type, row, column, color, canDie, lifetime, flammable, extinguishesThings, chanceToCatch, false,
 				temperature);
 		super.setDensity(999);
+		CellularMatrix.activateChunk(getRow(), getColumn());
 	}
 
 	/**
