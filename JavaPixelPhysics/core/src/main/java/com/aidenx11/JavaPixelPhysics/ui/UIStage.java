@@ -284,6 +284,7 @@ public class UIStage extends Stage {
 				if (PixelPhysicsGame.isPaused) {
 					pauseButton.setText("Pause");
 					PixelPhysicsGame.isPaused = false;
+					CellularMatrix.resetChunks();
 				} else {
 					pauseButton.setText("Resume");
 					PixelPhysicsGame.isPaused = true;

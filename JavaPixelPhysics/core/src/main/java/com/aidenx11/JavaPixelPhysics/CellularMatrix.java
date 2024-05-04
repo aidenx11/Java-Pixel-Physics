@@ -96,6 +96,7 @@ public class CellularMatrix {
 		for (int i = 0; i < chunkMatrix.length; i++) {
 			for (int j = 0; j < chunkMatrix[i].length; j++) {
 				chunkMatrix[i][j] = new Chunk();
+				chunkMatrix[i][j].enableChunk();
 			}
 		}
 
