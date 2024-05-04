@@ -17,8 +17,8 @@ import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.Dirt;
 import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.Obsidian;
 import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.Rust;
 import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.Sand;
-import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.WetDirt;
-import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.WetSand;
+import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.wet_movable_solid.WetDirt;
+import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.wet_movable_solid.WetSand;
 import com.badlogic.gdx.graphics.Color;
 
 import space.earlygrey.shapedrawer.ShapeDrawer;
@@ -492,35 +492,39 @@ public class CellularMatrix {
 	 * @return the elements adjacent to the given element in an array of format [top
 	 *         left, top, top right, left, right, bottom left, bottom, bottom right]
 	 */
-	public Element[] getAdjacentElements(Element element) {
+	public Element[] getAdjacentElements(Element element, boolean top, boolean sides, boolean bottom) {
 		Element[] adjacentElements = new Element[8];
 		int row = element.getRow();
 		int col = element.getColumn();
 
 		if (col + 1 < columns) {
-			if (row + 1 < rows) {
+			if (row + 1 < rows && top) {
 				adjacentElements[2] = matrix[row + 1][col + 1];
 			}
-			adjacentElements[4] = matrix[row][col + 1];
-			if (row - 1 > 0) {
+			if (sides) {
+				adjacentElements[4] = matrix[row][col + 1];
+			}
+			if (row - 1 > 0 && bottom) {
 				adjacentElements[7] = matrix[row - 1][col + 1];
 			}
 		}
 
 		if (col - 1 >= 0) {
-			adjacentElements[3] = matrix[row][col - 1];
-			if (row + 1 < rows) {
+			if (sides) {
+				adjacentElements[3] = matrix[row][col - 1];
+			}
+			if (row + 1 < rows && top) {
 				adjacentElements[0] = matrix[row + 1][col - 1];
 			}
-			if (row - 1 > 0) {
+			if (row - 1 > 0 && bottom) {
 				adjacentElements[5] = matrix[row - 1][col - 1];
 			}
 		}
 
-		if (row - 1 >= 0) {
+		if (row - 1 >= 0 && bottom) {
 			adjacentElements[6] = matrix[row - 1][col];
 		}
-		if (row + 1 < rows) {
+		if (row + 1 < rows && top) {
 			adjacentElements[1] = matrix[row + 1][col];
 		}
 

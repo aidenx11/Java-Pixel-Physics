@@ -61,7 +61,7 @@ public class Water extends Liquid {
 	 */
 	public boolean actOnOther() {
 
-		Element[] adjacentElements = PixelPhysicsGame.matrix.getAdjacentElements(this);
+		Element[] adjacentElements = PixelPhysicsGame.matrix.getAdjacentElements(this, false, true, true);
 		List<Element> shuffledElements = Arrays.asList(adjacentElements);
 		Collections.shuffle(shuffledElements);
 		Element nextElement;

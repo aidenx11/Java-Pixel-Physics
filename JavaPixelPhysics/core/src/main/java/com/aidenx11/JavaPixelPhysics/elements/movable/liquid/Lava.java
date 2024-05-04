@@ -18,8 +18,8 @@ import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.Dirt;
 import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.MovableSolid;
 import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.Obsidian;
 import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.Sand;
-import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.WetDirt;
-import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.WetSand;
+import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.wet_movable_solid.WetDirt;
+import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.wet_movable_solid.WetSand;
 
 /**
  * Class to manage Lava elements. Lava is a complex Liquid with a relatively low
@@ -206,7 +206,7 @@ public class Lava extends Liquid {
 	}
 
 	public void distributeHeat() {
-		Element[] adjacentElements = PixelPhysicsGame.matrix.getAdjacentElements(this);
+		Element[] adjacentElements = PixelPhysicsGame.matrix.getAdjacentElements(this, true, true, true);
 		Element nextElement;
 		for (int i = 0; i < adjacentElements.length; i++) {
 			nextElement = adjacentElements[i];
@@ -227,7 +227,7 @@ public class Lava extends Liquid {
 	 */
 	public void actOnOther() {
 
-		Element[] adjacentElements = PixelPhysicsGame.matrix.getAdjacentElements(this);
+		Element[] adjacentElements = PixelPhysicsGame.matrix.getAdjacentElements(this, true, true, true);
 		List<Element> shuffledElements = Arrays.asList(adjacentElements);
 		Collections.shuffle(shuffledElements);
 		Element newElement;

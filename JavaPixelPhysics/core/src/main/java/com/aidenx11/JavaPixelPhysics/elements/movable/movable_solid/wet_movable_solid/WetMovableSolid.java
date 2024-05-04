@@ -1,4 +1,4 @@
-package com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid;
+package com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.wet_movable_solid;
 
 import com.aidenx11.JavaPixelPhysics.CellularMatrix;
 import com.aidenx11.JavaPixelPhysics.PixelPhysicsGame;
@@ -9,24 +9,34 @@ import com.aidenx11.JavaPixelPhysics.elements.immovable.Immovable;
 import com.aidenx11.JavaPixelPhysics.elements.movable.Movable;
 import com.aidenx11.JavaPixelPhysics.elements.movable.liquid.Lava;
 import com.aidenx11.JavaPixelPhysics.elements.movable.liquid.Water;
-import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.wet_movable_solid.WetDirt;
-import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.wet_movable_solid.WetSand;
+import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.Dirt;
+import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.MovableSolid;
+import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.Sand;
 
-public abstract class MovableSolid extends Movable {
+public class WetMovableSolid extends MovableSolid {
 
-	public MovableSolid(ElementTypes type, int row, int column, CustomColor color, boolean canDie, int lifetime,
+	public WetMovableSolid(ElementTypes type, int row, int column, CustomColor color, boolean canDie, int lifetime,
 			boolean flammable, boolean extinguishesThings, float chanceToCatch, boolean burnsThings, float velocity,
 			float acceleration, float maxSpeed, int density, boolean movesSideways, float inertialResistance,
 			float friction, int temperature) {
 		super(type, row, column, color, canDie, lifetime, flammable, extinguishesThings, chanceToCatch, burnsThings,
-				velocity, acceleration, maxSpeed, density, movesSideways, true, friction, temperature);
-		this.setInertialResistance(inertialResistance);
+				velocity, acceleration, maxSpeed, density, movesSideways, inertialResistance, friction, temperature);
+	}
+
+	@Override
+	public void update() {
+
+		super.update();
+		this.checkForDryElements();
 	}
 
 	@Override
 	public void updateMovementLogic() {
 
 		this.updateVerticalVelocity();
+
+		boolean thisIsWetDirt = (this instanceof WetDirt);
+		boolean thisIsWetSand = (this instanceof WetSand);
 
 		Element nextVertical;
 		Element nextVertical1;
@@ -61,11 +71,11 @@ public abstract class MovableSolid extends Movable {
 						setFallingThroughAir(true);
 						break;
 					}
-					if (this instanceof WetSand && (elementToCheck instanceof Sand || elementToCheck instanceof Dirt)) {
+					if (this instanceof WetSand && (elementToCheck instanceof Sand)) {
 						setFallingThroughAir(true);
 						break;
 					}
-					if (this instanceof WetDirt && (elementToCheck instanceof Sand || elementToCheck instanceof Dirt)) {
+					if (this instanceof WetDirt && (elementToCheck instanceof Dirt)) {
 						setFallingThroughAir(true);
 						break;
 					}
@@ -84,7 +94,9 @@ public abstract class MovableSolid extends Movable {
 			nextVertical2 = PixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn() + randDirection,
 					true, true);
 
-			if (nextVertical != null && (nextVertical.getDensity() < this.getDensity())) {
+			if (nextVertical != null && (nextVertical.getDensity() < this.getDensity() - 1
+					|| ((thisIsWetDirt && nextVertical instanceof Dirt)
+							|| (thisIsWetSand && nextVertical instanceof Sand)))) {
 
 				setFreeFalling(true);
 				PixelPhysicsGame.matrix.swap(this, nextVertical);
@@ -94,8 +106,11 @@ public abstract class MovableSolid extends Movable {
 				setVerticalVelocity(this.getVerticalVelocity() + this.getHorizontalVelocity());
 
 			} else if (nextVertical1 != null
-					&& (nextVertical1.getDensity() < this.getDensity()
-							|| (nextVertical1.isFallingThroughAir() && nextVertical1.getDensity() == this.getDensity()))
+					&& (nextVertical1.getDensity() < this.getDensity() - 1
+							|| ((nextVertical1.isFallingThroughAir()
+									&& nextVertical1.getDensity() == this.getDensity()))
+							|| ((thisIsWetDirt && nextVertical1 instanceof Dirt)
+									|| (thisIsWetSand && nextVertical1 instanceof Sand)))
 					&& (this.isFreeFalling() || this.getHorizontalVelocity() > 0) && !inContainer) {
 
 				PixelPhysicsGame.matrix.swap(this, nextVertical1);
@@ -106,8 +121,11 @@ public abstract class MovableSolid extends Movable {
 				}
 
 			} else if (nextVertical2 != null
-					&& (nextVertical2.getDensity() < this.getDensity()
-							|| (nextVertical2.isFallingThroughAir()) && nextVertical2.getDensity() == this.getDensity())
+					&& (nextVertical2.getDensity() < this.getDensity() - 1
+							|| ((nextVertical2.isFallingThroughAir())
+									&& nextVertical2.getDensity() == this.getDensity())
+							|| ((thisIsWetDirt && nextVertical2 instanceof Dirt)
+									|| (thisIsWetSand && nextVertical2 instanceof Sand)))
 					&& (this.isFreeFalling() || this.getHorizontalVelocity() > 0) && !inContainer) {
 
 				PixelPhysicsGame.matrix.swap(this, nextVertical2);
@@ -133,10 +151,14 @@ public abstract class MovableSolid extends Movable {
 							Element elementBelowDirection = PixelPhysicsGame.matrix.getElement(getRow() - 1,
 									getColumn() + getDirection(), true, true);
 
-							if (elementInDirection != null && (elementInDirection.getDensity() < this.getDensity())) {
+							if (elementInDirection != null && (elementInDirection.getDensity() < this.getDensity() - 1
+									|| ((thisIsWetDirt && elementInDirection instanceof Dirt)
+											|| (thisIsWetSand && elementInDirection instanceof Sand)))) {
 
 								if (elementBelowDirection != null
-										&& (elementBelowDirection.getDensity() < this.getDensity())) {
+										&& (elementBelowDirection.getDensity() < this.getDensity() - 1
+												|| ((thisIsWetDirt && elementBelowDirection instanceof Dirt)
+														|| (thisIsWetSand && elementBelowDirection instanceof Sand)))) {
 
 									PixelPhysicsGame.matrix.swap(this, elementBelowDirection);
 
@@ -195,4 +217,24 @@ public abstract class MovableSolid extends Movable {
 		}
 
 	}
+
+	public void checkForDryElements() {
+		Element[] elementsBelow = PixelPhysicsGame.matrix.getAdjacentElements(this, false, false, true);
+
+		for (int i = 0; i < elementsBelow.length; i++) {
+			Element currentElement = elementsBelow[i];
+
+			if (this instanceof WetDirt && currentElement instanceof Sand) {
+				PixelPhysicsGame.matrix.setNewElement(currentElement, ElementTypes.WET_SAND);
+				PixelPhysicsGame.matrix.setNewElement(this, ElementTypes.DIRT);
+				return;
+			}
+			if (this instanceof WetSand && currentElement instanceof Dirt) {
+				PixelPhysicsGame.matrix.setNewElement(currentElement, ElementTypes.WET_DIRT);
+				PixelPhysicsGame.matrix.setNewElement(this, ElementTypes.SAND);
+				return;
+			}
+		}
+	}
+
 }

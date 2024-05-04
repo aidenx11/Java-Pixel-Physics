@@ -36,7 +36,7 @@ public class Void extends Element {
 	 */
 	private void actOnOther() {
 
-		Element[] adjacentElements = PixelPhysicsGame.matrix.getAdjacentElements(this);
+		Element[] adjacentElements = PixelPhysicsGame.matrix.getAdjacentElements(this, true, true, true);
 		List<Element> shuffledElements = Arrays.asList(adjacentElements);
 		Collections.shuffle(shuffledElements);
 

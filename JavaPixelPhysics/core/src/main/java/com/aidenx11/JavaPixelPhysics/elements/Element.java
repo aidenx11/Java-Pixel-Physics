@@ -9,8 +9,8 @@ import com.aidenx11.JavaPixelPhysics.elements.immovable.Steel;
 import com.aidenx11.JavaPixelPhysics.elements.movable.gas.Smoke;
 import com.aidenx11.JavaPixelPhysics.elements.movable.gas.Steam;
 import com.aidenx11.JavaPixelPhysics.elements.movable.liquid.Water;
-import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.WetDirt;
-import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.WetSand;
+import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.wet_movable_solid.WetDirt;
+import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.wet_movable_solid.WetSand;
 import com.badlogic.gdx.graphics.Color;
 
 /**
@@ -212,7 +212,7 @@ public abstract class Element {
 	 */
 	public void updateBurningLogic() {
 
-		Element[] adjacentElements = PixelPhysicsGame.matrix.getAdjacentElements(this);
+		Element[] adjacentElements = PixelPhysicsGame.matrix.getAdjacentElements(this, true, true, true);
 		boolean extinguished = updateDryingLogic(adjacentElements);
 		int numberOfFire = updateNumberOfAdjacentFire(adjacentElements);
 

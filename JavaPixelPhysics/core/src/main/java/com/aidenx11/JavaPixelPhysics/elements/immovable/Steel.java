@@ -76,7 +76,7 @@ public class Steel extends Immovable {
 	 * amount of time, it will rust.
 	 */
 	public void actOnOther() {
-		Element[] adjacentElements = PixelPhysicsGame.matrix.getAdjacentElements(this);
+		Element[] adjacentElements = PixelPhysicsGame.matrix.getAdjacentElements(this, true, true, true);
 		List<Element> shuffledElements = Arrays.asList(adjacentElements);
 		Collections.shuffle(shuffledElements);
 		Element nextElement;

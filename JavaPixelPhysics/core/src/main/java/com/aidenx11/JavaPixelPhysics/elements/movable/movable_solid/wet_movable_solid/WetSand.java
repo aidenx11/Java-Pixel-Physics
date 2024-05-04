@@ -1,10 +1,11 @@
-package com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid;
+package com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.wet_movable_solid;
 
 import com.aidenx11.JavaPixelPhysics.PixelPhysicsGame;
 import com.aidenx11.JavaPixelPhysics.color.CustomColor;
 import com.aidenx11.JavaPixelPhysics.color.CustomColor.ColorValues;
+import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.MovableSolid;
 
-public class WetSand extends MovableSolid {
+public class WetSand extends WetMovableSolid {
 
 	public static ElementTypes type = ElementTypes.WET_SAND;
 	private static float acceleration = PixelPhysicsGame.GRAVITY_ACCELERATION - 0.05f;
