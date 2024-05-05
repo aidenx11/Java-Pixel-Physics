@@ -172,7 +172,7 @@ public abstract class Movable extends Element {
 		if (Math.random() > sideways1.getInertialResistance()) {
 			sideways1.setFreeFalling(true);
 			sideways1.movedLastFrame = true;
-			CellularMatrix.activateChunk(sideways1.getRow(), sideways1.getColumn());
+//			CellularMatrix.activateChunk(sideways1.getRow(), sideways1.getColumn());
 			return true;
 		}
 		return false;
