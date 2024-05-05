@@ -248,6 +248,9 @@ public class MouseInput implements InputProcessor {
 			} else {
 				lastMousePos.set(mousePos.x, mousePos.y, 0);
 			}
+			
+			CellularMatrix.activateChunk((PixelPhysicsGame.SCREEN_HEIGHT - Gdx.input.getY()) / pixelSizeModifier,
+					Gdx.input.getX() / pixelSizeModifier);
 
 			mousePos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			getCamera().unproject(mousePos);

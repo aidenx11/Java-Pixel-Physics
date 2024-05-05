@@ -1,6 +1,5 @@
 package com.aidenx11.JavaPixelPhysics.elements.immovable;
 
-import com.aidenx11.JavaPixelPhysics.PixelPhysicsGame;
 import com.aidenx11.JavaPixelPhysics.elements.Element;
 
 /**
@@ -24,12 +23,5 @@ public class Fire extends Immovable {
 		super.setOnFire(true);
 	}
 
-	/**
-	 * Override of update method to include custom method
-	 */
-	@Override
-	public void update() {
-		super.update();
-	}
 
 }

@@ -155,22 +155,27 @@ public class CellularMatrix {
 			activateChunkRight = true;
 		}
 
+		chunkMatrix[chunkRow][chunkCol].activeThisFrame = true;
 		chunkMatrix[chunkRow][chunkCol].activeNextFrame = true;
 		chunkMatrix[chunkRow][chunkCol].activeInTwoFrames = true;
 
 		if (chunkCol - 1 > 0 && activateChunkLeft) {
+			chunkMatrix[chunkRow][chunkCol - 1].activeThisFrame = true;
 			chunkMatrix[chunkRow][chunkCol - 1].activeNextFrame = true;
 			chunkMatrix[chunkRow][chunkCol - 1].activeInTwoFrames = true;
 		}
 		if (chunkCol + 1 < chunkMatrix[0].length && activateChunkRight) {
+			chunkMatrix[chunkRow][chunkCol + 1].activeThisFrame = true;
 			chunkMatrix[chunkRow][chunkCol + 1].activeNextFrame = true;
 			chunkMatrix[chunkRow][chunkCol + 1].activeInTwoFrames = true;
 		}
 		if (chunkRow + 1 < chunkMatrix.length && activateChunkAbove) {
+			chunkMatrix[chunkRow + 1][chunkCol].activeThisFrame = true;
 			chunkMatrix[chunkRow + 1][chunkCol].activeNextFrame = true;
 			chunkMatrix[chunkRow + 1][chunkCol].activeInTwoFrames = true;
 		}
 		if (chunkRow - 1 > 0 && activateChunkBelow) {
+			chunkMatrix[chunkRow - 1][chunkCol].activeThisFrame = true;
 			chunkMatrix[chunkRow - 1][chunkCol].activeNextFrame = true;
 			chunkMatrix[chunkRow - 1][chunkCol].activeInTwoFrames = true;
 		}

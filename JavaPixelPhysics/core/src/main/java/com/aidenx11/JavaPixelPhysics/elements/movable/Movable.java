@@ -85,6 +85,7 @@ public abstract class Movable extends Element {
 		setDensity(density);
 		setMovesSideways(movesSideways);
 		setFriction(friction);
+		super.setFallingThroughAir(true);
 		this.movedLastFrame = true;
 		CellularMatrix.activateChunk(row, column);
 	}
@@ -103,6 +104,9 @@ public abstract class Movable extends Element {
 		if (this instanceof MovableSolid
 				&& PixelPhysicsGame.matrix.getElement(getRow() + 1, getColumn(), true, false) instanceof Liquid
 				&& PixelPhysicsGame.matrix.getElement(getRow() - 1, getColumn(), true, false) instanceof Liquid) {
+			CellularMatrix.activateChunk(getRow(), getColumn());
+		}
+		if (PixelPhysicsGame.matrix.getElement(this.getRow() - 1, this.getColumn(), true, false) instanceof Empty) {
 			CellularMatrix.activateChunk(getRow(), getColumn());
 		}
 		if (CellularMatrix.getChunk(getRow(), getColumn()).activeThisFrame) {
@@ -168,6 +172,7 @@ public abstract class Movable extends Element {
 		if (Math.random() > sideways1.getInertialResistance()) {
 			sideways1.setFreeFalling(true);
 			sideways1.movedLastFrame = true;
+			CellularMatrix.activateChunk(sideways1.getRow(), sideways1.getColumn());
 			return true;
 		}
 		return false;

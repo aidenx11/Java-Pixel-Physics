@@ -48,7 +48,7 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 	public static final float GRAVITY_ACCELERATION = 0.1f;
 
 	/** Pixel size modifier of the game */
-	public static int pixelSizeModifier = 5;
+	public static int pixelSizeModifier = 2;
 
 	public static int chunkSize = 10;
 
@@ -295,6 +295,7 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 		texture.dispose();
 		buttonStage.dispose();
 		matrix = null;
+		System.gc();
 	}
 
 }

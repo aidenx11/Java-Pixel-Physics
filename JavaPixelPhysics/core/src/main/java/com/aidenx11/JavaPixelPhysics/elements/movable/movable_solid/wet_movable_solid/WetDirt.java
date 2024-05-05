@@ -3,7 +3,6 @@ package com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.wet_movable
 import com.aidenx11.JavaPixelPhysics.PixelPhysicsGame;
 import com.aidenx11.JavaPixelPhysics.color.CustomColor;
 import com.aidenx11.JavaPixelPhysics.color.CustomColor.ColorValues;
-import com.aidenx11.JavaPixelPhysics.elements.movable.movable_solid.MovableSolid;
 
 public class WetDirt extends WetMovableSolid {
 

@@ -18,12 +18,12 @@ public class Obsidian extends MovableSolid {
 	private static int density = 8;
 	private static float inertialResistance = 0.995f;
 	private static float friction = 0.7f;
-	
+
 	public static CustomColor color = new CustomColor(ColorValues.OBSIDIAN, false);
 
 	public Obsidian(int row, int column) {
-		super(type, row, column, color, false, -1, false, true, 0, false, 0,
-				acceleration, maxSpeed, density, false, inertialResistance, friction, -1);
+		super(type, row, column, color, false, -1, false, true, 0, false, 0, acceleration, maxSpeed, density, false,
+				inertialResistance, friction, -1);
 		super.setFreeFalling(true);
 	}
 
@@ -35,7 +35,8 @@ public class Obsidian extends MovableSolid {
 
 			int delta = (int) Math.signum(this.getVerticalVelocity());
 
-			Element nextVertical = PixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn(), true, false);
+			Element nextVertical = PixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn(), true,
+					false);
 			int randDirection = Math.random() > 0.5 ? 1 : -1;
 
 			if (this.getHorizontalVelocity() > 0 && this.isFreeFalling()) {
@@ -63,15 +64,20 @@ public class Obsidian extends MovableSolid {
 				}
 			}
 
-			Element sideways1 = PixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() - randDirection, false, true);
-			Element sideways2 = PixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() + randDirection, false, true);
+			Element sideways1 = PixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() - randDirection,
+					false, true);
+			Element sideways2 = PixelPhysicsGame.matrix.getElement(this.getRow(), this.getColumn() + randDirection,
+					false, true);
 
 			boolean inContainer = sideways1 instanceof Immovable || sideways2 instanceof Immovable;
 
-			nextVertical1 = PixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn() - randDirection, true, true);
-			nextVertical2 = PixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn() + randDirection, true, true);
+			nextVertical1 = PixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn() - randDirection,
+					true, true);
+			nextVertical2 = PixelPhysicsGame.matrix.getElement(this.getRow() - delta, this.getColumn() + randDirection,
+					true, true);
 
-			if (nextVertical != null && (nextVertical.getDensity() < this.getDensity() - 1)) {
+			if (nextVertical != null && (nextVertical.getDensity() < this.getDensity() - 1)
+					&& !(nextVertical instanceof Lava)) {
 
 				setFreeFalling(true);
 				PixelPhysicsGame.matrix.swap(this, nextVertical);
@@ -83,7 +89,8 @@ public class Obsidian extends MovableSolid {
 			} else if (nextVertical1 != null
 					&& (nextVertical1.getDensity() < this.getDensity() - 1
 							|| (nextVertical1.isFallingThroughAir() && nextVertical1.getDensity() == this.getDensity()))
-					&& (this.isFreeFalling() || this.getHorizontalVelocity() > 0) && !inContainer) {
+					&& (this.isFreeFalling() || this.getHorizontalVelocity() > 0) && !inContainer
+					&& !(nextVertical1 instanceof Lava)) {
 
 				PixelPhysicsGame.matrix.swap(this, nextVertical1);
 				setDirection(randDirection * -1);
@@ -95,7 +102,8 @@ public class Obsidian extends MovableSolid {
 			} else if (nextVertical2 != null
 					&& (nextVertical2.getDensity() < this.getDensity() - 1
 							|| nextVertical2.isFallingThroughAir() && nextVertical2.getDensity() == this.getDensity())
-					&& (this.isFreeFalling() || this.getHorizontalVelocity() > 0) && !inContainer) {
+					&& (this.isFreeFalling() || this.getHorizontalVelocity() > 0) && !inContainer
+					&& !(nextVertical2 instanceof Lava)) {
 
 				PixelPhysicsGame.matrix.swap(this, nextVertical2);
 				setDirection(randDirection);
@@ -120,10 +128,12 @@ public class Obsidian extends MovableSolid {
 							Element elementBelowDirection = PixelPhysicsGame.matrix.getElement(getRow() - 1,
 									getColumn() + getDirection(), true, true);
 
-							if (elementInDirection != null && elementInDirection.getDensity() <= this.getDensity()) {
+							if (elementInDirection != null && elementInDirection.getDensity() <= this.getDensity()
+									&& !(elementInDirection instanceof Lava)) {
 
 								if (elementBelowDirection != null
-										&& elementBelowDirection.getDensity() <= this.getDensity()) {
+										&& elementBelowDirection.getDensity() <= this.getDensity()
+										&& !(elementBelowDirection instanceof Lava)) {
 
 									PixelPhysicsGame.matrix.swap(this, elementBelowDirection);
 

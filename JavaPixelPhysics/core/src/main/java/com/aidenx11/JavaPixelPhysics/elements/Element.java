@@ -1,9 +1,7 @@
 package com.aidenx11.JavaPixelPhysics.elements;
 
-import com.aidenx11.JavaPixelPhysics.CellularMatrix;
 import com.aidenx11.JavaPixelPhysics.PixelPhysicsGame;
 import com.aidenx11.JavaPixelPhysics.color.CustomColor;
-import com.aidenx11.JavaPixelPhysics.elements.Element.ElementTypes;
 import com.aidenx11.JavaPixelPhysics.elements.immovable.Fire;
 import com.aidenx11.JavaPixelPhysics.elements.immovable.Steel;
 import com.aidenx11.JavaPixelPhysics.elements.movable.gas.Smoke;
