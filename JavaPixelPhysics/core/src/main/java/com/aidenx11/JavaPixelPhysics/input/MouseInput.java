@@ -195,7 +195,8 @@ public class MouseInput implements InputProcessor {
 	 */
 	public void drawCursor(ShapeDrawer shapeDrawer) {
 
-		boolean mouseInBounds = Gdx.input.getX() < PixelPhysicsGame.SCREEN_WIDTH - PixelPhysicsGame.uiOffset;
+		boolean mouseInBounds = true;
+//				Gdx.input.getX() < PixelPhysicsGame.SCREEN_WIDTH - PixelPhysicsGame.uiOffset;
 
 		shapeDrawer.setColor(Color.RED);
 		if (getBrushType() == BrushTypes.CIRCLE && mouseInBounds) {

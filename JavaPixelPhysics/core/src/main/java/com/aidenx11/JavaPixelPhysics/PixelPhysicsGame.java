@@ -172,7 +172,7 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 		im.addProcessor(mouse);
 
 		Gdx.input.setInputProcessor(im);
-		
+
 //		System.out.println("rows: " + rows);
 //		System.out.println("cols: " + columns);
 
@@ -208,8 +208,6 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 
 		matrix.draw(shapeDrawer);
 
-		mouse.drawCursor(shapeDrawer);
-
 		if (lightsOn) {
 			shapeDrawer.setColor(Color.GRAY);
 		} else {
@@ -230,7 +228,18 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 		// Draw the UI to the screen
 		buttonStage.draw();
 
+		batch.begin();
+
+		mouse.drawCursor(shapeDrawer);
+		
+		batch.end();
+
 		CellularMatrix.stepChunks();
+
+		if (UIStage.brushSizeSlider.isDragging()) {
+			mouse.setBrushSize((int) UIStage.brushSizeSlider.getValue());
+			mouse.setCursorSize((int) UIStage.brushSizeSlider.getValue());
+		}
 
 	}
 
@@ -253,7 +262,7 @@ public class PixelPhysicsGame extends ApplicationAdapter {
 				pixelSizeModifier, chunkSize);
 		int oldRows = rows;
 		int oldCols = columns;
-		
+
 		CellularMatrix.resetChunks();
 
 		// fill the old matrix
