@@ -64,7 +64,8 @@ public class WetMovableSolid extends MovableSolid {
 				for (int i = this.getRow() - delta; i >= 0; i--) {
 					Element elementToCheck = PixelPhysicsGame.matrix.getElement(i, this.getColumn(), false, false);
 
-					if (elementToCheck instanceof Immovable || elementToCheck instanceof Lava) {
+					if (elementToCheck instanceof Immovable || elementToCheck instanceof Lava
+							|| elementToCheck instanceof WetSand || elementToCheck instanceof WetDirt) {
 						break;
 					}
 					if (elementToCheck instanceof Empty || elementToCheck instanceof Water) {
@@ -138,6 +139,7 @@ public class WetMovableSolid extends MovableSolid {
 			} else {
 
 				this.updateHorizontalVelocity();
+				this.setFreeFalling(false);
 
 				if (this.getHorizontalVelocity() == 0 && this.getVerticalVelocity() > 0) {
 					this.setHorizontalVelocity((float) (this.getDirection() * getVerticalVelocity() * Math.random()));
