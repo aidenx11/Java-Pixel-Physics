@@ -1,4 +1,4 @@
-# Java Pixel Physics 
+# Java Pixel Physics  
 
 ## [Try the web version](https://aidenx11.github.io/Java-Pixel-Physics/)
 *Note: The web version has a smaller screen size and resolution than the desktop version to save performance.*
