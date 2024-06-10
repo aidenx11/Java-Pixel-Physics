@@ -17,7 +17,7 @@ public class GwtLauncher extends GwtApplication {
 //            return cfg;
             // If you want a fixed size application, comment out the above resizable section,
             // and uncomment below:
-            return new GwtApplicationConfiguration(720, 720, GwtApplication.isMobileDevice());
+            return new GwtApplicationConfiguration(850, 650, GwtApplication.isMobileDevice());
         }
 
         @Override
