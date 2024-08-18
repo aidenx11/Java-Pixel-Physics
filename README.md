@@ -3,7 +3,7 @@
 ## [Try the web version](https://aidenx11.github.io/Java-Pixel-Physics/)
 *Note: The web version has a smaller screen size and resolution than the desktop version to save performance.*
 
-## [Download Latest Release](https://github.com/aidenx11/Java-Pixel-Physics/releases/tag/v0.1.0-beta.1) 
+## [Download Latest Release](https://github.com/aidenx11/Java-Pixel-Physics/releases/tag/v1.0.0) 
 
 ## Overview
   Inspired by the various falling sand simulators from when I was a kid such as [The Sandbox](https://apps.apple.com/us/app/the-sandbox-building-craft/id520777858), and more modern games such as [Noita](https://en.wikipedia.org/wiki/Noita_(video_game)), I aimed to create a simulation of my own in Java using the [LibGDX](https://libgdx.com/) framework.
